@@ -1,0 +1,146 @@
+[
+    {
+        "model": "upload_forecasts.onmonthlist",
+        "pk": "00a6d01a-8026-481d-90e8-dba26b59c2df",
+        "fields": {
+            "name": "June",
+            "value": 6,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.213",
+            "updated_on": "2023-12-12T19:23:43.213"
+        }
+    },
+    {
+        "model": "upload_forecasts.onmonthlist",
+        "pk": "0626d194-258d-4b9e-ae30-df2848048a01",
+        "fields": {
+            "name": "September",
+            "value": 9,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.307",
+            "updated_on": "2023-12-12T19:23:43.307"
+        }
+    },
+    {
+        "model": "upload_forecasts.onmonthlist",
+        "pk": "3bd2ccc9-4b52-43a0-bc84-2264d697e921",
+        "fields": {
+            "name": "November",
+            "value": 11,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.370",
+            "updated_on": "2023-12-12T19:23:43.370"
+        }
+    },
+    {
+        "model": "upload_forecasts.onmonthlist",
+        "pk": "7c1b6936-74a5-498f-a1ef-9bd496288fa5",
+        "fields": {
+            "name": "February",
+            "value": 2,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.078",
+            "updated_on": "2023-12-12T19:23:43.078"
+        }
+    },
+    {
+        "model": "upload_forecasts.onmonthlist",
+        "pk": "83dd0cf1-4f64-42ef-8fa9-1c361a68718b",
+        "fields": {
+            "name": "December",
+            "value": 12,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.400",
+            "updated_on": "2023-12-12T19:23:43.400"
+        }
+    },
+    {
+        "model": "upload_forecasts.onmonthlist",
+        "pk": "84b13913-215a-4515-adb9-14f8b81334f7",
+        "fields": {
+            "name": "April",
+            "value": 4,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.148",
+            "updated_on": "2023-12-12T19:23:43.148"
+        }
+    },
+    {
+        "model": "upload_forecasts.onmonthlist",
+        "pk": "877a073d-dc23-4a6e-83fb-21db69ebf7ef",
+        "fields": {
+            "name": "October",
+            "value": 10,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.341",
+            "updated_on": "2023-12-12T19:23:43.341"
+        }
+    },
+    {
+        "model": "upload_forecasts.onmonthlist",
+        "pk": "a731f5d2-a58e-4a14-9d16-a7d37274e5ac",
+        "fields": {
+            "name": "July",
+            "value": 7,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.243",
+            "updated_on": "2023-12-12T19:23:43.243"
+        }
+    },
+    {
+        "model": "upload_forecasts.onmonthlist",
+        "pk": "c4beab61-b5d3-4807-809c-19f38453652e",
+        "fields": {
+            "name": "May",
+            "value": 5,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.184",
+            "updated_on": "2023-12-12T19:23:43.184"
+        }
+    },
+    {
+        "model": "upload_forecasts.onmonthlist",
+        "pk": "d4118b8e-b1f1-4342-849b-45d2f9eb4aa7",
+        "fields": {
+            "name": "March",
+            "value": 3,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.113",
+            "updated_on": "2023-12-12T19:23:43.113"
+        }
+    },
+    {
+        "model": "upload_forecasts.onmonthlist",
+        "pk": "d9d53a52-d14e-4ad7-83d1-ba17bff91f45",
+        "fields": {
+            "name": "August",
+            "value": 8,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.276",
+            "updated_on": "2023-12-12T19:23:43.276"
+        }
+    },
+    {
+        "model": "upload_forecasts.onmonthlist",
+        "pk": "db3020b0-6685-4215-9b49-4568ebf53329",
+        "fields": {
+            "name": "January",
+            "value": 1,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.041",
+            "updated_on": "2023-12-12T19:23:43.041"
+        }
+    }
+]

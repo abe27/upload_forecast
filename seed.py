@@ -6,6 +6,7 @@ def main():
     dir.sort()
     for dd in dir:
         files = [f for f in os.listdir(f"seed/{dd}")]
+        files.sort()
         for f in files:
             fname = f"seed/{dd}/{f}"
             strCmd = f"python manage.py loaddata {fname}"

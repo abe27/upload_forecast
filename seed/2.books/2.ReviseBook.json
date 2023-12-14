@@ -1,0 +1,15 @@
+[
+    {
+        "model": "books.revisebook",
+        "pk": "849341ba-2f79-4108-ab77-23ecd4cdf323",
+        "fields": {
+            "ref_type_id": "2eefa8bb-27ea-4134-87d7-424dc0d48cdb",
+            "book_id": "fc39a350-7941-43ab-aea6-2903ece6adea",
+            "name": "Upload EDI",
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:39.744",
+            "updated_on": "2023-12-12T19:19:39.744"
+        }
+    }
+]

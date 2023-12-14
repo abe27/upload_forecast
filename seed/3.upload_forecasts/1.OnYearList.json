@@ -1,0 +1,1202 @@
+[
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "01519226-2d14-471b-9c80-6f2b330fb713",
+        "fields": {
+            "name": "2038",
+            "value": 2038,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.160",
+            "updated_on": "2023-12-12T19:23:44.160"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "037e34f8-eb6e-40f8-9dc8-6ad0913c25e5",
+        "fields": {
+            "name": "2058",
+            "value": 2058,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.767",
+            "updated_on": "2023-12-12T19:23:44.767"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "0b0aea49-5924-4601-a5c3-e9118bc27a2d",
+        "fields": {
+            "name": "2041",
+            "value": 2041,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.268",
+            "updated_on": "2023-12-12T19:23:44.268"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "0bc02d36-931d-43aa-a700-a4ea9f7d8d18",
+        "fields": {
+            "name": "2027",
+            "value": 2027,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.816",
+            "updated_on": "2023-12-12T19:23:43.816"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "0df7cbf7-62a0-49d6-bbcc-5780c7c4a8a7",
+        "fields": {
+            "name": "2069",
+            "value": 2069,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.085",
+            "updated_on": "2023-12-12T19:23:45.085"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "12d2df0a-8d45-4d96-99b4-891bf5039c6f",
+        "fields": {
+            "name": "2072",
+            "value": 2072,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.181",
+            "updated_on": "2023-12-12T19:23:45.181"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "18567ade-8ed5-4b30-bf20-2a50f1f3104e",
+        "fields": {
+            "name": "2111",
+            "value": 2111,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.544",
+            "updated_on": "2023-12-12T19:23:46.544"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "192d4be8-eef8-407f-9f7e-a476d7c186ef",
+        "fields": {
+            "name": "2053",
+            "value": 2053,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.620",
+            "updated_on": "2023-12-12T19:23:44.620"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "19839513-48ee-4196-95d5-e33a5a2ae1e4",
+        "fields": {
+            "name": "2115",
+            "value": 2115,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.662",
+            "updated_on": "2023-12-12T19:23:46.662"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "19bdd4a3-2455-4443-b067-50905b8c4a4a",
+        "fields": {
+            "name": "2030",
+            "value": 2030,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.907",
+            "updated_on": "2023-12-12T19:23:43.907"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "1c7f91c8-25f3-4a3a-ad1d-ba36cff4238c",
+        "fields": {
+            "name": "2024",
+            "value": 2024,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.725",
+            "updated_on": "2023-12-12T19:23:43.725"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "1cb74f33-a139-4743-ab49-7fdac44332e6",
+        "fields": {
+            "name": "2091",
+            "value": 2091,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.846",
+            "updated_on": "2023-12-12T19:23:45.846"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "1d9d70eb-ad41-4afe-94b3-2d3040a22481",
+        "fields": {
+            "name": "2073",
+            "value": 2073,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.213",
+            "updated_on": "2023-12-12T19:23:45.213"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "1fd72176-1e96-4717-8b6f-a26ba9ad5691",
+        "fields": {
+            "name": "2096",
+            "value": 2096,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.011",
+            "updated_on": "2023-12-12T19:23:46.011"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "226b6f46-2614-4830-b397-7a6df27ffd99",
+        "fields": {
+            "name": "2080",
+            "value": 2080,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.460",
+            "updated_on": "2023-12-12T19:23:45.460"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "22739115-f81e-4db7-95ea-fbcef9803a7c",
+        "fields": {
+            "name": "2049",
+            "value": 2049,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.505",
+            "updated_on": "2023-12-12T19:23:44.505"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "271a7b05-e1d1-4b10-bd2b-f988213a20c4",
+        "fields": {
+            "name": "2050",
+            "value": 2050,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.534",
+            "updated_on": "2023-12-12T19:23:44.534"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "2ad5b329-1502-4990-8301-ce21a5f3e9dd",
+        "fields": {
+            "name": "2048",
+            "value": 2048,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.474",
+            "updated_on": "2023-12-12T19:23:44.474"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "2b4dc668-43a7-4555-835d-4374dcc41fd5",
+        "fields": {
+            "name": "2118",
+            "value": 2118,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.759",
+            "updated_on": "2023-12-12T19:23:46.759"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "326f3716-3612-4e7a-945c-ab29037ec87d",
+        "fields": {
+            "name": "2114",
+            "value": 2114,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.631",
+            "updated_on": "2023-12-12T19:23:46.631"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "37dbbeba-452a-4ec8-8c37-44a770f09b52",
+        "fields": {
+            "name": "2026",
+            "value": 2026,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.788",
+            "updated_on": "2023-12-12T19:23:43.788"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "3869ce3d-effc-4c1f-92e5-378920f75fe4",
+        "fields": {
+            "name": "2052",
+            "value": 2052,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.592",
+            "updated_on": "2023-12-12T19:23:44.592"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "3ab0c49c-6cbc-4887-8bda-9a08d3e35cb7",
+        "fields": {
+            "name": "2060",
+            "value": 2060,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.821",
+            "updated_on": "2023-12-12T19:23:44.821"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "3bb9b89c-b5ba-4619-b760-590e36394cd8",
+        "fields": {
+            "name": "2036",
+            "value": 2036,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.091",
+            "updated_on": "2023-12-12T19:23:44.091"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "3fbe6801-7085-43a6-954d-1a4bd67df58d",
+        "fields": {
+            "name": "2120",
+            "value": 2120,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.813",
+            "updated_on": "2023-12-12T19:23:46.813"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "403c888e-9980-448e-9d13-4d95fda43768",
+        "fields": {
+            "name": "2034",
+            "value": 2034,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.026",
+            "updated_on": "2023-12-12T19:23:44.026"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "43b6d122-1d27-4e1e-a914-da373de13228",
+        "fields": {
+            "name": "2047",
+            "value": 2047,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.448",
+            "updated_on": "2023-12-12T19:23:44.448"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "4447a5c7-31f7-4c01-ac53-15414af3f35a",
+        "fields": {
+            "name": "2064",
+            "value": 2064,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.935",
+            "updated_on": "2023-12-12T19:23:44.935"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "44e970bc-5405-47c0-9504-d2c9fa54682b",
+        "fields": {
+            "name": "2042",
+            "value": 2042,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.303",
+            "updated_on": "2023-12-12T19:23:44.303"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "4a465ab8-fb4c-43db-b62f-6cbd08092687",
+        "fields": {
+            "name": "2045",
+            "value": 2045,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.393",
+            "updated_on": "2023-12-12T19:23:44.393"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "4da2dc5b-5927-4e8d-b503-bf6b974e4d97",
+        "fields": {
+            "name": "2037",
+            "value": 2037,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.125",
+            "updated_on": "2023-12-12T19:23:44.125"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "51aefe3c-7f11-4776-8c09-0efddcd39c8f",
+        "fields": {
+            "name": "2101",
+            "value": 2101,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.179",
+            "updated_on": "2023-12-12T19:23:46.179"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "56d95c50-0a10-4cc3-bb43-c8242213d2df",
+        "fields": {
+            "name": "2090",
+            "value": 2090,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.812",
+            "updated_on": "2023-12-12T19:23:45.812"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "5b8ba3e3-0f78-410c-b9a7-3385f238e5e6",
+        "fields": {
+            "name": "2029",
+            "value": 2029,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.877",
+            "updated_on": "2023-12-12T19:23:43.877"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "5fa2fac2-a61a-4abc-84e3-0bc617c8f48d",
+        "fields": {
+            "name": "2025",
+            "value": 2025,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.759",
+            "updated_on": "2023-12-12T19:23:43.759"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "640e9b5d-bed6-4ab4-b99a-f63f170ec235",
+        "fields": {
+            "name": "2094",
+            "value": 2094,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.940",
+            "updated_on": "2023-12-12T19:23:45.940"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "66418469-76c8-4dd9-9249-b58ce9d55009",
+        "fields": {
+            "name": "2057",
+            "value": 2057,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.738",
+            "updated_on": "2023-12-12T19:23:44.738"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "67b4648f-e60b-4a01-88ce-934e977304a9",
+        "fields": {
+            "name": "2062",
+            "value": 2062,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.879",
+            "updated_on": "2023-12-12T19:23:44.879"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "67fe41af-c1b6-4e69-a26e-069cb5ef7854",
+        "fields": {
+            "name": "2116",
+            "value": 2116,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.693",
+            "updated_on": "2023-12-12T19:23:46.693"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "730bba63-1cae-44fa-8947-b1a58ca41289",
+        "fields": {
+            "name": "2067",
+            "value": 2067,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.022",
+            "updated_on": "2023-12-12T19:23:45.022"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "74492e84-e0b0-4516-afc7-a531feb7bc14",
+        "fields": {
+            "name": "2056",
+            "value": 2056,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.707",
+            "updated_on": "2023-12-12T19:23:44.707"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "75864d92-df2f-4f67-939c-3ddf16af82bd",
+        "fields": {
+            "name": "2098",
+            "value": 2098,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.078",
+            "updated_on": "2023-12-12T19:23:46.078"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "7ab34857-c5c0-4124-b536-fd52bd4d29ef",
+        "fields": {
+            "name": "2043",
+            "value": 2043,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.336",
+            "updated_on": "2023-12-12T19:23:44.336"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "7eae20cc-ba25-4e2f-8a7b-648057f4c10b",
+        "fields": {
+            "name": "2061",
+            "value": 2061,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.852",
+            "updated_on": "2023-12-12T19:23:44.852"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "7f37ab4e-746c-4bce-9575-cbb2816e5bd7",
+        "fields": {
+            "name": "2095",
+            "value": 2095,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.973",
+            "updated_on": "2023-12-12T19:23:45.973"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "84d24b6e-8b94-415e-a048-0dd259ce76a5",
+        "fields": {
+            "name": "2023",
+            "value": 2023,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.691",
+            "updated_on": "2023-12-12T19:23:43.691"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "86f6db81-212a-48e8-b616-86e9b958ad13",
+        "fields": {
+            "name": "2113",
+            "value": 2113,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.603",
+            "updated_on": "2023-12-12T19:23:46.603"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "898a596a-c753-4d94-a524-51610ddc8641",
+        "fields": {
+            "name": "2084",
+            "value": 2084,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.603",
+            "updated_on": "2023-12-12T19:23:45.603"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "8ac88043-18c4-4244-a157-c953df399585",
+        "fields": {
+            "name": "2055",
+            "value": 2055,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.678",
+            "updated_on": "2023-12-12T19:23:44.678"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "8bfe2779-61b8-4814-8017-205a08c3be2a",
+        "fields": {
+            "name": "2035",
+            "value": 2035,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.058",
+            "updated_on": "2023-12-12T19:23:44.058"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "8d88701f-aba6-4337-953e-fd102052250b",
+        "fields": {
+            "name": "2028",
+            "value": 2028,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.845",
+            "updated_on": "2023-12-12T19:23:43.845"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "8d97d87b-9c27-4120-805e-d1ec6b5928e8",
+        "fields": {
+            "name": "2079",
+            "value": 2079,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.414",
+            "updated_on": "2023-12-12T19:23:45.414"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "8e3c22a9-2506-4a80-996f-4e9b8fa319fd",
+        "fields": {
+            "name": "2105",
+            "value": 2105,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.318",
+            "updated_on": "2023-12-12T19:23:46.318"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "8efebef9-39b6-405b-8374-4743d18cd274",
+        "fields": {
+            "name": "2039",
+            "value": 2039,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.197",
+            "updated_on": "2023-12-12T19:23:44.197"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "8faf8d29-468c-4f6c-9cc2-a9678db9e7ff",
+        "fields": {
+            "name": "2110",
+            "value": 2110,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.507",
+            "updated_on": "2023-12-12T19:23:46.507"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "91233a3f-a0cd-45f9-a299-ac37144a741a",
+        "fields": {
+            "name": "2046",
+            "value": 2046,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.421",
+            "updated_on": "2023-12-12T19:23:44.421"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "9146be79-37a3-4cca-ac6b-1c70ba9f52a6",
+        "fields": {
+            "name": "2077",
+            "value": 2077,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.346",
+            "updated_on": "2023-12-12T19:23:45.346"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "92b5046f-c132-4cb7-b0cb-134909b0ff60",
+        "fields": {
+            "name": "2107",
+            "value": 2107,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.400",
+            "updated_on": "2023-12-12T19:23:46.400"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "93af0374-a210-4ca4-9b99-6abdba3f99e7",
+        "fields": {
+            "name": "2086",
+            "value": 2086,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.668",
+            "updated_on": "2023-12-12T19:23:45.668"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "984ef434-1c22-4fbb-bd59-705e02de374d",
+        "fields": {
+            "name": "2103",
+            "value": 2103,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.243",
+            "updated_on": "2023-12-12T19:23:46.243"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "98708718-fceb-430f-9b1a-85f145fae4e2",
+        "fields": {
+            "name": "2059",
+            "value": 2059,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.793",
+            "updated_on": "2023-12-12T19:23:44.793"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "9ac3818a-6cb4-4541-ad7f-1e9e30ba634e",
+        "fields": {
+            "name": "2108",
+            "value": 2108,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.438",
+            "updated_on": "2023-12-12T19:23:46.438"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "9b0b1aca-d2a3-4f3e-9c4b-2a11787a8870",
+        "fields": {
+            "name": "2071",
+            "value": 2071,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.151",
+            "updated_on": "2023-12-12T19:23:45.151"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "9d22e746-3618-4f99-8521-d19fa745d1cd",
+        "fields": {
+            "name": "2051",
+            "value": 2051,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.562",
+            "updated_on": "2023-12-12T19:23:44.562"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "9dc7fcbe-e3a2-4791-9039-ad21fc1d6324",
+        "fields": {
+            "name": "2097",
+            "value": 2097,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.042",
+            "updated_on": "2023-12-12T19:23:46.042"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "a10f8af8-5edd-4bff-b6f7-cd4ce32c0a51",
+        "fields": {
+            "name": "2076",
+            "value": 2076,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.312",
+            "updated_on": "2023-12-12T19:23:45.312"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "a1bd2722-16da-4bcc-8cc9-98bbff71fd24",
+        "fields": {
+            "name": "2106",
+            "value": 2106,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.358",
+            "updated_on": "2023-12-12T19:23:46.358"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "a649cb83-e0b0-4bea-a494-c0a78d07771b",
+        "fields": {
+            "name": "2112",
+            "value": 2112,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.572",
+            "updated_on": "2023-12-12T19:23:46.572"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "a8efef33-d3a4-47fe-90f6-70daddee8724",
+        "fields": {
+            "name": "2066",
+            "value": 2066,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.994",
+            "updated_on": "2023-12-12T19:23:44.994"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "adcd944a-06d6-411c-8143-948ce0a20c77",
+        "fields": {
+            "name": "2078",
+            "value": 2078,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.382",
+            "updated_on": "2023-12-12T19:23:45.382"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "ade351f8-0c05-4860-8e87-19ea6570f1a4",
+        "fields": {
+            "name": "2081",
+            "value": 2081,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.501",
+            "updated_on": "2023-12-12T19:23:45.501"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "af875cc2-5a95-48a1-8936-ea901f7553e7",
+        "fields": {
+            "name": "2109",
+            "value": 2109,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.473",
+            "updated_on": "2023-12-12T19:23:46.473"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "af8cccec-2079-4cae-8b71-7287141b62d8",
+        "fields": {
+            "name": "2031",
+            "value": 2031,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.936",
+            "updated_on": "2023-12-12T19:23:43.936"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "b2578367-b7ef-42b8-bff8-a45ea6c50cf3",
+        "fields": {
+            "name": "2033",
+            "value": 2033,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.998",
+            "updated_on": "2023-12-12T19:23:43.998"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "b424f903-04c5-44a7-b963-7a8e883a71aa",
+        "fields": {
+            "name": "2074",
+            "value": 2074,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.249",
+            "updated_on": "2023-12-12T19:23:45.249"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "b5ec7e2f-1743-4ff3-99f1-1d616b571170",
+        "fields": {
+            "name": "2082",
+            "value": 2082,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.532",
+            "updated_on": "2023-12-12T19:23:45.532"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "b7050d6e-ceb1-4d48-97b5-73590a1532e5",
+        "fields": {
+            "name": "2100",
+            "value": 2100,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.146",
+            "updated_on": "2023-12-12T19:23:46.146"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "b7fe0128-28ad-4040-9ce1-eb2de5a88b03",
+        "fields": {
+            "name": "2119",
+            "value": 2119,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.784",
+            "updated_on": "2023-12-12T19:23:46.784"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "bb9f6b6f-af7d-4b55-88da-2bf72ba02e87",
+        "fields": {
+            "name": "2032",
+            "value": 2032,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.966",
+            "updated_on": "2023-12-12T19:23:43.966"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "bbc8b710-c0fb-4001-824a-bbda0adb3dd0",
+        "fields": {
+            "name": "2068",
+            "value": 2068,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.052",
+            "updated_on": "2023-12-12T19:23:45.052"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "bfd7f7c5-733f-495a-8497-e3aef4ddfe6f",
+        "fields": {
+            "name": "2070",
+            "value": 2070,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.119",
+            "updated_on": "2023-12-12T19:23:45.119"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "c44c2179-7b65-47af-94a6-afa2724dfe9f",
+        "fields": {
+            "name": "2063",
+            "value": 2063,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.907",
+            "updated_on": "2023-12-12T19:23:44.907"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "c46b2aab-8006-4087-a9f6-8d1a9509fe08",
+        "fields": {
+            "name": "2065",
+            "value": 2065,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.964",
+            "updated_on": "2023-12-12T19:23:44.964"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "c481f555-d383-4a71-83f5-75b9a8302fc2",
+        "fields": {
+            "name": "2102",
+            "value": 2102,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.212",
+            "updated_on": "2023-12-12T19:23:46.212"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "c9c9e6f8-4591-4691-a547-16011ceb447f",
+        "fields": {
+            "name": "2087",
+            "value": 2087,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.700",
+            "updated_on": "2023-12-12T19:23:45.700"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "cfbeb849-8e11-41a2-9a0c-d4078fd33cb3",
+        "fields": {
+            "name": "2121",
+            "value": 2121,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.842",
+            "updated_on": "2023-12-12T19:23:46.842"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "d02c265a-7ad4-4651-9ef9-94241e1b113d",
+        "fields": {
+            "name": "2085",
+            "value": 2085,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.635",
+            "updated_on": "2023-12-12T19:23:45.635"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "d16c83e7-e0fa-448f-8354-41e9c5d61d91",
+        "fields": {
+            "name": "2075",
+            "value": 2075,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.282",
+            "updated_on": "2023-12-12T19:23:45.282"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "d2382e5a-39f1-4429-9d7c-99f0e9fb19bd",
+        "fields": {
+            "name": "2040",
+            "value": 2040,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.231",
+            "updated_on": "2023-12-12T19:23:44.231"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "d5e2f313-4511-4e7c-a040-e077d95ecae7",
+        "fields": {
+            "name": "2099",
+            "value": 2099,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.112",
+            "updated_on": "2023-12-12T19:23:46.112"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "e1ec234c-0d93-4f46-bf75-408f6ed861a9",
+        "fields": {
+            "name": "2088",
+            "value": 2088,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.744",
+            "updated_on": "2023-12-12T19:23:45.744"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "e49494af-07e6-4d29-971e-e9f41c0cbef3",
+        "fields": {
+            "name": "2092",
+            "value": 2092,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.877",
+            "updated_on": "2023-12-12T19:23:45.878"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "e9e7f1ce-4146-4c13-8ac5-29ac280319c9",
+        "fields": {
+            "name": "2089",
+            "value": 2089,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.777",
+            "updated_on": "2023-12-12T19:23:45.777"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "ea00b4c1-6712-4b0f-876c-c925cad5ff5f",
+        "fields": {
+            "name": "2054",
+            "value": 2054,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.649",
+            "updated_on": "2023-12-12T19:23:44.649"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "ea239aa0-dc9a-402c-b8b7-1b7893b2e5c0",
+        "fields": {
+            "name": "2022",
+            "value": 2022,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:43.632",
+            "updated_on": "2023-12-12T19:23:43.632"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "ef35fef5-ce20-4b82-ac90-882449d4b63a",
+        "fields": {
+            "name": "2104",
+            "value": 2104,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.277",
+            "updated_on": "2023-12-12T19:23:46.277"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "f14cd600-606b-48d7-990e-b5f403a858d2",
+        "fields": {
+            "name": "2093",
+            "value": 2093,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.909",
+            "updated_on": "2023-12-12T19:23:45.909"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "f1a17f6d-a2fc-4a76-82ad-3bdfb1c6867d",
+        "fields": {
+            "name": "2083",
+            "value": 2083,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:45.565",
+            "updated_on": "2023-12-12T19:23:45.565"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "f3dc7bf8-85e6-4b79-92ad-5ad6d64e6c8e",
+        "fields": {
+            "name": "2117",
+            "value": 2117,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:46.719",
+            "updated_on": "2023-12-12T19:23:46.719"
+        }
+    },
+    {
+        "model": "upload_forecasts.onyearlist",
+        "pk": "f6718778-063c-4d15-884d-9de893bf1888",
+        "fields": {
+            "name": "2044",
+            "value": 2044,
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:23:44.364",
+            "updated_on": "2023-12-12T19:23:44.364"
+        }
+    }
+]
