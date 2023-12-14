@@ -1,0 +1,266 @@
+[
+    {
+        "model": "members.position",
+        "pk": "058979bd-10e9-4023-8121-7b29cb220e20",
+        "fields": {
+            "code": "APMK",
+            "name": "ผู้จัดการฝ่าย",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:30.106",
+            "updated_on": "2023-12-12T19:19:30.106"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "0bf04b27-339d-4bb4-b3aa-65ffb1d751a4",
+        "fields": {
+            "code": "PC02",
+            "name": "INVENTORY",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.987",
+            "updated_on": "2023-12-12T19:19:29.987"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "173208bf-fdc2-465d-ade5-163e2b9ee580",
+        "fields": {
+            "code": "PC1",
+            "name": "STORE",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.572",
+            "updated_on": "2023-12-12T19:19:29.572"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "1cb3eb66-cf6e-4b93-a885-b9559001d2fc",
+        "fields": {
+            "code": "IT01",
+            "name": "ไอที",
+            "description": "IT",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:30.020",
+            "updated_on": "2023-12-12T19:19:30.020"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "375f4582-ac6e-4a20-9eed-5663719a8679",
+        "fields": {
+            "code": "PU",
+            "name": "แผนกจัดซื้อ",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.605",
+            "updated_on": "2023-12-12T19:19:29.605"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "3bdf1442-5ee6-496d-aa60-4a173da78cab",
+        "fields": {
+            "code": "OS",
+            "name": "โอเอสทรานสปอร์ท",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.725",
+            "updated_on": "2023-12-12T19:19:29.725"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "4c6cbd38-4fa7-4de8-b611-47f9256bc56f",
+        "fields": {
+            "code": "AC01",
+            "name": "แผนกบัญชี",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.872",
+            "updated_on": "2023-12-12T19:19:29.872"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "56aec596-daf5-4a30-bcaa-fcf4eae25dfe",
+        "fields": {
+            "code": "-",
+            "name": "ไม่ระบุ",
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.433",
+            "updated_on": "2023-12-12T19:19:29.433"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "6c9b0473-d974-4ac3-a2d9-cc885cb505dc",
+        "fields": {
+            "code": "APPU",
+            "name": "ผู้จัดการส่วนจัดซื้อ",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:30.053",
+            "updated_on": "2023-12-12T19:19:30.053"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "72661444-4350-4b2c-8759-6a857f0818af",
+        "fields": {
+            "code": "PP",
+            "name": "วางแผนการผลิต",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.815",
+            "updated_on": "2023-12-12T19:19:29.815"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "754e10e2-1ac9-44b9-b1ac-2fc79b91d728",
+        "fields": {
+            "code": "APIT",
+            "name": "ผุ้จัดการส่วนไอที",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:30.080",
+            "updated_on": "2023-12-12T19:19:30.080"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "8b78e206-af9c-4026-adb8-03ab5b6b4fe0",
+        "fields": {
+            "code": "EN",
+            "name": "วิศวกรรม",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:30.135",
+            "updated_on": "2023-12-12T19:19:30.135"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "96ed68b9-86ae-4f65-bb60-1cb9e2eb0d2e",
+        "fields": {
+            "code": "QC",
+            "name": "คุณภาพ",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.637",
+            "updated_on": "2023-12-12T19:19:29.637"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "9704705f-342c-47fb-8ff4-3b575bf2a685",
+        "fields": {
+            "code": "PC",
+            "name": "แผนกคลังสินค้า",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.537",
+            "updated_on": "2023-12-12T19:19:29.537"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "b4ae5d66-3c45-4276-a499-f267f78e1315",
+        "fields": {
+            "code": "HR",
+            "name": "ทรัพยากรบุคคล",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.783",
+            "updated_on": "2023-12-12T19:19:29.783"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "b9770cf4-c455-416b-af73-7b28cba342bc",
+        "fields": {
+            "code": "AC03",
+            "name": "แผนกบัญชีคลังสินค้า",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.916",
+            "updated_on": "2023-12-12T19:19:29.916"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "bded78f1-b788-472a-9f24-08f0bb511f2f",
+        "fields": {
+            "code": "AC04",
+            "name": "บัญชีซื้อ",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.668",
+            "updated_on": "2023-12-12T19:19:29.668"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "c7a3fed4-3473-4f76-8b99-10e27f851ee4",
+        "fields": {
+            "code": "AC02",
+            "name": "แผนกบัญชีการเงิน",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.957",
+            "updated_on": "2023-12-12T19:19:29.957"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "d32b1a00-1670-4bcf-84ab-9ff5e6150282",
+        "fields": {
+            "code": "PU2",
+            "name": "จัดซื้อ 56-57",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.755",
+            "updated_on": "2023-12-12T19:19:29.755"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "e461b077-9100-4d71-9dd9-df1b18dee94f",
+        "fields": {
+            "code": "PD",
+            "name": "แผนกผลิต",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.506",
+            "updated_on": "2023-12-12T19:19:29.506"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "e679a5f4-b5f9-4549-a558-ed725eef125a",
+        "fields": {
+            "code": "0001",
+            "name": "PD2",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:30.164",
+            "updated_on": "2023-12-12T19:19:30.164"
+        }
+    },
+    {
+        "model": "members.position",
+        "pk": "eec94ee7-a2a7-4582-8c4f-d5b9fe3c10a9",
+        "fields": {
+            "code": "AC05",
+            "name": "บัญชีขาย",
+            "description": "",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.699",
+            "updated_on": "2023-12-12T19:19:29.699"
+        }
+    }
+]

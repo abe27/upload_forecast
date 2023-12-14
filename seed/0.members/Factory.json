@@ -1,0 +1,1010 @@
+[
+    {
+        "model": "members.factory",
+        "pk": "032a0f2b-78b1-426b-b2e6-5dd7d0b6794b",
+        "fields": {
+            "code": "008",
+            "name": "ประกอบรอขาย LC",
+            "description": "008-ประกอบรอขาย LC",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.523",
+            "updated_on": "2023-12-12T19:18:34.523"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "067efd29-f1f6-4945-a265-b826c7cdcb4e",
+        "fields": {
+            "code": "SSA",
+            "name": "ส่งพ่นสี SSA",
+            "description": "SSA-ส่งพ่นสี SSA",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.696",
+            "updated_on": "2023-12-12T19:18:36.696"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "080f05c6-5c61-44f5-a3a8-c9e5570fb2c6",
+        "fields": {
+            "code": "STC",
+            "name": "STC",
+            "description": "STC-STC",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.343",
+            "updated_on": "2023-12-12T19:18:36.343"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "0a4f1e17-0ae9-4d5f-9ad7-006cce1d545d",
+        "fields": {
+            "code": "00001",
+            "name": "คลังลดหนี้",
+            "description": "00001-คลังลดหนี้",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.207",
+            "updated_on": "2023-12-12T19:18:34.207"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "0b2ed73d-a7d7-4002-9345-03c9c2bc6386",
+        "fields": {
+            "code": "SAS",
+            "name": "SAS",
+            "description": "SAS-SAS",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.374",
+            "updated_on": "2023-12-12T19:18:36.374"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "11bcc1f3-6f50-4814-ac10-22e701a4bab1",
+        "fields": {
+            "code": "020",
+            "name": "ค่าซ่อมแซม",
+            "description": "020-ค่าซ่อมแซม",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.959",
+            "updated_on": "2023-12-12T19:18:34.959"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "15d4c04b-4c12-4882-a732-012e68d29162",
+        "fields": {
+            "code": "400",
+            "name": "คลังเชื่อมรอพ่นสี/และประกอบ",
+            "description": "400-คลังเชื่อมรอพ่นสี/และประกอบ",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.606",
+            "updated_on": "2023-12-12T19:18:34.606"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "1e5a29d3-e464-4cb7-9050-a63e31db286d",
+        "fields": {
+            "code": "002",
+            "name": "วัสดุสิ้นเปลืองโรง1.",
+            "description": "002-วัสดุสิ้นเปลืองโรง1.",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.349",
+            "updated_on": "2023-12-12T19:18:34.349"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "24de6b76-7e05-4e00-809a-3e219a7388ea",
+        "fields": {
+            "code": "018",
+            "name": "เบ็ดเตล็ด",
+            "description": "018-เบ็ดเตล็ด",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.905",
+            "updated_on": "2023-12-12T19:18:34.905"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "28904d63-5464-4814-a5ce-827d569d0056",
+        "fields": {
+            "code": "NLD",
+            "name": "ส่งพ่นสี NLD",
+            "description": "NLD-ส่งพ่นสี NLD",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.635",
+            "updated_on": "2023-12-12T19:18:34.635"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "28e06af8-8f09-4b25-97a4-bfa7d8d4fdd9",
+        "fields": {
+            "code": "025",
+            "name": "OEM",
+            "description": "025-OEM",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.199",
+            "updated_on": "2023-12-12T19:18:36.199"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "2bb0736e-39f1-4ba5-9a9c-f249ffb94a4a",
+        "fields": {
+            "code": "AAPT",
+            "name": "บริษัท แอดวานซ์ออโต โปรดักส์ เทคโนโลยี จำกัด",
+            "description": "AAPT-บริษัท แอดวานซ์ออโต โปรดักส์ เทคโนโลยี จำกัด",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.911",
+            "updated_on": "2023-12-12T19:18:35.911"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "2bd6d144-4452-40c1-941a-f5c6cadd8977",
+        "fields": {
+            "code": "TMP",
+            "name": "บริษัท โตไก เมทัลโปรดักส์ จำกัด",
+            "description": "TMP-บริษัท โตไก เมทัลโปรดักส์ จำกัด",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.510",
+            "updated_on": "2023-12-12T19:18:36.510"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "2c8c18bc-26db-4d4b-9e90-93322906d393",
+        "fields": {
+            "code": "022",
+            "name": "ค่าจ้างขนส่ง",
+            "description": "022-ค่าจ้างขนส่ง",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.028",
+            "updated_on": "2023-12-12T19:18:36.028"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "2eb9568a-e190-4f5c-afdf-33a249f43cb1",
+        "fields": {
+            "code": "UEM",
+            "name": "UEM",
+            "description": "UEM-UEM",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.085",
+            "updated_on": "2023-12-12T19:18:36.085"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "381b321e-543c-465f-af09-e030607da302",
+        "fields": {
+            "code": "TNT",
+            "name": "TNT",
+            "description": "TNT-TNT",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.970",
+            "updated_on": "2023-12-12T19:18:35.970"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "385cc914-1dbb-4af4-850b-03c6c756b9b4",
+        "fields": {
+            "code": "0000000002",
+            "name": "คลังระหว่างทำ",
+            "description": "0000000002-คลังระหว่างทำ",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.258",
+            "updated_on": "2023-12-12T19:18:34.258"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "3b3b3751-cc31-413a-8baa-5b6484c24485",
+        "fields": {
+            "code": "KTA",
+            "name": "ส่งงอ KTA",
+            "description": "KTA-ส่งงอ KTA",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.849",
+            "updated_on": "2023-12-12T19:18:34.849"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "3ffa6366-c3da-44fb-9ca5-484a722dde4f",
+        "fields": {
+            "code": "00002",
+            "name": "คลังหลัก",
+            "description": "00002-คลังหลัก",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.602",
+            "updated_on": "2023-12-12T19:18:35.602"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "410c4e1f-4c40-46ca-8ea5-de891edc9831",
+        "fields": {
+            "code": "603",
+            "name": "คลังปรับ",
+            "description": "603-คลังปรับ",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.662",
+            "updated_on": "2023-12-12T19:18:35.662"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "414c55a9-dc46-4d22-be91-3286d02c6f92",
+        "fields": {
+            "code": "WPK",
+            "name": "WPK",
+            "description": "WPK-WPK",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.281",
+            "updated_on": "2023-12-12T19:18:36.281"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "46bd9629-4eea-4dd5-8044-571a43dd378e",
+        "fields": {
+            "code": "021",
+            "name": "สวัสดิการ",
+            "description": "021-สวัสดิการ",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.041",
+            "updated_on": "2023-12-12T19:18:35.041"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "47972ade-46ad-4610-a6f2-49fbc4234121",
+        "fields": {
+            "code": "009",
+            "name": "กึ่งสำเร็จรูป",
+            "description": "009-กึ่งสำเร็จรูป",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.379",
+            "updated_on": "2023-12-12T19:18:35.379"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "4a7b90e7-97d1-4a86-9669-a1fe41342c5c",
+        "fields": {
+            "code": "FTB",
+            "name": "FTB",
+            "description": "FTB-FTB",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.056",
+            "updated_on": "2023-12-12T19:18:36.056"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "4b125f07-65d9-445a-82e9-a03fd6aced0a",
+        "fields": {
+            "code": "010",
+            "name": "คลัง TRIAL CUTCHACK",
+            "description": "010-คลัง TRIAL CUTCHACK",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.126",
+            "updated_on": "2023-12-12T19:18:35.126"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "4c1a1290-8ee2-4ec9-b36e-3eea048d9ac8",
+        "fields": {
+            "code": "DOWA",
+            "name": "ชุบ DOWA",
+            "description": "DOWA-ชุบ DOWA",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.321",
+            "updated_on": "2023-12-12T19:18:35.321"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "4cc14dd8-0994-440b-bb3e-c7447fd0b948",
+        "fields": {
+            "code": "BTA",
+            "name": "BTA",
+            "description": "BTA-BTA",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.630",
+            "updated_on": "2023-12-12T19:18:35.630"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "4da827c7-f26c-4a7e-ba82-ad8b22f632b2",
+        "fields": {
+            "code": "001",
+            "name": "วัตถุดิบ",
+            "description": "001-วัตถุดิบ",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.377",
+            "updated_on": "2023-12-12T19:18:34.377"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "4ed128c8-353b-4cf7-94cb-5ee9b0768e6b",
+        "fields": {
+            "code": "LTI",
+            "name": "เหรียญทอง",
+            "description": "LTI-เหรียญทอง",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.941",
+            "updated_on": "2023-12-12T19:18:35.941"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "53792002-a62d-48c6-be0a-534d125de9c9",
+        "fields": {
+            "code": "015",
+            "name": "สินทรัพย์อื่นๆ",
+            "description": "015-สินทรัพย์อื่นๆ",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.406",
+            "updated_on": "2023-12-12T19:18:34.406"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "5522214f-b21e-48d5-a651-8cf99630f51f",
+        "fields": {
+            "code": "VCS",
+            "name": "VCS",
+            "description": "VCS-VCS",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.793",
+            "updated_on": "2023-12-12T19:18:35.793"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "55624194-1004-4e09-8dfd-6da9c7efc564",
+        "fields": {
+            "code": "017",
+            "name": "สิ้นเปลืองอื่นๆ",
+            "description": "017-สิ้นเปลืองอื่นๆ",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.876",
+            "updated_on": "2023-12-12T19:18:34.876"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "55727d1d-a367-4912-9906-c1be9c44255a",
+        "fields": {
+            "code": "007",
+            "name": "คลังค่าซ่อมแซม",
+            "description": "007-คลังค่าซ่อมแซม",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.760",
+            "updated_on": "2023-12-12T19:18:35.760"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "5605abf5-3c30-4c24-a960-eb9661ef857e",
+        "fields": {
+            "code": "BVS",
+            "name": ".",
+            "description": "BVS-.",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.855",
+            "updated_on": "2023-12-12T19:18:35.855"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "5aa6507c-2bba-4720-98e3-34f2d3d69463",
+        "fields": {
+            "code": "005",
+            "name": "สินค้าสำเร็จรูป",
+            "description": "005-สินค้าสำเร็จรูป",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.288",
+            "updated_on": "2023-12-12T19:18:34.288"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "5b353412-2803-4198-96d4-050b3cb73800",
+        "fields": {
+            "code": "604",
+            "name": "งานปรับออก",
+            "description": "604-งานปรับออก",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.472",
+            "updated_on": "2023-12-12T19:18:36.472"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "5b6cfcfc-586e-4093-939c-9e9188b52aa6",
+        "fields": {
+            "code": "AMIDA",
+            "name": "บจก.อมิดะ อินเตอร์เนชั่นแนล",
+            "description": "AMIDA-บจก.อมิดะ อินเตอร์เนชั่นแนล",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.171",
+            "updated_on": "2023-12-12T19:18:36.171"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "62586c09-8d0f-4e18-8ecb-9dd96c1a8dac",
+        "fields": {
+            "code": "ซินหยวน.",
+            "name": "ซินหยวน.",
+            "description": "ซินหยวน.-ซินหยวน.",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.999",
+            "updated_on": "2023-12-12T19:18:35.999"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "62abaf9e-ac7a-4b53-a161-69d63f51d6b1",
+        "fields": {
+            "code": "002.1",
+            "name": "สิ้นเปลืองโรง2",
+            "description": "002.1-สิ้นเปลืองโรง2",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.512",
+            "updated_on": "2023-12-12T19:18:35.512"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "663661fd-7928-4dde-905f-122a608f555a",
+        "fields": {
+            "code": "KRDA",
+            "name": "-",
+            "description": "KRDA--",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.727",
+            "updated_on": "2023-12-12T19:18:35.727"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "666c189d-7d99-44b4-90fa-1fd63b630590",
+        "fields": {
+            "code": "601",
+            "name": "ขายโคโบต้า",
+            "description": "601-ขายโคโบต้า",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.551",
+            "updated_on": "2023-12-12T19:18:34.551"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "6a910cec-64ba-4b36-9c86-bdff4fb78ce5",
+        "fields": {
+            "code": "JRT",
+            "name": "ส่งเจาะ JRT",
+            "description": "JRT-ส่งเจาะ JRT",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.241",
+            "updated_on": "2023-12-12T19:18:35.241"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "6d1e9207-d537-436c-a004-ebfe4014763a",
+        "fields": {
+            "code": "PPD",
+            "name": "PPD",
+            "description": "PPD-PPD",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.405",
+            "updated_on": "2023-12-12T19:18:36.405"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "6e8265a2-9746-4cd1-8f00-8461dd8822d0",
+        "fields": {
+            "code": "XXX",
+            "name": "คลังการเบิก",
+            "description": "XXX-คลังการเบิก",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.495",
+            "updated_on": "2023-12-12T19:18:34.495"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "77e6319a-be91-4e48-8bcc-9b68bce01ece",
+        "fields": {
+            "code": "JA",
+            "name": "JA",
+            "description": "JA-JA",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.224",
+            "updated_on": "2023-12-12T19:18:36.224"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "78df141c-1112-4ba7-95d1-2bc414597675",
+        "fields": {
+            "code": "TPG",
+            "name": "ส่งชุบ TPG",
+            "description": "TPG-ส่งชุบ TPG",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.069",
+            "updated_on": "2023-12-12T19:18:35.069"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "78fe495c-c3a6-45d6-9333-aa2b2b63686d",
+        "fields": {
+            "code": "014",
+            "name": "คลังเบิกวัสดุสิ้นเปลือง",
+            "description": "014-คลังเบิกวัสดุสิ้นเปลือง",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.579",
+            "updated_on": "2023-12-12T19:18:34.579"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "7fb4d717-60eb-45e0-b6d0-cc17804f5a18",
+        "fields": {
+            "code": "BSP",
+            "name": "ขึ้นรูป BSP",
+            "description": "BSP-ขึ้นรูป BSP",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.215",
+            "updated_on": "2023-12-12T19:18:35.215"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "808099cc-a93f-445b-8830-87df38f3157f",
+        "fields": {
+            "code": "EDP",
+            "name": "ทำสี EDP",
+            "description": "EDP-ทำสี EDP",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.408",
+            "updated_on": "2023-12-12T19:18:35.408"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "8126a996-b56b-468a-be94-c93c7350dd7f",
+        "fields": {
+            "code": "602",
+            "name": "คลัง LACK",
+            "description": "602-คลัง LACK",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.694",
+            "updated_on": "2023-12-12T19:18:35.694"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "832ca45f-d2c9-4e90-9dda-81438c1d1573",
+        "fields": {
+            "code": "SORE",
+            "name": "ส่งพ่นสี SORE",
+            "description": "SORE-ส่งพ่นสี SORE",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.714",
+            "updated_on": "2023-12-12T19:18:34.714"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "88c49ed9-0bfe-4461-b581-de7d2e55b2c7",
+        "fields": {
+            "code": "019",
+            "name": "อุปกรณ์สำนักงานอื่นๆ",
+            "description": "019-อุปกรณ์สำนักงานอื่นๆ",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.930",
+            "updated_on": "2023-12-12T19:18:34.930"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "8d9e0f18-9c83-4844-9679-f53335fa9d7e",
+        "fields": {
+            "code": "KK",
+            "name": "KK",
+            "description": "KK-KK",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.144",
+            "updated_on": "2023-12-12T19:18:36.144"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "8fd1ac54-3291-49e5-b559-34ba2bbaffd4",
+        "fields": {
+            "code": "300",
+            "name": "งานเสีย",
+            "description": "300-งานเสีย",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.986",
+            "updated_on": "2023-12-12T19:18:34.986"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "9198776f-ca11-46eb-a9f9-c53af0101df2",
+        "fields": {
+            "code": "200",
+            "name": "งานเคลม",
+            "description": "200-งานเคลม",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.014",
+            "updated_on": "2023-12-12T19:18:35.014"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "91aa76e1-6d99-4929-b560-0683f14b1eff",
+        "fields": {
+            "code": "FST",
+            "name": "ส่งFST",
+            "description": "FST-ส่งFST",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.885",
+            "updated_on": "2023-12-12T19:18:35.885"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "95c86ceb-c403-4a6e-ae1a-f014395becf2",
+        "fields": {
+            "code": "YNT",
+            "name": "YNT",
+            "description": "YNT-YNT",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.253",
+            "updated_on": "2023-12-12T19:18:36.253"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "9787d9d1-ada6-421e-9ace-545b194f88c9",
+        "fields": {
+            "code": "006",
+            "name": "อะไหล่ทั่วไป",
+            "description": "006-อะไหล่ทั่วไป",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.443",
+            "updated_on": "2023-12-12T19:18:35.443"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "9c307917-9c95-49d8-8969-d0e4bb06fb52",
+        "fields": {
+            "code": "ATOM",
+            "name": "ส่งพ่นสี ATOM",
+            "description": "ATOM-ส่งพ่นสี ATOM",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.550",
+            "updated_on": "2023-12-12T19:18:36.550"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "9f66f370-03f3-485f-bb51-229ec22eb01c",
+        "fields": {
+            "code": "013",
+            "name": "ค่าจ้างชุบพ่นสี",
+            "description": "013-ค่าจ้างชุบพ่นสี",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.741",
+            "updated_on": "2023-12-12T19:18:34.741"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "a1282d66-4abc-4117-96c3-00b07a1f7a7d",
+        "fields": {
+            "code": "NTP",
+            "name": "ส่งพ่นสี NTP",
+            "description": "NTP-ส่งพ่นสี NTP",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.662",
+            "updated_on": "2023-12-12T19:18:34.662"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "ab6bae9b-19d3-49eb-8304-143f34fa5f73",
+        "fields": {
+            "code": "004",
+            "name": "อุปกรณ์สำนักงาน",
+            "description": "004-อุปกรณ์สำนักงาน",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.439",
+            "updated_on": "2023-12-12T19:18:34.439"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "af29e7c1-1688-4d3e-a9b1-8c3fb838c613",
+        "fields": {
+            "code": "016",
+            "name": "งานตัวอย่าง",
+            "description": "016-งานตัวอย่าง",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.348",
+            "updated_on": "2023-12-12T19:18:35.348"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "b29616cb-9601-48ad-a71e-9a1b18f26dda",
+        "fields": {
+            "code": "SSI",
+            "name": "ส่งม้วน SSI",
+            "description": "SSI-ส่งม้วน SSI",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.768",
+            "updated_on": "2023-12-12T19:18:34.769"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "b2cdbeee-f316-4742-9339-a502abdfd254",
+        "fields": {
+            "code": "012",
+            "name": "อุปกรณ์โรงงาน",
+            "description": "012-อุปกรณ์โรงงาน",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.096",
+            "updated_on": "2023-12-12T19:18:35.096"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "b7dc222b-aa59-4498-8a07-69798078dae7",
+        "fields": {
+            "code": "014.",
+            "name": "ค่าจ้างทำของ",
+            "description": "014.-ค่าจ้างทำของ",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.184",
+            "updated_on": "2023-12-12T19:18:35.184"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "be36f2fc-8f16-4050-b747-7c0dcdf8ffb1",
+        "fields": {
+            "code": "002.2",
+            "name": "คลังวัสดุสิ้นเปลือง LC",
+            "description": "002.2-คลังวัสดุสิ้นเปลือง LC",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.435",
+            "updated_on": "2023-12-12T19:18:36.435"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "c38539c3-8fe2-49c9-9294-09bf855151ff",
+        "fields": {
+            "code": "011",
+            "name": "งานระหว่างทำ",
+            "description": "011-งานระหว่างทำ",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.689",
+            "updated_on": "2023-12-12T19:18:34.689"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "c4947ae3-7ad6-4e95-9dff-0549c47554c1",
+        "fields": {
+            "code": "600",
+            "name": "พ่นสี",
+            "description": "600-พ่นสี",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.796",
+            "updated_on": "2023-12-12T19:18:34.796"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "c4de0148-46c2-4a15-ba9a-479284dc03e6",
+        "fields": {
+            "code": "900",
+            "name": "งาน SUPPLY SKC",
+            "description": "900-งาน SUPPLY SKC",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.621",
+            "updated_on": "2023-12-12T19:18:36.621"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "c800e61a-9dc4-4a18-9b15-7337e20f32dc",
+        "fields": {
+            "code": "0001",
+            "name": "สำเร็จรูปคลังรอ",
+            "description": "0001-สำเร็จรูปคลังรอ",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.543",
+            "updated_on": "2023-12-12T19:18:35.543"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "c8125f3a-618b-4e06-b48c-d7a46518585f",
+        "fields": {
+            "code": "CQP",
+            "name": "ส่ง Machine CQP",
+            "description": "CQP-ส่ง Machine CQP",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.822",
+            "updated_on": "2023-12-12T19:18:34.822"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "ca5f362f-b0c9-4aa1-a149-c4457e97a0b3",
+        "fields": {
+            "code": "PBC",
+            "name": "ส่งบอรู PBC",
+            "description": "PBC-ส่งบอรู PBC",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.267",
+            "updated_on": "2023-12-12T19:18:35.267"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "d538c6b9-1498-44f2-86e8-d8587012d359",
+        "fields": {
+            "code": "701",
+            "name": "งานทิ้ง",
+            "description": "701-งานทิ้ง",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.826",
+            "updated_on": "2023-12-12T19:18:35.826"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "d87a0f7b-86c8-4b73-9aa5-2335b0e21191",
+        "fields": {
+            "code": "BEA",
+            "name": "BEA",
+            "description": "BEA-BEA",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.311",
+            "updated_on": "2023-12-12T19:18:36.311"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "dbe38c4d-5f83-4109-927f-461e986c8cc3",
+        "fields": {
+            "code": "VPS",
+            "name": "ส่งVPS",
+            "description": "VPS-ส่งVPS",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.155",
+            "updated_on": "2023-12-12T19:18:35.155"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "e3c84b47-d67f-4064-a030-787b27d1ae06",
+        "fields": {
+            "code": "YYY",
+            "name": "คลังการรับ",
+            "description": "YYY-คลังการรับ",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.467",
+            "updated_on": "2023-12-12T19:18:34.467"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "e82a8586-23fa-4d5d-869d-8f4970a656f3",
+        "fields": {
+            "code": "AAA",
+            "name": "AAA",
+            "description": "AAA-AAA",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.472",
+            "updated_on": "2023-12-12T19:18:35.472"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "ed7be0d7-2971-49d2-8577-b4a206657427",
+        "fields": {
+            "code": "SIRI",
+            "name": "ส่งชุป SIRI",
+            "description": "SIRI-ส่งชุป SIRI",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.586",
+            "updated_on": "2023-12-12T19:18:36.586"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "f12d1896-7066-43fc-b3af-19ef17b0e6d0",
+        "fields": {
+            "code": "700",
+            "name": "งานรอซ่อม",
+            "description": "700-งานรอซ่อม",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.573",
+            "updated_on": "2023-12-12T19:18:35.573"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "f15e1fe1-f0e0-4a63-bed8-a7d67296c807",
+        "fields": {
+            "code": "BSP SUPPLY",
+            "name": "SUPPLY SKC",
+            "description": "BSP SUPPLY-SUPPLY SKC",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.663",
+            "updated_on": "2023-12-12T19:18:36.663"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "f323de9a-02dc-412b-aea1-7fa7502da033",
+        "fields": {
+            "code": "003",
+            "name": "ตัวประกอบ",
+            "description": "003-ตัวประกอบ",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:34.317",
+            "updated_on": "2023-12-12T19:18:34.317"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "f49e44f5-aeb7-438e-8108-cce60a2e1cd4",
+        "fields": {
+            "code": "ABT",
+            "name": "ABT",
+            "description": "ABT-ABT",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:36.115",
+            "updated_on": "2023-12-12T19:18:36.115"
+        }
+    },
+    {
+        "model": "members.factory",
+        "pk": "f84ab04f-b030-45a9-b7b5-74b79f6d3893",
+        "fields": {
+            "code": "TKM",
+            "name": "TKM",
+            "description": "TKM-TKM",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:35.295",
+            "updated_on": "2023-12-12T19:18:35.295"
+        }
+    }
+]

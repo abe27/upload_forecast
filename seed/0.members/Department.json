@@ -1,0 +1,218 @@
+[
+    {
+        "model": "members.department",
+        "pk": "08953c27-5bfb-42ef-ada2-ad10a9237e5a",
+        "fields": {
+            "code": "08",
+            "name": "การตลาด",
+            "description": "MK",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:28.936",
+            "updated_on": "2023-12-12T19:19:28.936"
+        }
+    },
+    {
+        "model": "members.department",
+        "pk": "1b8e4cc8-c08d-4c24-9ad2-36ea388af286",
+        "fields": {
+            "code": "09",
+            "name": "ฝ่ายผลิต",
+            "description": "PD",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:28.966",
+            "updated_on": "2023-12-12T19:19:28.966"
+        }
+    },
+    {
+        "model": "members.department",
+        "pk": "259e200e-38e3-48de-84d7-668b20856b4b",
+        "fields": {
+            "code": "10",
+            "name": "คุณภาพ",
+            "description": "QA",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:28.995",
+            "updated_on": "2023-12-12T19:19:28.995"
+        }
+    },
+    {
+        "model": "members.department",
+        "pk": "2812a9ae-24d7-40ac-a56d-35ef8dd59778",
+        "fields": {
+            "code": "16",
+            "name": "IT",
+            "description": "IT",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:28.554",
+            "updated_on": "2023-12-12T19:19:28.554"
+        }
+    },
+    {
+        "model": "members.department",
+        "pk": "29a7fb5d-c477-4610-a4cc-e865eeddcaca",
+        "fields": {
+            "code": "11.1",
+            "name": "PI",
+            "description": "PI",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.143",
+            "updated_on": "2023-12-12T19:19:29.143"
+        }
+    },
+    {
+        "model": "members.department",
+        "pk": "4957a9e9-302e-4332-9982-e79d518ddddc",
+        "fields": {
+            "code": "03",
+            "name": "ฝ่ายบริหาร",
+            "description": "GM",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:28.753",
+            "updated_on": "2023-12-12T19:19:28.753"
+        }
+    },
+    {
+        "model": "members.department",
+        "pk": "4fb11332-7f0a-4ec7-87e7-b3089bbce0b3",
+        "fields": {
+            "code": "01",
+            "name": "ประธานกรรมการ",
+            "description": "PS",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:28.686",
+            "updated_on": "2023-12-12T19:19:28.686"
+        }
+    },
+    {
+        "model": "members.department",
+        "pk": "5278754d-a671-41b8-9936-ec29865c228c",
+        "fields": {
+            "code": "04",
+            "name": "ทรัพยากรบุคคล",
+            "description": "HR",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:28.794",
+            "updated_on": "2023-12-12T19:19:28.794"
+        }
+    },
+    {
+        "model": "members.department",
+        "pk": "5ef135cf-5d31-491a-8154-b3396b2ab44e",
+        "fields": {
+            "code": "-",
+            "name": "<ไม่ระบุ>",
+            "description": "<NOT SPECIFIED>",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:28.651",
+            "updated_on": "2023-12-12T19:19:28.651"
+        }
+    },
+    {
+        "model": "members.department",
+        "pk": "650fc2e9-0a4d-4291-9494-6a4acb4da1ff",
+        "fields": {
+            "code": "02",
+            "name": "กรรมการผู้จัดการ",
+            "description": "MD",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:28.719",
+            "updated_on": "2023-12-12T19:19:28.719"
+        }
+    },
+    {
+        "model": "members.department",
+        "pk": "66450332-b852-471f-9e3f-263510bf8662",
+        "fields": {
+            "code": "11",
+            "name": "วิศวกรรม",
+            "description": "EN",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.024",
+            "updated_on": "2023-12-12T19:19:29.024"
+        }
+    },
+    {
+        "model": "members.department",
+        "pk": "6eddd124-ede9-43e4-a4e7-3423dc32c525",
+        "fields": {
+            "code": "06",
+            "name": "ควบคุมและวางแผน",
+            "description": "PL",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:28.870",
+            "updated_on": "2023-12-12T19:19:28.870"
+        }
+    },
+    {
+        "model": "members.department",
+        "pk": "8fb1fdb5-4bf1-4208-a4c7-02929c418939",
+        "fields": {
+            "code": "05",
+            "name": "บัญชีและการเงิน",
+            "description": "AC",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:28.835",
+            "updated_on": "2023-12-12T19:19:28.835"
+        }
+    },
+    {
+        "model": "members.department",
+        "pk": "9f894198-eced-4a71-8a7a-b555e481ddb7",
+        "fields": {
+            "code": "07",
+            "name": "จัดซื้อจัดหา",
+            "description": "PU",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:28.904",
+            "updated_on": "2023-12-12T19:19:28.904"
+        }
+    },
+    {
+        "model": "members.department",
+        "pk": "b1e8baf3-6eee-475b-9463-8db4b15f2415",
+        "fields": {
+            "code": "12",
+            "name": "SUPCONTACK",
+            "description": "SC",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.053",
+            "updated_on": "2023-12-12T19:19:29.053"
+        }
+    },
+    {
+        "model": "members.department",
+        "pk": "b2212fc9-c86f-4aba-abc6-115ddf8ffd7f",
+        "fields": {
+            "code": "14",
+            "name": "วิศวกรรมผลิต",
+            "description": "PE",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:28.613",
+            "updated_on": "2023-12-12T19:19:28.613"
+        }
+    },
+    {
+        "model": "members.department",
+        "pk": "d985d0b9-f743-4f7b-922d-55b21028d6ce",
+        "fields": {
+            "code": "15",
+            "name": "PC",
+            "description": "PC",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.117",
+            "updated_on": "2023-12-12T19:19:29.117"
+        }
+    },
+    {
+        "model": "members.department",
+        "pk": "e0b1080b-7419-4b2e-a14f-60fafcb082fd",
+        "fields": {
+            "code": "13",
+            "name": "ไคเซน",
+            "description": "KZ",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:29.081",
+            "updated_on": "2023-12-12T19:19:29.081"
+        }
+    }
+]

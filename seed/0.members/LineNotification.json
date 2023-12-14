@@ -1,0 +1,14 @@
+[
+    {
+        "model": "members.linenotification",
+        "pk": "b5f21c22-f37e-4848-a468-22923741df2b",
+        "fields": {
+            "token": "UVjbbQsus8lznMSGfCKMpPxqfnnIbjHVvRKrczK5lHE",
+            "name": "TEST",
+            "description": "ทดสอบ",
+            "is_active": true,
+            "created_on": "2023-12-12T19:19:40.005",
+            "updated_on": "2023-12-12T19:19:40.005"
+        }
+    }
+]
