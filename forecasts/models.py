@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.utils import timezone
 from django.utils.html import format_html
+from django.db.models import F
 from books.models import Book, EDIReviseType
 
 from products.models import Product, ProductGroup
@@ -48,6 +49,7 @@ class Forecast(models.Model):
     is_sync = models.BooleanField(verbose_name="Is Sync", default=True, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
     
     def __str__(self):
         return self.forecast_no
@@ -104,12 +106,12 @@ class ForecastDetail(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
+        return ""
+    
+    def product_no(self):
         return str(self.product_id.code)
     
     def product_code(self):
-        return str(self.product_id.code)
-    
-    def product_no(self):
         return str(self.product_id.no)
     
     def product_name(self):

@@ -2,7 +2,7 @@ import datetime
 from django.contrib import admin,messages
 from django.shortcuts import redirect
 from books.models import Book, EDIReviseType, ReviseBook
-# from forecasts import greeter
+from forecasts import greeter
 
 from upload_forecasts.models import OnMonthList, OnYearList, UploadForecast
 
@@ -91,8 +91,8 @@ class UploadForecastAdmin(admin.ModelAdmin):
     def response_add(self, request, obj, post_url_continue=None):
         return redirect('/web/forecasts/forecast/')
     
-    # def save_model(self, request, obj, form, change):
-    #     greeter.upload_file_forecast(request, obj, form, change)
+    def save_model(self, request, obj, form, change):
+        greeter.upload_file_forecast(request, obj, form, change)
         
     pass
 

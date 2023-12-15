@@ -282,3 +282,21 @@ class JasperReportServer(models.Model):
         db_table = "tbmServerReport"
         verbose_name = "Server Report PDS"
         verbose_name_plural = "Server Report PDS"
+        
+class UserErrorLog(models.Model):
+    id = models.UUIDField(primary_key=True, editable=False, verbose_name="PRIMARY KEY", default=uuid.uuid4)
+    user_id = models.ForeignKey(ManagementUser, verbose_name="User ID", on_delete=models.CASCADE, blank=True)
+    remark = models.TextField(verbose_name="หมายเหตุ")
+    is_status = models.BooleanField(verbose_name="Success", default=False)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    
+    
+    # def __str__(self):
+    #     return self.user_id
+    
+    class Meta:
+        db_table = "tbmLoggingReport"
+        verbose_name = "Logging Report Handle"
+        verbose_name_plural = "Logging Report Handle"
+        ordering = ("updated_on",)

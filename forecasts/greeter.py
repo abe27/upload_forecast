@@ -1,41 +1,41 @@
 from datetime import datetime
-from types import NoneType
 from django.contrib import messages
 from django.utils.html import format_html
 import os
 from django.conf import settings
+import nanoid
 import numpy as np
 import pandas as pd
-from confirm_invoice.models import ConfirmInvoiceDetail, ConfirmInvoiceHeader
-from reportlab.lib.pagesizes import letter
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib.units import mm, inch
-from reportlab.pdfgen import canvas
-from reportlab.platypus import Image, Paragraph, Table, Frame
-from reportlab.lib import colors
+# from confirm_invoice.models import ConfirmInvoiceDetail, ConfirmInvoiceHeader
+# from reportlab.lib.pagesizes import letter
+# from reportlab.lib.styles import getSampleStyleSheet
+# from reportlab.lib.units import mm, inch
+# from reportlab.pdfgen import canvas
+# from reportlab.platypus import Image, Paragraph, Table, Frame
+# from reportlab.lib import colors
 from books.models import Book, ReviseBook
+from confirm_invoices.models import ConfirmInvoiceDetail, ConfirmInvoiceHeader
+from open_pds.models import PDSDetail, PDSHeader
 from products.models import Product, ProductGroup
 
-from upload_forecast.models import ForecastErrorLogs, OnMonthList, OnYearList
-from users.models import PlanningForecast, Section, Supplier
+from upload_forecasts.models import ForecastErrorLogs, OnMonthList, OnYearList
+from members.models import PlanningForecast, Section, Supplier
 
-styles = getSampleStyleSheet()
-styleN = styles['Normal']
-style = getSampleStyleSheet()
-styleH = styles['Heading1']
+# styles = getSampleStyleSheet()
+# styleN = styles['Normal']
+# style = getSampleStyleSheet()
+# styleH = styles['Heading1']
 
 
-import nanoid
 import requests
 
 from forecasts.models import Forecast, ForecastDetail
-from open_pds.models import PDSDetail, PDSHeader
-from formula_vcst.models import BOOK, COOR, CORP, DEPT, EMPLOYEE, PROD, SECT, UM, NoteCut, OrderH, OrderI
+# from open_pds.models import PDSDetail, PDSHeader
+from formula_vcs.models import BOOK, COOR, CORP, DEPT, EMPLOYEE, PROD, SECT, UM, NoteCut, OrderH, OrderI
 
 def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
     dte = datetime.now()
     ordH = None
-    # return print(request.POST.get("pds_delivery_date"))
     try:
         ## Line Notification
         token = os.environ.get("LINE_TOKEN")
@@ -68,16 +68,19 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
         
         fcStep = "1"
         if prefixRef == "PO":
-            # fcStep = "P"
+            fcStep = "P"
             obj = PDSHeader.objects.get(id=id)
             ### Get Supplier Information
             supplier = COOR.objects.filter(FCCODE=obj.forecast_id.supplier_id.code).values()
             ordH = None
             if obj.ref_formula_id is None:
-                lastNum = OrderH.objects.filter(FDDATE__lte=obj.pds_date).order_by('-FCCODE').first()
+                PREFIX_DTE_Y = str(int(obj.pds_date.strftime('%Y')) + 543)[2:]
+                PREFIX_DTE_M = f"{int(obj.pds_date.strftime('%m')):02d}"
+                lastNum = OrderH.objects.filter(FCREFTYPE="PO",FDDATE__lte=obj.pds_date).order_by('-FCCODE').first()
                 if lastNum is None:
-                    lastNum = "0"
-                fccodeNo = f"{int(str(lastNum)) + 1:07d}"
+                    lastNum = "0000000"
+                    
+                fccodeNo = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}{int(str(lastNum)[4:]) + 1:03d}"
                 prNo = f"{str(ordBook[0]['FCPREFIX']).strip()}{fccodeNo}"### PR TEST REFNO
                 msg = f"message=เรียนแผนก PU\nขณะนี้ทางแผนก Planning ได้ทำการเปิดเอกสาร{str(ordBook[0]['FCNAME']).strip()} เลขที่ {prNo} เรียบร้อยแล้วคะ"
                 
@@ -123,6 +126,7 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
             qty = 0
             summary_price = 0
             summary_balance = 0
+            SUM_FNQTY = 0
             for i in ordDetail:
                 #### Sum Balance
                 summary_balance += i.balance_qty
@@ -187,6 +191,7 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                         pass
                     
                     ordI.save()
+                    SUM_FNQTY += ordI.FNQTY
                     
                     ### Create Notecut
                     orderPRID = obj.forecast_id.ref_formula_id
@@ -280,7 +285,8 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
             obj.balance_qty = qty
             obj.summary_price = summary_price
             
-            if summary_balance == 0:
+            
+            if (summary_balance - SUM_FNQTY) == 0:
                 obj.pds_status = "2"
                 obj.pds_no = ordH.FCREFNO
                 obj.ref_formula_id = ordH.FCSKID
@@ -348,11 +354,13 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
             if obj.ref_formula_id is None:
                 ### Create PR to Formula
                 # #### Create Formula OrderH
-                lastNum = OrderH.objects.filter(FDDATE__lte=obj.forecast_date).order_by('-FCCODE').first()
+                PREFIX_DTE_Y = str(int(obj.forecast_date.strftime('%Y')) + 543)[2:]
+                PREFIX_DTE_M = f"{int(obj.forecast_date.strftime('%m')):02d}"
+                lastNum = OrderH.objects.filter(FCREFTYPE="PR",FDDATE__lte=obj.forecast_date).order_by('-FCCODE').first()
                 if lastNum is None:
-                    lastNum = "0"
+                    lastNum = "0000000"
                     
-                fccodeNo = f"{int(str(lastNum)) + 1:07d}"
+                fccodeNo = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}{int(str(lastNum)[4:]) + 1:03d}"
                 prNo = f"{str(ordBook[0]['FCPREFIX']).strip()}{fccodeNo}"### PR TEST REFNO
                 msg = f"message=เรียนแผนก Planning\nขณะนี้ทางแผนก PU ได้ทำการอนุมัติเอกสาร {prNo} เรียบร้อยแล้วคะ"
                 ordH = OrderH()
@@ -413,7 +421,6 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                     pdsDetail.remark = i.remark
                     pdsDetail.is_active = True
                     pdsDetail.save()
-                    print(f"Save PDS Detail: {pdsDetail}")
                     ### End PDS Detail
                 
                     ordI = None
@@ -684,6 +691,7 @@ def upload_file_forecast(request, obj, form, change):
                     bookData = Book.objects.get(id=reviseData.book_id)
                     obj.forecast_book_id = bookData
             ### Save Data
+            obj.is_generated = True
             obj.save()
             
             planForecast = PlanningForecast.objects.get(plan_month=str(obj.forecast_month.value), plan_year=obj.forecast_year.value)
@@ -794,76 +802,6 @@ def upload_file_forecast(request, obj, form, change):
         return
     
     return obj
-    
-class fcMaker(object):
-    """"""
-    def __init__(self, response):
-        self.PAGE_SIZE = (8.27*inch, 11.69*inch)
-        self.c = canvas.Canvas(response, pagesize=self.PAGE_SIZE)
-        self.styles = style
-        self.width, self.height = self.PAGE_SIZE
 
-    def createDocument(self):
-        """"""
-        # Title Page
-        title = """Title goes here"""
-        p = Paragraph(title, styleH)
-
-        logo = Image(os.path.join(settings.STATIC_ROOT,"img/honeybadger.jpg"))
-        logo.drawHeight = 99
-        logo.drawWidth = 99
-
-        data = [[logo], [p]]
-        table = Table(data, colWidths=2.25*inch)
-        table.setStyle([("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                        ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                        ("TOPPADDING", (0, 0), (-1, -1), 20)])
-        table.wrapOn(self.c, self.width, self.height)
-        table.drawOn(self.c, *self.coord(.25, 2.75, inch))
-
-        self.c.showPage()
-
-        #Page Two
-        side1_text = """Text goes here"""
-        p = Paragraph(side1_text, styleH)
-
-        side1_image = Image(os.path.join(settings.STATIC_ROOT,"img/honeybadger.jpg"))
-        side1_image.drawHeight = 99
-        side1_image.drawWidth = 99
-
-        data = [[side1_image], [p]]
-        table = Table(data, colWidths=2.25*inch)
-        table.setStyle([("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                        ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                        ("TOPPADDING", (0, 0), (-1, -1), 3)])
-        table.wrapOn(self.c, self.width, self.height)
-        table.drawOn(self.c, *self.coord(.25, 2.75, inch))
-
-        self.c.showPage()
-
-        #Page Three
-        side2_text = """<font size = '14'>This is where and how the main text will appear on the rear of this card.
-        </font>"""
-        p_side2 = Paragraph(side2_text, styleH)
-        data = [[p_side2]]
-        table_side2 = Table(data, colWidths=2.25*inch, rowHeights=2.55*inch)
-        table_side2.setStyle([("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                        ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-                        ("TOPPADDING", (0, 0), (-1, -1), 3),
-                        ("BOX", (0, 0), (-1,-1), 0.25, colors.red)])
-        front_page = []
-        front_page.append(table_side2)
-
-        f = Frame(inch*.25, inch*.5, self.width-.5*inch, self.height-1*inch, showBoundary=1)
-        f.addFromList(front_page, self.c)
-
-    def coord(self, x, y, unit=1):
-        """
-        Helper class to help position flowables in Canvas objects
-        """
-        x, y = x * unit, self.height -  y * unit
-        return x, y
-
-    def savePDF(self):
-        """"""
-        self.c.save()
+def request_validation(request):
+    pass

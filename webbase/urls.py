@@ -16,19 +16,21 @@ Including another URLconf
 """
 from django.views.generic import RedirectView
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 
 admin.site.site_title = "EDI Web Application"
 admin.site.site_header = "EDI Web Application"
 admin.site.index_title = "EDI Management System"
 # admin.site.site_url = "/"
 # admin.site.enable_nav_sidebar = True
-# admin.site.empty_value_display = "-"
+admin.site.empty_value_display = "-"
 
 # admin.autodiscover()
 # admin.site.enable_nav_sidebar = True
 
 urlpatterns = [
     path('web/', admin.site.urls),
+    path("forecast/", include("forecasts.urls")),
+    path("open_pds/", include("open_pds.urls")),
     path("", RedirectView.as_view(url="/web/", permanent=True)),
 ]

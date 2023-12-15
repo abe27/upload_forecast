@@ -1,0 +1,14 @@
+{% extends "admin/change_list.html" %}
+{% block object-tools-items %}
+    {% comment %} {{ block.super }} {% endcomment %}
+    {% comment %} {{ lame_static_text }} 
+    <div><span>{{perms.forecasts}}</span></div> {% endcomment %}
+    {% if wait_approve > 0 %}<div class="pr-3">Wait Approv{{" "}}<span class="badge bg-warning">{{wait_approve}}</span></div>{% endif %}
+    {% if approve_total > 0 %}<div class="pr-3">Approve{{" "}}<span class="badge bg-info">{{approve_total}}</span></div>{% endif %}
+    {% if purchase_total > 0 %}<div class="pr-3">Purchase{{" "}}<span class="badge bg-success">{{purchase_total}}</span></div>{% endif %}
+    {% if rejected_total > 0 %}<div class="pr-3">Rejected{{" "}}<span class="badge bg-danger">{{rejected_total}}</span></div>{% endif %}
+    {% if perms.forecasts.upload_file_forecast %}
+        {% load static %}
+        <a href="/web/upload_forecasts/uploadforecast/add/" class="btn float-right btn-info"><i class="fas fa-upload"></i>&nbsp;Upload Forecast</a>
+    {% endif %}
+{% endblock %}

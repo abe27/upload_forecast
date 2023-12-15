@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
 
-from .models import Corporation,Factory, LineNotification, ReportApproveByUser, ReportIssueByUser,Section,Position,Department,Employee,ManagementUser,Supplier, PlanningForecast, OrganizationApprovePDS
+from .models import Corporation,Factory, LineNotification, ReportApproveByUser, ReportIssueByUser,Section,Position,Department,Employee,ManagementUser,Supplier, PlanningForecast, OrganizationApprovePDS, UserErrorLog
 
 # Register your models here.
 class CorporationAdmin(admin.ModelAdmin):
@@ -334,6 +334,32 @@ class PlanningForecastAdmin(admin.ModelAdmin):
 class OrganizationApprovePDSAdmin(admin.ModelAdmin):
     pass
 
+class UserErrorLogAdmin(admin.ModelAdmin):
+    list_display = (
+        "user_id",
+        "remark",
+        "is_status",
+        "created_on",
+        "updated_on",
+    )
+    
+    fields = (
+        "user_id",
+        "remark",
+        "is_status",
+        "created_on",
+        "updated_on",
+    )
+    
+    readonly_fields = fields
+    
+    list_filter = (
+        "user_id",
+        "is_status",
+        "created_on",
+    )
+    pass
+
 admin.site.register(Corporation, CorporationAdmin,)
 admin.site.register(Factory, FactoryAdmin,)
 admin.site.register(Section, SectionAdmin,)
@@ -345,3 +371,4 @@ admin.site.register(Supplier, SupplierAdmin,)
 admin.site.register(LineNotification, LineNotificationAdmin)
 admin.site.register(PlanningForecast, PlanningForecastAdmin)
 admin.site.register(OrganizationApprovePDS, OrganizationApprovePDSAdmin)
+admin.site.register(UserErrorLog, UserErrorLogAdmin)
