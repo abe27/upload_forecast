@@ -25,8 +25,8 @@ admin.site.index_title = "EDI Management System"
 # admin.site.enable_nav_sidebar = True
 # admin.site.empty_value_display = "-"
 
-admin.autodiscover()
-admin.site.enable_nav_sidebar = True
+# admin.autodiscover()
+# admin.site.enable_nav_sidebar = True
 
 urlpatterns = [
     path('web/', admin.site.urls),
