@@ -97,9 +97,17 @@ WSGI_APPLICATION = 'webbase.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # },
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        "ENGINE": "django.db.backends.postgresql",
+        'NAME': os.environ.get('EDI_DBNAME'),
+        'USER': os.environ.get('EDI_USERNAME'),
+        'PASSWORD': os.environ.get('EDI_PASSWORD'),
+        'HOST': os.environ.get('EDI_HOSTNAME'),
+        'PORT': os.environ.get('EDI_PORT'),
     },
     'formula_vcst': {
         'ENGINE': 'mssql',
@@ -248,7 +256,7 @@ JAZZMIN_SETTINGS = {
     "hide_models": [],
 
     # # List of apps (and/or models) to base side menu ordering off of (does not need to contain all apps/models)
-    "order_with_respect_to": ["upload_forecast", "forecasts", "open_pds","confirm_invoice", "receive","auth"],
+    "order_with_respect_to": ["upload_forecast", "forecasts", "open_pds","confirm_invoices", "receives","auth"],
 
     # Custom links to append to app groups, keyed on app name
     # "custom_links": {
@@ -289,8 +297,8 @@ JAZZMIN_SETTINGS = {
         'forecasts.Forecast': "fas fa-tasks",
         'open_pds.PDSHeader': "fas fa-file-invoice",
         # 'request_orders.PurchaseRequest': "fas fa-money-check",
-        'receive.ReceiveHeader': "fas fa-file-invoice",
-        'confirm_invoice.ConfirmInvoiceHeader': "fas fa-check-double",
+        'receives.ReceiveHeader': "fas fa-file-invoice",
+        'confirm_invoices.ConfirmInvoiceHeader': "fas fa-check-double",
     },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",

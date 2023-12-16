@@ -8,8 +8,9 @@ from members.models import ManagementUser, Supplier
 CONFIRM_INV_STATUS = [
     ("0", "รอยืนยัน"),
     ("1", "ยืนยันแล้ว"),
-    ("2", "จัดส่งไม่ครบ"),
+    ("2", "ยืนยันบางส่วน"),
     ("3", "ยกเลิก"),### ("3", "ยกเลิกจาก PDS"),
+    ("4", "ยกยอด"),
 ]
 # Create your models here.
 class ConfirmInvoiceHeader(models.Model):
@@ -25,6 +26,7 @@ class ConfirmInvoiceHeader(models.Model):
     item = models.IntegerField(verbose_name="Item")
     qty = models.IntegerField(verbose_name="Qty")
     confirm_qty = models.IntegerField(verbose_name="Confirm Qty", blank=True, null=True, default="0")
+    original_qty = models.IntegerField(verbose_name="Original Qty", blank=True, null=True, default="0")
     summary_price = models.FloatField(verbose_name="Summary Price", blank=True, null=True, default="0")
     remark = models.TextField(verbose_name="Remark", blank=True, null=True)
     inv_status = models.CharField(max_length=1, choices=CONFIRM_INV_STATUS,verbose_name="inv Status", blank=True, null=True, default="0")
@@ -37,6 +39,7 @@ class ConfirmInvoiceHeader(models.Model):
     def __str__(self):
         if self.inv_no is None:
             return str(self.id)
+        
         return str(self.inv_no)
     
     class Meta:
@@ -71,6 +74,7 @@ class ConfirmInvoiceDetail(models.Model):
     price = models.FloatField(verbose_name="Price", blank=True, null=True, default="0")
     remark = models.TextField(verbose_name="Remark", blank=True, null=True)
     ref_formula_id = models.CharField(max_length=8, blank=True, null=True, verbose_name="Formula ID")
+    confirm_status = models.CharField(max_length=1, blank=True, null=True, verbose_name="Status", default="0", choices=CONFIRM_INV_STATUS)
     is_select = models.BooleanField(verbose_name="Is Select", blank=True, null=True, default=True)
     is_active = models.BooleanField(verbose_name="Is Active", default=False, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -79,20 +83,23 @@ class ConfirmInvoiceDetail(models.Model):
     def __str__(self):
         return str(self.pds_detail_id)
     
-    # def product_code(self):
-    #     return str(self.forecast_detail_id.product_id.code)
+    def product_code(self):
+        return str(self.pds_detail_id.forecast_detail_id.product_id.no)
     
-    # def product_no(self):
-    #     return str(self.forecast_detail_id.product_id.no)
+    def product_no(self):
+        return str(self.pds_detail_id.forecast_detail_id.product_id.code)
     
-    # def product_name(self):
-    #     return str(self.forecast_detail_id.product_id.name)
+    def product_name(self):
+        return str(self.pds_detail_id.forecast_detail_id.product_id.name)
     
     def total(self):
         if self.qty > 0:
             return self.qty
         
         return self.total_qty
+    
+    def last_update(self):
+        return self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
     
     class Meta:
         db_table = "ediConfirmInvoiceDetail"

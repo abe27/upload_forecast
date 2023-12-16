@@ -94,6 +94,7 @@ class PDSDetail(models.Model):
     # total_price = models.FloatField(verbose_name="Price", blank=True, null=True, default="0")
     remark = models.TextField(verbose_name="Remark", blank=True, null=True)
     ref_formula_id = models.CharField(max_length=8, blank=True, null=True, verbose_name="Formula ID")
+    pds_detail_status = models.CharField(max_length=1, choices=FORECAST_PDS_STATUS,verbose_name="PDS Status", blank=True, null=True, default="0") 
     is_select = models.BooleanField(verbose_name="Is Select", blank=True, null=True, default=True)
     is_active = models.BooleanField(verbose_name="Is Active", default=False, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

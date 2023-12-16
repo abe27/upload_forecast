@@ -1,0 +1,26 @@
+{% extends "admin/change_form.html" %}
+{% block form_top %}
+    {{ lame_static_text }}
+{% endblock %}
+{% block submit_buttons_bottom %} 
+{% comment %} {{block.super }} {% endcomment %}
+{% if receive_status < 2 %}
+<div class="pb-1">
+    <button type="submit" class="btn btn-primary btn-sm form-control" name="_cancel_invoice">
+        <i class="fas fa-times-circle"></i>{{" "}}ยกเลิกรายการนี้
+    </button>
+</div>
+{% endif %}
+{% if receive_status != 2 %}
+<div class="pb-1 pt-1">
+    <a type="button" class="btn btn-info btn-sm form-control" href="/confirm_invoice/reports/pds/{{object_id}}">
+        <i class="fas fa-print"></i>{{" "}}โหลดเอกสาร PDS
+    </a>
+</div>
+<div class="pt-1">
+    <a type="button" class="btn btn-danger btn-sm form-control" href="/receive/reports/tags/{{object_id}}">
+        <i class="fas fa-qrcode"></i>{{" "}}โหลด TAG PDS
+    </a>
+</div>
+{% endif %}
+{% endblock %}

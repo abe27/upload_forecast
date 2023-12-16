@@ -299,4 +299,4 @@ class UserErrorLog(models.Model):
         db_table = "tbmLoggingReport"
         verbose_name = "Logging Report Handle"
         verbose_name_plural = "Logging Report Handle"
-        ordering = ("updated_on",)
+        ordering = ("-updated_on",)

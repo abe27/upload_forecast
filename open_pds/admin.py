@@ -70,6 +70,7 @@ class PDSDetailInlineAdmin(admin.TabularInline):
         'balance_qty',
         'price',
         'is_active',
+        'pds_detail_status'
     )
 
     extra = 3
@@ -81,6 +82,9 @@ class PDSDetailInlineAdmin(admin.TabularInline):
 
     def get_readonly_fields(self, request, obj=None):
         if request.user.has_perm("open_pds.edit_qty"):
+            if int(obj.pds_status) == 2:
+                return self.list_readonly_fields + ('qty','is_select',)
+            
             return self.list_readonly_fields
         
         return self.list_readonly_fields + ('is_select',)
@@ -97,6 +101,7 @@ class PDSDetailInlineAdmin(admin.TabularInline):
                 'qty',
                 'balance_qty',
                 'price',
+                'pds_detail_status',
             ]
 
         query_set = Group.objects.filter(user=request.user)
@@ -111,6 +116,7 @@ class PDSDetailInlineAdmin(admin.TabularInline):
                 'qty',
                 'balance_qty',
                 'price',
+                'pds_detail_status'
             ]
 
         return [
@@ -123,6 +129,7 @@ class PDSDetailInlineAdmin(admin.TabularInline):
             'qty',
             # 'balance_qty',
             'price',
+            'pds_detail_status'
         ]
 
     def has_change_permission(self, request, obj):
@@ -144,6 +151,7 @@ class PDSHeaderAdmin(admin.ModelAdmin):
     change_form_template = "admin/open_pds_form_view.html"
     change_list_template = "admin/open_pds_list_view.html"
     inlines = [PDSDetailInlineAdmin]
+    
     def get_fields(self, request, obj=None):
         query_set = Group.objects.filter(user=request.user)
         if query_set.filter(name="Supplier").exists():
@@ -158,6 +166,7 @@ class PDSHeaderAdmin(admin.ModelAdmin):
                 'pds_delivery_date',
                 # "summary_price",
                 "remark",
+                "pds_status",
             ]
         
         if query_set.filter(name="Purchase").exists():
@@ -171,6 +180,7 @@ class PDSHeaderAdmin(admin.ModelAdmin):
                 'pds_delivery_date',
                 # "summary_price",
                 "remark",
+                "pds_status",
             ]
         
         return [
@@ -182,9 +192,10 @@ class PDSHeaderAdmin(admin.ModelAdmin):
             "item",
             "qty",
             "remark",
+            "pds_status",
         ]
     
-    readonly_fields = [
+    list_readonly_fields = [
         "forecast_id",
         "pds_date",
         "pds_no",
@@ -196,12 +207,29 @@ class PDSHeaderAdmin(admin.ModelAdmin):
         "ref_formula_id",
         'part_model_id',
         "is_active",
+        "pds_status",
     ]
     
     def get_readonly_fields(self, request, obj=None):
-        if obj.pds_status == 2:
-            self.readonly_fields.append('pds_delivery_date')
-        return self.readonly_fields
+        # print(obj.pds_status == 2)
+        if int(obj.pds_status) == 0:
+            return [
+                    "forecast_id",
+                    "pds_date",
+                    "pds_no",
+                    "item",
+                    "qty",
+                    'balance_qty',
+                    "summary_price",
+                    "pds_status",
+                    "ref_formula_id",
+                    'part_model_id',
+                    "is_active",
+                ]
+        if int(obj.pds_status) == 2:
+            self.list_readonly_fields += ['pds_delivery_date', 'remark',]
+            
+        return self.list_readonly_fields
     
     # list_filter = ["forecast_plan_id", "supplier_id", "pds_status"]
     def get_list_filter(self, request):
@@ -263,7 +291,12 @@ class PDSHeaderAdmin(admin.ModelAdmin):
     def get_pds_delivery_date(self, obj):
         if obj.pds_delivery_date is None:
             return "-"
-        return format_html(f'<span class="text-primary">{obj.pds_delivery_date.strftime("%d-%m-%Y")}</span>')
+        
+        dlDte = int(f"{obj.forecast_id.forecast_on_year_id.value}{obj.forecast_id.forecast_on_month_id.value}")
+        if dlDte != int(obj.pds_delivery_date.strftime("%Y%m")):
+            return format_html(f'<span class="badge badge-danger">{obj.pds_delivery_date.strftime("%d-%m-%Y")}</span>')
+        
+        return format_html(f'<span class="text-success">{obj.pds_delivery_date.strftime("%d-%m-%Y")}</span>')
     get_pds_delivery_date.short_description = "Delivery Date"
     
     def get_qty(self, obj):

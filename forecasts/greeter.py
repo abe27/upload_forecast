@@ -17,9 +17,10 @@ from books.models import Book, ReviseBook
 from confirm_invoices.models import ConfirmInvoiceDetail, ConfirmInvoiceHeader
 from open_pds.models import PDSDetail, PDSHeader
 from products.models import Product, ProductGroup
+from receives.models import ReceiveDetail, ReceiveHeader
 
 from upload_forecasts.models import ForecastErrorLogs, OnMonthList, OnYearList
-from members.models import PlanningForecast, Section, Supplier
+from members.models import PlanningForecast, Section, Supplier, UserErrorLog
 
 # styles = getSampleStyleSheet()
 # styleN = styles['Normal']
@@ -36,6 +37,7 @@ from formula_vcs.models import BOOK, COOR, CORP, DEPT, EMPLOYEE, PROD, SECT, UM,
 def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
     dte = datetime.now()
     ordH = None
+    txtMsg =""
     try:
         ## Line Notification
         token = os.environ.get("LINE_TOKEN")
@@ -60,18 +62,18 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
         if type(request.user.section_id)!= type(None):
             formulaSect = request.user.section_id.code
         
-        emp = EMPLOYEE.objects.filter(FCCODE=formulaUser).values()
-        dept = DEPT.objects.filter(FCCODE=formulaDepartment).values()
-        sect = SECT.objects.filter(FCCODE=formulaSect).values()
-        corp = CORP.objects.filter(FCCODE="2023 (2566)").values()
-        ordBook = BOOK.objects.filter(FCREFTYPE=prefixRef, FCCODE=bookGroup).values()
+        emp = EMPLOYEE.objects.filter(FCCODE=formulaUser).first()
+        dept = DEPT.objects.filter(FCCODE=formulaDepartment).first()
+        sect = SECT.objects.filter(FCCODE=formulaSect).first()
+        corp = CORP.objects.all().first()
+        ordBook = BOOK.objects.filter(FCREFTYPE=prefixRef, FCCODE=bookGroup).first()
         
         fcStep = "1"
         if prefixRef == "PO":
             fcStep = "P"
             obj = PDSHeader.objects.get(id=id)
             ### Get Supplier Information
-            supplier = COOR.objects.filter(FCCODE=obj.forecast_id.supplier_id.code).values()
+            supplier = COOR.objects.filter(FCCODE=obj.forecast_id.supplier_id.code).first()
             ordH = None
             if obj.ref_formula_id is None:
                 PREFIX_DTE_Y = str(int(obj.pds_date.strftime('%Y')) + 543)[2:]
@@ -81,8 +83,8 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                     lastNum = "0000000"
                     
                 fccodeNo = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}{int(str(lastNum)[4:]) + 1:03d}"
-                prNo = f"{str(ordBook[0]['FCPREFIX']).strip()}{fccodeNo}"### PR TEST REFNO
-                msg = f"message=เรียนแผนก PU\nขณะนี้ทางแผนก Planning ได้ทำการเปิดเอกสาร{str(ordBook[0]['FCNAME']).strip()} เลขที่ {prNo} เรียบร้อยแล้วคะ"
+                prNo = f"{str(ordBook.FCPREFIX).strip()}{fccodeNo}"### PR TEST REFNO
+                msg = f"message=เรียนแผนก PU\nขณะนี้ทางแผนก Planning ได้ทำการเปิดเอกสาร{str(ordBook.FCNAME).strip()} เลขที่ {prNo} เรียบร้อยแล้วคะ"
                 
                 ordH = OrderH()
                 ordH.FCSKID=nanoid.generate(size=8)
@@ -96,13 +98,13 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                 pass
             
             ordH.FCREFTYPE=prefixRef
-            ordH.FCDEPT=dept[0]['FCSKID']
-            ordH.FCSECT=sect[0]['FCSKID']
-            ordH.FCBOOK=ordBook[0]['FCSKID']
-            ordH.FCCREATEBY=emp[0]['FCSKID']
+            ordH.FCDEPT=dept.FCSKID
+            ordH.FCSECT=sect.FCSKID
+            ordH.FCBOOK=ordBook.FCSKID
+            ordH.FCCREATEBY=emp.FCSKID
             ordH.FCAPPROVEB=""
-            ordH.FCCOOR=supplier[0]['FCSKID']
-            ordH.FCCORP=corp[0]['FCSKID']
+            ordH.FCCOOR=supplier.FCSKID
+            ordH.FCCORP=corp.FCSKID
             ordH.FDDATE=obj.pds_date
             ordH.FNAMT=obj.qty
             ordH.FCSTEP=fcStep
@@ -118,6 +120,7 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
             confirmInv.inv_date = datetime.now()
             confirmInv.item = 0
             confirmInv.qty = 0
+            confirmInv.original_qty = 0
             confirmInv.is_active = True
             confirmInv.save()
             
@@ -133,25 +136,25 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                 
                 if i.is_select is True and i.qty > 0:
                     ordI = None
-                    ordProd = PROD.objects.filter(FCCODE=i.forecast_detail_id.product_id.code,FCTYPE=i.forecast_detail_id.product_id.prod_type_id.code).values()
-                    unitObj = UM.objects.filter(FCCODE=i.forecast_detail_id.product_id.unit_id.code).values()
-                    summary_price += int(ordProd[0]['FNSTDCOST']) * i.qty
-                    currentPrice = int(ordProd[0]['FNSTDCOST']) * i.qty
+                    ordProd = PROD.objects.filter(FCCODE=i.forecast_detail_id.product_id.code,FCTYPE=i.forecast_detail_id.product_id.prod_type_id.code).first()
+                    unitObj = UM.objects.filter(FCCODE=i.forecast_detail_id.product_id.unit_id.code).first()
+                    summary_price += int(ordProd.FNSTDCOST) * i.qty
+                    currentPrice = int(ordProd.FNSTDCOST) * i.qty
                     try:
                         # ordI = OrderI.objects.get(FCSKID=i.ref_formula_id)
-                        ordI = OrderI.objects.get(FCORDERH=ordH.FCSKID,FCPROD=ordProd[0]["FCSKID"])
-                        ordI.FCCOOR=supplier[0]['FCSKID']
-                        ordI.FCCORP=corp[0]['FCSKID']
-                        ordI.FCDEPT=dept[0]['FCSKID']
+                        ordI = OrderI.objects.get(FCORDERH=ordH.FCSKID,FCPROD=ordProd.FCSKID)
+                        ordI.FCCOOR=supplier.FCSKID
+                        ordI.FCCORP=corp.FCSKID
+                        ordI.FCDEPT=dept.FCSKID
                         ordI.FCORDERH=ordH.FCSKID
-                        ordI.FCPROD=ordProd[0]["FCSKID"]
-                        ordI.FCPRODTYPE=ordProd[0]["FCTYPE"]
+                        ordI.FCPROD=ordProd.FCSKID
+                        ordI.FCPRODTYPE=ordProd.FCTYPE
                         ordI.FCREFTYPE=prefixRef
-                        ordI.FCSECT=sect[0]['FCSKID']
+                        ordI.FCSECT=sect.FCSKID
                         ordI.FCSEQ=f"{seq:03d}"
-                        ordI.FCSTUM=unitObj[0]["FCSKID"]
-                        ordI.FCUM=unitObj[0]["FCSKID"]
-                        ordI.FCUMSTD=unitObj[0]["FCSKID"]
+                        ordI.FCSTUM=unitObj.FCSKID
+                        ordI.FCUM=unitObj.FCSKID
+                        ordI.FCUMSTD=unitObj.FCSKID
                         ordI.FDDATE=obj.pds_date
                         ordI.FNQTY=i.qty
                         ordI.FMREMARK=i.remark
@@ -167,18 +170,18 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                     except OrderI.DoesNotExist as e:
                         ordI = OrderI(
                             FCSKID=nanoid.generate(size=8),
-                            FCCOOR=supplier[0]['FCSKID'],
-                            FCCORP=corp[0]['FCSKID'],
-                            FCDEPT=dept[0]['FCSKID'],
+                            FCCOOR=supplier.FCSKID,
+                            FCCORP=corp.FCSKID,
+                            FCDEPT=dept.FCSKID,
                             FCORDERH=ordH.FCSKID,
-                            FCPROD=ordProd[0]["FCSKID"],
-                            FCPRODTYPE=ordProd[0]["FCTYPE"],
+                            FCPROD=ordProd.FCSKID,
+                            FCPRODTYPE=ordProd.FCTYPE,
                             FCREFTYPE=prefixRef,
-                            FCSECT=sect[0]['FCSKID'],
+                            FCSECT=sect.FCSKID,
                             FCSEQ=f"{seq:03d}",
-                            FCSTUM=unitObj[0]["FCSKID"],
-                            FCUM=unitObj[0]["FCSKID"],
-                            FCUMSTD=unitObj[0]["FCSKID"],
+                            FCSTUM=unitObj.FCSKID,
+                            FCUM=unitObj.FCSKID,
+                            FCUMSTD=unitObj.FCSKID,
                             FDDATE=obj.pds_date,
                             FNQTY=i.qty,
                             FMREMARK=i.remark,
@@ -215,7 +218,7 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                     invDetail.qty = i.qty
                     invDetail.confirm_qty = i.qty
                     invDetail.total_qty = i.qty
-                    invDetail.price = int(ordProd[0]['FNSTDCOST'])
+                    invDetail.price = int(ordProd.FNSTDCOST)
                     invDetail.remark = ""
                     invDetail.ref_formula_id = ordI.FCSKID
                     invDetail.save()
@@ -234,8 +237,8 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                             FCMASTERI=orderPODetailID,
                             FNQTY=i.qty,
                             FNUMQTY=i.qty,
-                            FCCORRECTB=emp[0]["FCSKID"],
-                            FCCREATEBY=emp[0]["FCSKID"],
+                            FCCORRECTB=emp.FCSKID,
+                            FCCREATEBY=emp.FCSKID,
                             FCCREATETY="",
                             FCCUACC="",
                             FCDATAIMP="",
@@ -245,13 +248,16 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                             FCU1ACC="",
                             FCUDATE="",
                             FCUTIME="",
-                            FCCORP=corp[0]['FCSKID']
+                            FCCORP=corp.FCSKID
                         )
                     noteCut.save()
                     # Update Status Order Details
+                    print(f"QTY: {i.qty} Balance Qty: {i.balance_qty}")
+                    blQty = i.balance_qty - i.qty
                     i.ref_formula_id = ordI.FCSKID
                     i.request_status = "1"
-                    i.qty = i.balance_qty
+                    i.qty = blQty
+                    i.balance_qty = blQty
                     i.is_select = i.balance_qty > 0
                     i.save()
                     
@@ -310,6 +316,7 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
             
             confirmInv.item = seq
             confirmInv.qty = qty
+            confirmInv.original_qty = qty
             confirmInv.confirm_qty = qty
             confirmInv.summary_price = summary_price
             confirmInv.inv_status = "0"
@@ -317,7 +324,8 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
             confirmInv.save()
             
             ### Message Notification
-            msg = f"message=เรียนแผนก PU \nขณะนี้ทางแผนก Planning ได้ทำการอนุมัติเอกสาร {ordH.FCREFNO} เรียบร้อยแล้วคะ"
+            txtMsg = f"ได้ทำการเปิดเอกสาร PDS เลขที่ {ordH.FCREFNO}"
+            msg = f"message=เรียนแผนก PU \nขณะนี้ทางแผนก Planning ได้ทำการเปิดเอกสาร PDS เลขที่ {ordH.FCREFNO} เรียบร้อยแล้วคะ"
             requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
         else:
             ### Create PR
@@ -345,11 +353,12 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
             pdsHead.qty = 0
             pdsHead.balance_qty = 0
             pdsHead.summary_price = 0
+            pdsHead.pds_status = "0"
             pdsHead.is_active = True
             pdsHead.save()
             ### End PDSHeader
             
-            supplier = COOR.objects.filter(FCCODE=obj.supplier_id.code).values()
+            supplier = COOR.objects.filter(FCCODE=obj.supplier_id.code).first()
             ordH = None
             if obj.ref_formula_id is None:
                 ### Create PR to Formula
@@ -361,7 +370,7 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                     lastNum = "0000000"
                     
                 fccodeNo = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}{int(str(lastNum)[4:]) + 1:03d}"
-                prNo = f"{str(ordBook[0]['FCPREFIX']).strip()}{fccodeNo}"### PR TEST REFNO
+                prNo = f"{str(ordBook.FCPREFIX).strip()}{fccodeNo}"### PR TEST REFNO
                 msg = f"message=เรียนแผนก Planning\nขณะนี้ทางแผนก PU ได้ทำการอนุมัติเอกสาร {prNo} เรียบร้อยแล้วคะ"
                 ordH = OrderH()
                 ordH.FCCODE = fccodeNo
@@ -375,13 +384,13 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                 pass
             
             ordH.FCREFTYPE=prefixRef
-            ordH.FCDEPT=dept[0]['FCSKID']
-            ordH.FCSECT=sect[0]['FCSKID']
-            ordH.FCBOOK=ordBook[0]['FCSKID']
-            ordH.FCCREATEBY=emp[0]['FCSKID']
+            ordH.FCDEPT=dept.FCSKID
+            ordH.FCSECT=sect.FCSKID
+            ordH.FCBOOK=ordBook.FCSKID
+            ordH.FCCREATEBY=emp.FCSKID
             ordH.FCAPPROVEB=""
-            ordH.FCCOOR=supplier[0]['FCSKID']
-            ordH.FCCORP=corp[0]['FCSKID']
+            ordH.FCCOOR=supplier.FCSKID
+            ordH.FCCORP=corp.FCSKID
             ordH.FDDATE=obj.forecast_date
             ordH.FDDUEDATE=obj.forecast_date
             ordH.FNAMT=0
@@ -396,10 +405,10 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
             for i in ordDetail:
                 ### Create OrderI Formula
                 try:
-                    ordProd = PROD.objects.filter(FCCODE=i.product_id.code,FCTYPE=i.product_id.prod_type_id.code).values()
-                    unitObj = UM.objects.filter(FCCODE=i.product_id.unit_id.code).values()
-                    summary_price += int(ordProd[0]['FNSTDCOST']) * int(i.request_qty)
-                    currentPrice = int(ordProd[0]['FNSTDCOST']) * int(i.request_qty)
+                    ordProd = PROD.objects.filter(FCCODE=i.product_id.code,FCTYPE=i.product_id.prod_type_id.code).first()
+                    unitObj = UM.objects.filter(FCCODE=i.product_id.unit_id.code).first()
+                    summary_price += int(ordProd.FNSTDCOST) * int(i.request_qty)
+                    currentPrice = int(ordProd.FNSTDCOST) * int(i.request_qty)
                     ### Create PDS Detail
                     pdsDetail = None
                     try:
@@ -420,24 +429,25 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                     # pdsDetail.total_price = currentPrice 
                     pdsDetail.remark = i.remark
                     pdsDetail.is_active = True
+                    pdsDetail.pds_detail_status = "0"
                     pdsDetail.save()
                     ### End PDS Detail
                 
                     ordI = None
                     try:
                         ordI = OrderI.objects.get(FCSKID=i.ref_formula_id)
-                        ordI.FCCOOR=supplier[0]['FCSKID']
-                        ordI.FCCORP=corp[0]['FCSKID']
-                        ordI.FCDEPT=dept[0]['FCSKID']
+                        ordI.FCCOOR=supplier.FCSKID
+                        ordI.FCCORP=corp.FCSKID
+                        ordI.FCDEPT=dept.FCSKID
                         ordI.FCORDERH=ordH.FCSKID
-                        ordI.FCPROD=ordProd[0]["FCSKID"]
-                        ordI.FCPRODTYPE=ordProd[0]["FCTYPE"]
+                        ordI.FCPROD=ordProd.FCSKID
+                        ordI.FCPRODTYPE=ordProd.FCTYPE
                         ordI.FCREFTYPE=prefixRef
-                        ordI.FCSECT=sect[0]['FCSKID']
+                        ordI.FCSECT=sect.FCSKID
                         ordI.FCSEQ=f"{seq:03d}"
-                        ordI.FCSTUM=unitObj[0]["FCSKID"]
-                        ordI.FCUM=unitObj[0]["FCSKID"]
-                        ordI.FCUMSTD=unitObj[0]["FCSKID"]
+                        ordI.FCSTUM=unitObj.FCSKID
+                        ordI.FCUM=unitObj.FCSKID
+                        ordI.FCUMSTD=unitObj.FCSKID
                         ordI.FDDATE=obj.forecast_date
                         ordI.FNQTY=i.request_qty
                         ordI.FMREMARK=i.remark
@@ -453,18 +463,18 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                     except OrderI.DoesNotExist as e:
                         ordI = OrderI(
                             FCSKID=nanoid.generate(size=8),
-                            FCCOOR=supplier[0]['FCSKID'],
-                            FCCORP=corp[0]['FCSKID'],
-                            FCDEPT=dept[0]['FCSKID'],
+                            FCCOOR=supplier.FCSKID,
+                            FCCORP=corp.FCSKID,
+                            FCDEPT=dept.FCSKID,
                             FCORDERH=ordH.FCSKID,
-                            FCPROD=ordProd[0]["FCSKID"],
-                            FCPRODTYPE=ordProd[0]["FCTYPE"],
+                            FCPROD=ordProd.FCSKID,
+                            FCPRODTYPE=ordProd.FCTYPE,
                             FCREFTYPE=prefixRef,
-                            FCSECT=sect[0]['FCSKID'],
+                            FCSECT=sect.FCSKID,
                             FCSEQ=f"{seq:03d}",
-                            FCSTUM=unitObj[0]["FCSKID"],
-                            FCUM=unitObj[0]["FCSKID"],
-                            FCUMSTD=unitObj[0]["FCSKID"],
+                            FCSTUM=unitObj.FCSKID,
+                            FCUM=unitObj.FCSKID,
+                            FCUMSTD=unitObj.FCSKID,
                             FDDATE=obj.forecast_date,
                             FNQTY=i.request_qty,
                             FMREMARK=i.remark,
@@ -511,12 +521,24 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
             obj.save()
             
             ### Message Notification
+            txtMsg = f"ได้ทำการอนุมัติเอกสาร {obj.forecast_no}"
             msg = f"message=เรียนแผนก Planning\nขณะนี้ทางแผนก PU ได้ทำการอนุมัติเอกสาร {obj.forecast_no} เรียบร้อยแล้วคะ"
             requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
             # messages.success(request, f"บันทึกข้อมูลเรียบร้อยแล้ว")
         
+
+        rp = UserErrorLog()
+        rp.user_id = request.user
+        rp.remark = txtMsg
+        rp.is_status = True
+        rp.save()
     except Exception as ex:
         messages.error(request, str(ex))
+        rp = UserErrorLog()
+        rp.user_id = request.user
+        rp.remark = f"เกิดข้อผิดพลาด {str(ex)}"
+        rp.is_status = True
+        rp.save()
         return False
         # pass
     
@@ -763,7 +785,7 @@ def upload_file_forecast(request, obj, form, change):
                 rMonth3 = 0
                 for r in items:
                     rQty += r.request_qty
-                    rPrice += float(r.product_id.price)
+                    rPrice += int(r.product_id.price)
                     rMonth0 += r.month_0
                     rMonth1 += r.month_1
                     rMonth2 += r.month_2
@@ -795,9 +817,22 @@ def upload_file_forecast(request, obj, form, change):
             
             msg = f"message=เรียนแผนก PU\nขณะนี้ทางแผนก Planning\nทำการอัพโหลด Forecast({pHeader.forecast_plan_id}) {pHeader.forecast_revise_id.name}\nกรุณาทำการยืนยันให้ด้วยคะ"
             requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
+            
+            #### Create Logging
+            rp = UserErrorLog()
+            rp.user_id = request.user
+            rp.remark = f"Upload Forecast {obj.file_forecast}"
+            rp.is_status = True
+            rp.save()
         
     except Exception as ex:
         messages.error(request, f"รูปแบบเอกสารที่ใช้อัพโหลดข้อมูลไม่ถูกต้อง {str(ex)}")
+        #### Create Logging
+        rp = UserErrorLog()
+        rp.user_id = request.user
+        rp.remark = f"รูปแบบเอกสารที่ใช้อัพโหลดข้อมูลไม่ถูกต้อง {str(ex)}"
+        rp.is_status = False
+        rp.save()
         obj.delete()
         return
     
@@ -805,3 +840,99 @@ def upload_file_forecast(request, obj, form, change):
 
 def request_validation(request):
     pass
+
+def check_confirm_qty(request):
+    data = request.POST.copy()
+    confirmID = data['confirminvoicedetail_set-0-invoice_header_id']
+    totalConfirm = 0
+    plimit = int(data['confirminvoicedetail_set-TOTAL_FORMS'])
+    for i in range(0, plimit):
+        id = data[f'confirminvoicedetail_set-{i}-id']
+        confirmQty = int(data[f'confirminvoicedetail_set-{i}-confirm_qty'])
+        obj = ConfirmInvoiceDetail.objects.get(id=id)
+        print(f"Confirm QTY: {confirmQty} QTY: {obj.qty} :: {int(obj.qty)-confirmQty}")
+        if confirmQty > int(obj.qty):
+            obj.confirm_qty = obj.qty
+            obj.save()
+            return True
+        
+        obj.balance_qty = int(obj.qty)
+        balance_qty = int(obj.qty)-confirmQty
+        obj.qty=balance_qty
+        obj.save()
+        totalConfirm += int(obj.qty)-confirmQty
+    
+    # print(confirmID)
+    # conData = ConfirmInvoiceHeader.objects.get(id=confirmID)
+    # print(conData)
+    # conData.qty = totalConfirm
+    # conData.confirm_qty = totalConfirm
+    # conData.save()
+    return False
+
+def receive_invoice(request, obj):
+    dte = datetime.now()
+    rnd = ReceiveHeader.objects.filter(confirm_invoice_id=obj).count()
+    recNo = f"REC{str(dte.strftime('%Y%m%d'))[3:]}{(rnd+1):05d}"
+    rec = ReceiveHeader()
+    rec.receive_by_id = request.user
+    rec.confirm_invoice_id = obj
+    rec.supplier_id = obj.supplier_id
+    rec.part_model_id = obj.part_model_id
+    rec.purchase_no = obj.purchase_no
+    rec.receive_no = recNo
+    rec.receive_date = None
+    rec.inv_delivery_date = obj.inv_delivery_date
+    rec.inv_no = str(obj.inv_no).upper()
+    rec.item = 0
+    rec.qty = 0
+    rec.summary_price = 0
+    rec.save()
+    
+    seq = 0
+    qty = 0
+    data = request.POST.copy()
+    plimit = int(data['confirminvoicedetail_set-TOTAL_FORMS'])
+    for i in range(0, plimit):
+        id = data[f'confirminvoicedetail_set-{i}-id']
+        confirmQty = int(data[f'confirminvoicedetail_set-{i}-confirm_qty'])
+        confirmDetail = ConfirmInvoiceDetail.objects.get(id=id)
+        totalQty = confirmDetail.balance_qty
+        receDetail = ReceiveDetail()
+        receDetail.receive_header_id = rec
+        receDetail.confirm_detail_id = confirmDetail
+        receDetail.seq = seq + 1
+        receDetail.qty = confirmQty
+        receDetail.save()
+        
+        ### Update Transaction
+        confirmDetail.qty = (totalQty - confirmQty)
+        confirmDetail.confirm_qty = (totalQty - confirmQty)
+        confirmDetail.balance_qty = 0
+        confirmDetail.save()
+        seq += 1
+        qty += confirmQty
+        
+    rec.item = seq
+    rec.qty = qty
+    rec.save()
+    
+    
+    recQty = 0
+    objDetail = ConfirmInvoiceDetail.objects.filter(invoice_header_id=obj)
+    for i in objDetail:
+        rc = ReceiveDetail.objects.filter(confirm_detail_id=i)
+        for r in rc:
+            print(r.qty)
+            recQty += int(r.qty)
+    
+    obj.confirm_qty = recQty
+    obj.qty = obj.original_qty
+    
+    if confirmDetail.qty == 0:
+        obj.confirm_qty = obj.original_qty
+        obj.inv_status = 1
+        
+    else:
+        obj.inv_status = 2
+    

@@ -32,6 +32,7 @@ class ForecastDetailInline(admin.TabularInline):
         'request_status',
         'price',
         'last_updated',
+        'request_status'
     )
 
     fields = [
@@ -43,6 +44,7 @@ class ForecastDetailInline(admin.TabularInline):
         'request_qty',
         'balance_qty',
         'price',
+        'request_status',
         'last_updated',
     ]
 

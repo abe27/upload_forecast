@@ -10,10 +10,12 @@ from upload_forecasts.models import OnMonthList, OnYearList, UploadForecast
 from members.models import ManagementUser, PlanningForecast, Section, Supplier
 
 FORECAST_ORDER_STATUS = [
-    ('0', 'รออนุมัติเปิด PR'),
-    ('1', 'อนุมัติเปิด PR'),
+    ('0', 'รออนุมัติ'),
+    ('1', 'อนุมัติแล้ว'),
     ('2', 'เปิด PR แล้ว'),
-    ('3', 'ไม่อนุมัติ'),
+    ('3', 'เปิด PDS แล้ว'),
+    ('4', 'ไม่อนุมัติ'),
+    ('5', 'ยกเลิก'),
 ]
 
 # Create your models here.
@@ -106,7 +108,7 @@ class ForecastDetail(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return ""
+        return self.product_id.code
     
     def product_no(self):
         return str(self.product_id.code)

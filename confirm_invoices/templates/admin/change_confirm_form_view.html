@@ -1,0 +1,15 @@
+{% extends "admin/change_form.html" %}
+{% comment %} {% block form_top %}
+    {{ lame_static_text }}
+    <span>{{perms.confirm_invoice}}</span>
+{% endblock %} {% endcomment %}
+{% block submit_buttons_bottom %} 
+{% comment %} {{block.super }} {% endcomment %}
+{% if perms.confirm_invoice.edit_qty and is_confirm %}
+<div class="form-group pt-2">
+    <button type="submit" class="btn btn-success btn-sm form-control" name="_confirm_invoice">
+        <i class="fas fa-calendar-check"></i></i>{{" "}}ยืนยันการส่งสินค้า
+    </button>
+</div>
+{% endif %}
+{% endblock %}

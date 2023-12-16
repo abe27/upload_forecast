@@ -6,9 +6,9 @@ from products.models import ProductGroup
 from members.models import ManagementUser, Supplier
 
 RECEIVE_INV_STATUS = [
-    ("0", "รอรับ"),
-    ("1", "รับแล้ว"),
-    ('2', 'ยกเลิกจัดส่ง')
+    ("0", "กำลังดำเนินงาน"),
+    ("1", "รับเข้าแล้ว"),
+    ('2', 'ยกเลิกแล้ว')
 ]
 
 # Create your models here.
@@ -40,7 +40,7 @@ class ReceiveHeader(models.Model):
     class Meta:
         db_table = "ediReceiveHeader"
         verbose_name = "Receive"
-        verbose_name_plural = "EDI Confirm Invoice"
+        verbose_name_plural = "EDI Receive Invoice"
         
 class ReceiveDetail(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, verbose_name="PRIMARY KEY", default=uuid.uuid4)
@@ -57,10 +57,10 @@ class ReceiveDetail(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     def part_code(self):
-        return self.confirm_detail_id.pds_detail_id.forecast_detail_id.product_id.code
+        return self.confirm_detail_id.pds_detail_id.forecast_detail_id.product_id.no
     
     def part_no(self):
-        return self.confirm_detail_id.pds_detail_id.forecast_detail_id.product_id.no
+        return self.confirm_detail_id.pds_detail_id.forecast_detail_id.product_id.code
     
     def part_name(self):
         return self.confirm_detail_id.pds_detail_id.forecast_detail_id.product_id.name
