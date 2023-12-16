@@ -58,7 +58,7 @@ INSTALLED_APPS = [
     'forecasts.apps.ForecastsConfig',
     'open_pds.apps.OpenPdsConfig',
     'confirm_invoices.apps.ConfirmInvoicesConfig',
-    'receives.apps.ReceivesConfig'
+    'receives.apps.ReceivesConfig',
 ]
 
 MIDDLEWARE = [

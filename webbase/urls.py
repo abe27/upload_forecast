@@ -32,5 +32,6 @@ urlpatterns = [
     path('web/', admin.site.urls),
     path("forecast/", include("forecasts.urls")),
     path("open_pds/", include("open_pds.urls")),
+    path(""),
     path("", RedirectView.as_view(url="/web/", permanent=True)),
 ]
