@@ -4,7 +4,7 @@
 {% endblock %}
 {% block submit_buttons_bottom %} 
 {% comment %} {{block.super }} {% endcomment %}
-{% if receive_status < 2 %}
+{% if perms.confirm_invoice.edit_qty %}
 <div class="pb-1">
     <button type="submit" class="btn btn-primary btn-sm form-control" name="_cancel_invoice">
         <i class="fas fa-times-circle"></i>{{" "}}ยกเลิกรายการนี้

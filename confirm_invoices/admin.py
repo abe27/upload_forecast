@@ -1,11 +1,14 @@
 import random
+from django import forms
 import nanoid
 from django.contrib import admin, messages
+from django.contrib.admin import DateFieldListFilter
 from django.contrib.auth.models import Group
 from django.db.models.query import QuerySet
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
 from django.utils.html import format_html
+from rangefilter2.filter import DateRangeFilter
 
 from forecasts import greeter
 from formula_vcs.models import OrderH, OrderI
@@ -15,6 +18,15 @@ from .models import CONFIRM_INV_STATUS, ConfirmInvoiceDetail, ConfirmInvoiceHead
 from members.models import ManagementUser, Supplier
 
 # Register your models here.
+from django.forms.widgets import TextInput
+class CustomTextInput(TextInput):
+    icon = ''
+    def render(self, name, value, attrs=None, renderer=None):
+        if self.icon:
+            final_attrs = self.build_attrs(attrs)
+            return f'<div class="input-group"><span class="input-group-addon"><img src="{self.icon}" /></span>{super().render(name, value, final_attrs)}</div>'
+        else:
+            return super().render(name, value, attrs)
 
 
 class SupplierFilter(admin.SimpleListFilter):
@@ -63,6 +75,35 @@ class SupplierFilter(admin.SimpleListFilter):
         # print(self.value())
         return queryset.filter(supplier_id=self.value())
 
+class BeginInvoiceDateFilter(admin.SimpleListFilter):
+    # Human-readable title which will be displayed in the
+    # right admin sidebar just above the filter options.
+    title = ("Start Date")
+    # Parameter for the filter that will be used in the URL query.
+    parameter_name = "inv_date"
+
+    
+    def lookups(self, request, model_admin):
+        """
+        Returns a list of tuples. The first element in each
+        tuple is the coded value for the option that will
+        appear in the URL query. The second element is the
+        human-readable name for the option that will appear
+        in the right sidebar.
+        """
+        return [
+            ("80s", ("in the eighties")),
+            ("90s", ("in the nineties")),
+        ]
+
+    def queryset(self, request, queryset):
+        """
+        Returns the filtered queryset based on the value
+        provided in the query string and retrievable via
+        `self.value()`.
+        """
+        # print(self.value())
+        return queryset.filter(inv_date=self.value())
 
 class ConfirmInvoiceDetailInline(admin.TabularInline):
     model = ConfirmInvoiceDetail
@@ -232,12 +273,13 @@ def make_export_to_excel(modeladmin, request, queryset):
         print(r)
 
     messages.success(request, format_html(
-        f"<a href='/confirm_invoice/reports/purchase/{ids}'>กดที่ตรงนี้เพื่อดาวน์โหลดข้อมูล</a>"))
-
+        f"<a href='/confirm_invoices/reports/purchase/{ids}'>กดที่ตรงนี้เพื่อดาวน์โหลดข้อมูล</a>"))
 
 class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
+    change_list_template = "admin/change_confirm_list_view.html"
     change_form_template = "admin/change_confirm_form_view.html"
     inlines = [ConfirmInvoiceDetailInline]
+    # date_hierarchy = 'inv_date'
     list_display = (
         # "pds_id",
         "purchase_no",
@@ -272,7 +314,7 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
     list_filter = (
         "supplier_id",
         "part_model_id",
-        "inv_date",
+        ("inv_date",DateRangeFilter),
         "inv_status",
     )
 

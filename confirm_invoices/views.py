@@ -142,7 +142,10 @@ def print_tags(request, id):
             'Authorization': f'Bearer {token}'
         }
         msg = f"message=เรียนแผนก Planning/PU\nขณะนี้ทาง Supplier({request.user})\nได้ทำการโหลดเอกสาร TAG\n{head.supplier_id.name}\nเลขที่ {head.purchase_no}\nเรียบร้อยแล้วคะ"
-        requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
+        try:
+            requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
+        except:
+            pass
         ### Update Download Counter
         head.is_download_count += 1
         head.save()
