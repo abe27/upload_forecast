@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     #### Addons
     # 'bootstrap5',
     'django_admin_listfilter_dropdown',
-    'rangefilter2',
+    'rangefilter',
     #### Custom Application
     'formula_vcs.apps.FormulaVcsConfig',
     'members.apps.MembersConfig',

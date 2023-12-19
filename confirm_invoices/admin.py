@@ -8,7 +8,6 @@ from django.db.models.query import QuerySet
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
 from django.utils.html import format_html
-from rangefilter2.filter import DateRangeFilter
 
 from forecasts import greeter
 from formula_vcs.models import OrderH, OrderI
@@ -314,7 +313,7 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
     list_filter = (
         "supplier_id",
         "part_model_id",
-        ("inv_date",DateRangeFilter),
+        "inv_date",
         "inv_status",
     )
 
