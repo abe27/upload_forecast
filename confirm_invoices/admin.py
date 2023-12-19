@@ -516,13 +516,12 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
             obj.save()
             
         if '_cancel_invoice' in request.POST:
-            obj.remark = "XXXXX"
             if len(obj.remark) <= 0:
                 messages.warning(request, "กรุณาระบุหมายเหตุด้วยด้วย")
                 
             else:    
                 obj.inv_status = "3"
-                obj.pds_id.pds_status = "4"
+                obj.pds_id.pds_status = "0"
                 obj.pds_id.remark = obj.remark
                 
                 confirmDetail = ConfirmInvoiceDetail.objects.filter(invoice_header_id=obj)
@@ -531,7 +530,7 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
                     r.remark = obj.remark
                     
                     r.pds_detail_id.remark = obj.remark
-                    r.pds_detail_id.pds_detail_status = "4"
+                    r.pds_detail_id.pds_detail_status = "0"
                     r.pds_detail_id.qty += r.qty
                     r.pds_detail_id.balance_qty += r.qty
                     r.pds_detail_id.save()

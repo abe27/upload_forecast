@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.contrib import messages
+from django.contrib.auth.models import Group
 from django.utils.html import format_html
 import os
 from django.conf import settings
@@ -18,6 +19,14 @@ from confirm_invoices.models import ConfirmInvoiceDetail, ConfirmInvoiceHeader
 from open_pds.models import PDSDetail, PDSHeader
 from products.models import Product, ProductGroup
 from receives.models import ReceiveDetail, ReceiveHeader
+from forecasts.models import Forecast
+from forecasts import apps as forecast_apps
+from open_pds import apps as open_pds_apps
+from open_pds.models import PDSHeader
+from receives import apps as receive_apps
+from receives.models import ReceiveHeader
+from confirm_invoices import apps as confirm_invoice_apps
+from confirm_invoices.models import ConfirmInvoiceHeader
 
 from upload_forecasts.models import ForecastErrorLogs, OnMonthList, OnYearList
 from members.models import PlanningForecast, Section, Supplier, UserErrorLog
@@ -806,6 +815,36 @@ def upload_file_forecast(request, obj, form, change):
     return obj
 
 def request_validation(request):
+    Forecast._meta.verbose_name_plural = "Upload Forecast"
+    PDSHeader._meta.verbose_name_plural = "Open PDS"
+    ConfirmInvoiceHeader._meta.verbose_name_plural = "View Purchase"
+    confirm_invoice_apps.ConfirmInvoicesConfig.verbose_name = "คำสั่งซื้อสินค้า"
+    ReceiveHeader._meta.verbose_name_plural = "View Receive"
+    receive_apps.ReceivesConfig.verbose_name = "จัดการข้อมูล Receive"
+    
+    
+    query_set = Group.objects.filter(user=request.user)
+    if query_set.filter(name="Planning").exists():
+        Forecast._meta.verbose_name_plural = "Upload Forecast"
+        PDSHeader._meta.verbose_name_plural = "View PR"
+        forecast_apps.ForecastsConfig.verbose_name = "อัพโหลด Forecast"
+        open_pds_apps.OpenPdsConfig.verbose_name = "จัดการข้อมูล PDS"
+        
+    if query_set.filter(name="Purchase").exists():
+        Forecast._meta.verbose_name_plural = "Open PR"
+        PDSHeader._meta.verbose_name_plural = "View PDS"
+        forecast_apps.ForecastsConfig.verbose_name = "จัดการข้อมูล PR"
+        open_pds_apps.OpenPdsConfig.verbose_name = "ตรวจสอบ PDS"
+    
+    if query_set.filter(name="Supplier").exists():
+        Forecast._meta.verbose_name_plural = "View Forecast"
+        PDSHeader._meta.verbose_name_plural = "View PDS"
+        ConfirmInvoiceHeader._meta.verbose_name_plural = "Confirm Purchase"
+        forecast_apps.ForecastsConfig.verbose_name = "ตรวจสอบ Forecast"
+        open_pds_apps.OpenPdsConfig.verbose_name = "ตรวจสอบ PDS"
+        confirm_invoice_apps.ConfirmInvoicesConfig.verbose_name = "ยืนยันการส่งสินค้า"
+        ReceiveHeader._meta.verbose_name_plural = "View Delivery"
+        receive_apps.ReceivesConfig.verbose_name = "จัดการข้อมูล Delivery"
     pass
 
 def check_confirm_qty(request):
