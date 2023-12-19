@@ -147,11 +147,14 @@ class ReceiveHeaderAdmin(admin.ModelAdmin):
             for i in recDetail:
                 i.receive_status = "2"
                 i.confirm_detail_id.qty += i.qty
-                i.confirm_detail_id.confirm_status = "3"
+                i.confirm_detail_id.confirm_status = "0"
+                i.confirm_detail_id.save()
                 i.save()
                 sumQty += i.qty
-                
+            
+            obj.confirm_invoice_id.inv_status = "0"   
             obj.confirm_invoice_id.qty = sumQty
+            obj.confirm_invoice_id.save()
             obj.save()
             
             rp = UserErrorLog()

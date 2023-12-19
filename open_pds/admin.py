@@ -333,7 +333,7 @@ class PDSHeaderAdmin(admin.ModelAdmin):
                 txtClass = "badge-danger"
 
             elif int(obj.pds_status) == 4:
-                txtClass = "badge-info"
+                txtClass = "badge-warning"
 
             return format_html(f"<span class='badge {txtClass}'>{data[1]}</span>")
         
@@ -422,7 +422,7 @@ class PDSHeaderAdmin(admin.ModelAdmin):
         elif "_cancel_po" in request.POST:
             isSuccess = True
             msg = f"ทำการยกเลิก PDS หมายเลข {obj.pds_no}"
-            messages.success(request, f"ยกเลิกรายการนี้แล้วบันทึกข้อมูลเรียบร้อยแล้ว")
+            messages.success(request, f"ยกเลิกรายการ {obj.pds_no} นี้แล้วเรียบร้อยแล้ว")
         
         log = UserErrorLog()
         log.user_id = request.user
@@ -446,6 +446,14 @@ class PDSHeaderAdmin(admin.ModelAdmin):
             obj = qs.filter(supplier_id__in=sup_id, qty__gt=0)
             return obj
         return qs.filter(qty__gt=0)
+    
+    class Meta:
+        css = {
+            'all': (
+                'css/input.css',
+            )
+        }
+
     
     pass
 

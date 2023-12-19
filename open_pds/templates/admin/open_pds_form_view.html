@@ -8,14 +8,14 @@
 {% if perms.open_pds.create_purchase_order and pds_status == 0 %}
 <div class="form-group pt-2">
     <button type="submit" class="btn btn-info btn-sm form-control" name="_move_to_po">
-        <i class="fas fa-check-circle"></i>{{" "}}Create Purchase Order
+        <i class="fas fa-check-circle"></i>{{" "}}เปิด PDS
     </button>
 </div>
-{% elif perms.open_pds.create_purchase_order and pds_status == 1 %}
+{% comment %} {% elif perms.open_pds.create_purchase_order and pds_status > 0 %}
 <div class="form-group pt-2">
     <button type="submit" class="btn btn-danger btn-sm form-control" name="_cancel_po">
-        <i class="fas fa-times-circle"></i>{{" "}}Cancel Purchase Order
+        <i class="fas fa-times-circle"></i>{{" "}}ยกเลิก PDS
     </button>
-</div>
+</div> {% endcomment %}
 {% endif %}
 {% endblock %}

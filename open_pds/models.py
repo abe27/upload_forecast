@@ -12,7 +12,7 @@ FORECAST_PDS_STATUS = [
     (1, "เปิด PDS บางส่วน"),
     (2, "เสร็จสมบูรณ์"),
     (3, "ยกเลิก"),
-    (4, "-"),
+    (4, "ถูกยกเลิก PDS"),
 ]
 
 # Create your models here.
@@ -51,7 +51,7 @@ class PDSHeader(models.Model):
     class Meta:
         db_table = "ediPDS"
         verbose_name = "PDS"
-        verbose_name_plural = "EDI PDS"
+        verbose_name_plural = "Open PDS"
         ordering = ('pds_status','pds_no','created_at','updated_at')
         permissions = [
             (

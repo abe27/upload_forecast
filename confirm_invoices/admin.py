@@ -8,6 +8,8 @@ from django.http.response import HttpResponse
 from django.utils.html import format_html
 
 from forecasts import greeter
+from formula_vcs.models import OrderH, OrderI
+from open_pds.models import PDSDetail
 
 from .models import CONFIRM_INV_STATUS, ConfirmInvoiceDetail, ConfirmInvoiceHeader, ReportPurchaseOrder
 from members.models import ManagementUser, Supplier
@@ -132,7 +134,7 @@ class ConfirmInvoiceDetailInline(admin.TabularInline):
         )
 
     def get_readonly_fields(self, request, obj):
-        if int(obj.inv_status) == 1:
+        if int(obj.inv_status) > 0:
             return (
                 "product_code",
                 "product_no",
@@ -290,7 +292,7 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
         pass
 
     def get_readonly_fields(self, request, obj):
-        if int(obj.inv_status) == 1:
+        if int(obj.inv_status) > 0:
             return (
                 "purchase_no",
                 "supplier_id",
@@ -462,8 +464,9 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
         query_set = Group.objects.filter(user=request.user)
         extra_context['is_supplier'] = query_set.filter(
             name="Supplier").exists()
-        print((int(obj.inv_status) != 1))
         extra_context['is_confirm'] = (int(obj.inv_status) != 1)
+        if int(obj.inv_status) >= 3:
+            extra_context['is_confirm'] = False
         return super().change_view(request, object_id, form_url, extra_context=extra_context,)
 
     def has_view_permission(self, request, obj=None):
@@ -511,6 +514,59 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
             obj.inv_no = None
             obj.remark = None
             obj.save()
+            
+        if '_cancel_invoice' in request.POST:
+            obj.remark = "XXXXX"
+            if len(obj.remark) <= 0:
+                messages.warning(request, "กรุณาระบุหมายเหตุด้วยด้วย")
+                
+            else:    
+                obj.inv_status = "3"
+                obj.pds_id.pds_status = "4"
+                obj.pds_id.remark = obj.remark
+                
+                confirmDetail = ConfirmInvoiceDetail.objects.filter(invoice_header_id=obj)
+                for r in confirmDetail:
+                    r.confirm_status = "3"
+                    r.remark = obj.remark
+                    
+                    r.pds_detail_id.remark = obj.remark
+                    r.pds_detail_id.pds_detail_status = "4"
+                    r.pds_detail_id.qty += r.qty
+                    r.pds_detail_id.balance_qty += r.qty
+                    r.pds_detail_id.save()
+                    
+                    ### Order PO
+                    ordI = OrderI.objects.filter(FCSKID=r.pds_detail_id.ref_formula_id).first()
+                    ordI.FCSTEP = "C"
+                    ordI.save()
+                    
+                    #### Order PR
+                    ordI = OrderI.objects.filter(FCSKID=r.pds_detail_id.forecast_detail_id.ref_formula_id).first()
+                    ordI.FNBACKQTY += r.qty
+                    ordI.save()
+                    
+                    r.save()
+                    obj.pds_id.qty += r.qty
+                
+                #### Cancel ORDERH PO
+                ordH = OrderH.objects.filter(FCSKID=obj.pds_id.ref_formula_id).first()
+                ordH.FCSTEP = "C"
+                ordH.save()
+                
+                # #### UPDATE ORDERH PR
+                # ordH = OrderH.objects.filter(FCSKID=obj.pds_id.forecast_id.ref_formula_id).first()
+                # ordH.FCSTEP = "C"
+                # ordH.save()
+                # print(len(confirmDetail))
+                
+                item = PDSDetail.objects.filter(pds_header_id=obj.pds_id).count()
+                obj.pds_id.pds_no = obj.pds_id.forecast_id.forecast_no
+                obj.pds_id.item = item
+                obj.pds_id.save()
+                obj.save()
+            
+                messages.success(request, f"ยกเลิกรายการนี้ {obj.purchase_no} แล้ว")
 
         return super().response_change(request, obj)
     pass

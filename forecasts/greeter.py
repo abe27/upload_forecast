@@ -78,7 +78,7 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
             if obj.ref_formula_id is None:
                 PREFIX_DTE_Y = str(int(obj.pds_date.strftime('%Y')) + 543)[2:]
                 PREFIX_DTE_M = f"{int(obj.pds_date.strftime('%m')):02d}"
-                lastNum = OrderH.objects.filter(FCREFTYPE="PO",FDDATE__lte=obj.pds_date).order_by('-FCCODE').first()
+                lastNum = OrderH.objects.filter(FDDATE__lte=obj.pds_date).order_by('-FCCODE').first()
                 if lastNum is None:
                     lastNum = "0000000"
                     
@@ -140,60 +140,45 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                     unitObj = UM.objects.filter(FCCODE=i.forecast_detail_id.product_id.unit_id.code).first()
                     summary_price += int(ordProd.FNSTDCOST) * i.qty
                     currentPrice = int(ordProd.FNSTDCOST) * i.qty
+                    ### Get PR Data
+                    ordPR = OrderI.objects.get(FCSKID=i.forecast_detail_id.ref_formula_id)
+                    olderQty = int(ordPR.FNBACKQTY)
+                    print(f"PR BackQTY: %s" %olderQty)
                     try:
                         # ordI = OrderI.objects.get(FCSKID=i.ref_formula_id)
                         ordI = OrderI.objects.get(FCORDERH=ordH.FCSKID,FCPROD=ordProd.FCSKID)
-                        ordI.FCCOOR=supplier.FCSKID
-                        ordI.FCCORP=corp.FCSKID
-                        ordI.FCDEPT=dept.FCSKID
-                        ordI.FCORDERH=ordH.FCSKID
-                        ordI.FCPROD=ordProd.FCSKID
-                        ordI.FCPRODTYPE=ordProd.FCTYPE
-                        ordI.FCREFTYPE=prefixRef
-                        ordI.FCSECT=sect.FCSKID
-                        ordI.FCSEQ=f"{seq:03d}"
-                        ordI.FCSTUM=unitObj.FCSKID
-                        ordI.FCUM=unitObj.FCSKID
-                        ordI.FCUMSTD=unitObj.FCSKID
-                        ordI.FDDATE=obj.pds_date
-                        ordI.FNQTY=i.qty
-                        ordI.FMREMARK=i.remark
-                        #### Update Nagative to Positive
-                        olderQty = int(ordI.FNBACKQTY)
-                        ordI.FNBACKQTY=abs(int(i.qty)-olderQty)
-                        ######
-                        ordI.FNPRICE=currentPrice
-                        ordI.FNPRICEKE=currentPrice
-                        ordI.FCSHOWCOMP=""
-                        ordI.FCSTEP=fcStep
-                            
                     except OrderI.DoesNotExist as e:
-                        ordI = OrderI(
-                            FCSKID=nanoid.generate(size=8),
-                            FCCOOR=supplier.FCSKID,
-                            FCCORP=corp.FCSKID,
-                            FCDEPT=dept.FCSKID,
-                            FCORDERH=ordH.FCSKID,
-                            FCPROD=ordProd.FCSKID,
-                            FCPRODTYPE=ordProd.FCTYPE,
-                            FCREFTYPE=prefixRef,
-                            FCSECT=sect.FCSKID,
-                            FCSEQ=f"{seq:03d}",
-                            FCSTUM=unitObj.FCSKID,
-                            FCUM=unitObj.FCSKID,
-                            FCUMSTD=unitObj.FCSKID,
-                            FDDATE=obj.pds_date,
-                            FNQTY=i.qty,
-                            FMREMARK=i.remark,
-                            FNBACKQTY=i.balance_qty,
-                            FNPRICE=currentPrice,
-                            FNPRICEKE=currentPrice,
-                            FCSHOWCOMP="",
-                            FCSTEP=fcStep,
-                        )
+                        ordI = OrderI()
+                        ordI.FCSKID=nanoid.generate(size=8)
                         pass
                     
+                    ordI.FCCOOR=supplier.FCSKID
+                    ordI.FCCORP=corp.FCSKID
+                    ordI.FCDEPT=dept.FCSKID
+                    ordI.FCORDERH=ordH.FCSKID
+                    ordI.FCPROD=ordProd.FCSKID
+                    ordI.FCPRODTYPE=ordProd.FCTYPE
+                    ordI.FCREFTYPE=prefixRef
+                    ordI.FCSECT=sect.FCSKID
+                    ordI.FCSEQ=f"{seq:03d}"
+                    ordI.FCSTUM=unitObj.FCSKID
+                    ordI.FCUM=unitObj.FCSKID
+                    ordI.FCUMSTD=unitObj.FCSKID
+                    ordI.FDDATE=obj.pds_date
+                    ordI.FNQTY=i.qty
+                    ordI.FMREMARK=i.remark
+                    #### Update Nagative to Positive
+                    ordI.FNBACKQTY=abs(int(i.qty)-olderQty)
+                    ######
+                    ordI.FNPRICE=currentPrice
+                    ordI.FNPRICEKE=currentPrice
+                    ordI.FCSHOWCOMP=""
+                    ordI.FCSTEP=fcStep
                     ordI.save()
+                    
+                    ### Update BackQTY For PR
+                    ordPR.FNBACKQTY=abs(int(i.qty)-olderQty)
+                    ordPR.save()
                     SUM_FNQTY += ordI.FNQTY
                     
                     ### Create Notecut
@@ -326,7 +311,10 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
             ### Message Notification
             txtMsg = f"ได้ทำการเปิดเอกสาร PDS เลขที่ {ordH.FCREFNO}"
             msg = f"message=เรียนแผนก PU \nขณะนี้ทางแผนก Planning ได้ทำการเปิดเอกสาร PDS เลขที่ {ordH.FCREFNO} เรียบร้อยแล้วคะ"
-            requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
+            try:
+                requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
+            except:
+                pass
         else:
             ### Create PR
             obj = Forecast.objects.get(id=id)
@@ -365,7 +353,7 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                 # #### Create Formula OrderH
                 PREFIX_DTE_Y = str(int(obj.forecast_date.strftime('%Y')) + 543)[2:]
                 PREFIX_DTE_M = f"{int(obj.forecast_date.strftime('%m')):02d}"
-                lastNum = OrderH.objects.filter(FCREFTYPE="PR",FDDATE__lte=obj.forecast_date).order_by('-FCCODE').first()
+                lastNum = OrderH.objects.filter(FDDATE__lte=obj.forecast_date).order_by('-FCCODE').first()
                 if lastNum is None:
                     lastNum = "0000000"
                     
@@ -436,56 +424,32 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                     ordI = None
                     try:
                         ordI = OrderI.objects.get(FCSKID=i.ref_formula_id)
-                        ordI.FCCOOR=supplier.FCSKID
-                        ordI.FCCORP=corp.FCSKID
-                        ordI.FCDEPT=dept.FCSKID
-                        ordI.FCORDERH=ordH.FCSKID
-                        ordI.FCPROD=ordProd.FCSKID
-                        ordI.FCPRODTYPE=ordProd.FCTYPE
-                        ordI.FCREFTYPE=prefixRef
-                        ordI.FCSECT=sect.FCSKID
-                        ordI.FCSEQ=f"{seq:03d}"
-                        ordI.FCSTUM=unitObj.FCSKID
-                        ordI.FCUM=unitObj.FCSKID
-                        ordI.FCUMSTD=unitObj.FCSKID
-                        ordI.FDDATE=obj.forecast_date
-                        ordI.FNQTY=i.request_qty
-                        ordI.FMREMARK=i.remark
-                        #### Update Nagative to Positive
-                        olderQty = int(ordI.FNBACKQTY)
-                        ordI.FNBACKQTY=abs(int(i.request_qty)-olderQty)
-                        ordI.FCSTEP = fcStep
-                        ######
-                        ordI.FNPRICE=currentPrice
-                        ordI.FNPRICEKE=currentPrice
-                        ordI.FCSHOWCOMP=""
-                            
                     except OrderI.DoesNotExist as e:
-                        ordI = OrderI(
-                            FCSKID=nanoid.generate(size=8),
-                            FCCOOR=supplier.FCSKID,
-                            FCCORP=corp.FCSKID,
-                            FCDEPT=dept.FCSKID,
-                            FCORDERH=ordH.FCSKID,
-                            FCPROD=ordProd.FCSKID,
-                            FCPRODTYPE=ordProd.FCTYPE,
-                            FCREFTYPE=prefixRef,
-                            FCSECT=sect.FCSKID,
-                            FCSEQ=f"{seq:03d}",
-                            FCSTUM=unitObj.FCSKID,
-                            FCUM=unitObj.FCSKID,
-                            FCUMSTD=unitObj.FCSKID,
-                            FDDATE=obj.forecast_date,
-                            FNQTY=i.request_qty,
-                            FMREMARK=i.remark,
-                            FNBACKQTY=i.request_qty,
-                            FNPRICE=currentPrice,
-                            FNPRICEKE=currentPrice,
-                            FCSHOWCOMP="",
-                            FCSTEP = fcStep,
-                        )
+                        ordI = OrderI()
+                        ordI.FCSKID=nanoid.generate(size=8)
                         pass
                     
+                    ordI.FCCOOR=supplier.FCSKID
+                    ordI.FCCORP=corp.FCSKID
+                    ordI.FCDEPT=dept.FCSKID
+                    ordI.FCORDERH=ordH.FCSKID
+                    ordI.FCPROD=ordProd.FCSKID
+                    ordI.FCPRODTYPE=ordProd.FCTYPE
+                    ordI.FCREFTYPE=prefixRef
+                    ordI.FCSECT=sect.FCSKID
+                    ordI.FCSEQ=f"{seq:03d}"
+                    ordI.FCSTUM=unitObj.FCSKID
+                    ordI.FCUM=unitObj.FCSKID
+                    ordI.FCUMSTD=unitObj.FCSKID
+                    ordI.FDDATE=obj.forecast_date
+                    ordI.FNQTY=i.request_qty
+                    ordI.FMREMARK=i.remark
+                    ordI.FNBACKQTY=i.request_qty
+                    ordI.FCSTEP = fcStep
+                    ######
+                    ordI.FNPRICE=currentPrice
+                    ordI.FNPRICEKE=currentPrice
+                    ordI.FCSHOWCOMP=""
                     ordI.save()
                     # Update Status Order Details
                     i.ref_formula_id = ordI.FCSKID
@@ -816,7 +780,10 @@ def upload_file_forecast(request, obj, form, change):
             }
             
             msg = f"message=เรียนแผนก PU\nขณะนี้ทางแผนก Planning\nทำการอัพโหลด Forecast({pHeader.forecast_plan_id}) {pHeader.forecast_revise_id.name}\nกรุณาทำการยืนยันให้ด้วยคะ"
-            requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
+            try:
+                requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
+            except:
+                pass
             
             #### Create Logging
             rp = UserErrorLog()
@@ -843,7 +810,7 @@ def request_validation(request):
 
 def check_confirm_qty(request):
     data = request.POST.copy()
-    confirmID = data['confirminvoicedetail_set-0-invoice_header_id']
+    # confirmID = data['confirminvoicedetail_set-0-invoice_header_id']
     totalConfirm = 0
     plimit = int(data['confirminvoicedetail_set-TOTAL_FORMS'])
     for i in range(0, plimit):
@@ -853,12 +820,13 @@ def check_confirm_qty(request):
         print(f"Confirm QTY: {confirmQty} QTY: {obj.qty} :: {int(obj.qty)-confirmQty}")
         if confirmQty > int(obj.qty):
             obj.confirm_qty = obj.qty
-            obj.save()
+            # obj.save()
             return True
         
         obj.balance_qty = int(obj.qty)
         balance_qty = int(obj.qty)-confirmQty
         obj.qty=balance_qty
+        obj.confirm_status = "1"
         obj.save()
         totalConfirm += int(obj.qty)-confirmQty
     
