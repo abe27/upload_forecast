@@ -379,9 +379,9 @@ class ForecastAdmin(admin.ModelAdmin):
 
     def total_qty(self, obj):
         if obj.forecast_total_qty > 0:
-            return format_html(f"<span class='badge text-bg-info'>{int(obj.forecast_total_qty):,}</span>")
+            return format_html(f"<span class='text-xs badge text-bg-info'>{int(obj.forecast_total_qty):,}</span>")
 
-        return format_html(f"<span class='badge text-bg-danger'>{obj.forecast_total_qty}</span>")
+        return format_html(f"<span class='text-xs badge text-bg-danger'>{obj.forecast_total_qty}</span>")
     total_qty.short_description = "Total Qty"
 
     def price(self, obj):
@@ -404,9 +404,9 @@ class ForecastAdmin(admin.ModelAdmin):
 
     def get_qty(self, obj):
         if obj.forecast_qty > 0:
-            return format_html(f"<span class='badge text-bg-secondary'>{int(obj.forecast_qty):,}</span>")
+            return format_html(f"<span class='text-xs badge text-bg-secondary'>{int(obj.forecast_qty):,}</span>")
 
-        return format_html(f"<span class='badge text-bg-danger'>{obj.forecast_qty}</span>")
+        return format_html(f"<span class='text-xs badge text-bg-danger'>{obj.forecast_qty}</span>")
     get_qty.short_description = "Qty"
 
     def get_item(self, obj):

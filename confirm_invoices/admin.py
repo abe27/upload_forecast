@@ -462,11 +462,11 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
 
     def get_part_model(self, obj):
         a = ['info', 'danger', 'success', 'primary', 'secondary','warning']
-        return format_html(f"<span class='badge badge-pill badge-{a[random.randrange(0, len(a) -1)]}'>{obj.part_model_id}</span>")
+        return format_html(f"<span class='text-xs badge badge-pill badge-{a[random.randrange(0, len(a) -1)]}'>{obj.part_model_id}</span>")
     get_part_model.short_description = "Model"
 
     def get_inv_date(self, obj):
-        return format_html(f"<span class='badge badge-pill badge-warning'>{obj.inv_date.strftime('%d-%m-%Y')}</span>")
+        return format_html(f"<span class='text-xs badge badge-pill badge-warning'>{obj.inv_date.strftime('%d-%m-%Y')}</span>")
     get_inv_date.short_description = "Inv Date"
 
     def get_delivery_date(self, obj):

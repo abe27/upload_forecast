@@ -95,7 +95,7 @@ class ReceiveHeaderAdmin(admin.ModelAdmin):
     
     def get_tag_model(self, obj):
         a = ['info', 'success', 'danger', 'warning', 'secondary']
-        return format_html(f"<span class='badge badge-{a[random.randint(0, len(a) - 1)]}'>{obj.part_model_id}</span>")
+        return format_html(f"<span class='text-xs badge badge-{a[random.randint(0, len(a) - 1)]}'>{obj.part_model_id}</span>")
     get_tag_model.short_description = "Model"
     
     
@@ -118,7 +118,7 @@ class ReceiveHeaderAdmin(admin.ModelAdmin):
             elif int(obj.receive_status) == 4:
                 txtClass = "badge-info"
 
-            return format_html(f"<span class='font-weight-bold badge {txtClass}'>{data[1]}</span>")
+            return format_html(f"<span class='text-xs badge {txtClass}'>{data[1]}</span>")
         
         except:
             pass

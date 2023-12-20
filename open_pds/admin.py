@@ -335,7 +335,7 @@ class PDSHeaderAdmin(admin.ModelAdmin):
             elif int(obj.pds_status) == 4:
                 txtClass = "badge-warning"
 
-            return format_html(f"<span class='badge {txtClass}'>{data[1]}</span>")
+            return format_html(f"<span class='text-xs badge {txtClass}'>{data[1]}</span>")
         
         except:
             pass

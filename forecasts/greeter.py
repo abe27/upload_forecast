@@ -836,7 +836,7 @@ def request_validation(request):
     query_set = Group.objects.filter(user=request.user)
     if query_set.filter(name="Planning").exists():
         Forecast._meta.verbose_name_plural = "Upload Forecast"
-        PDSHeader._meta.verbose_name_plural = "View Purchase"
+        PDSHeader._meta.verbose_name_plural = "Open PDS"
         forecast_apps.ForecastsConfig.verbose_name = "อัพโหลด Forecast"
         open_pds_apps.OpenPdsConfig.verbose_name = "จัดการข้อมูล PDS"
         
@@ -849,7 +849,7 @@ def request_validation(request):
     if query_set.filter(name="Supplier").exists():
         Forecast._meta.verbose_name_plural = "View Forecast"
         PDSHeader._meta.verbose_name_plural = "View PDS"
-        ConfirmInvoiceHeader._meta.verbose_name_plural = "Confirm Purchase"
+        ConfirmInvoiceHeader._meta.verbose_name_plural = "Confirm Invoice"
         forecast_apps.ForecastsConfig.verbose_name = "ตรวจสอบ Forecast"
         open_pds_apps.OpenPdsConfig.verbose_name = "ตรวจสอบ PDS"
         confirm_invoice_apps.ConfirmInvoicesConfig.verbose_name = "ยืนยันการส่งสินค้า"
