@@ -1,4 +1,5 @@
 import random
+from typing import Any
 from django import forms
 import nanoid
 from django.contrib import admin, messages
@@ -179,7 +180,7 @@ class ConfirmInvoiceDetailInline(admin.TabularInline):
         )
 
     def get_readonly_fields(self, request, obj):
-        if int(obj.inv_status) > 0:
+        if (obj.inv_status in ["1", "3", "4", "5"]):
             return (
                 "product_code",
                 "product_no",
@@ -195,6 +196,7 @@ class ConfirmInvoiceDetailInline(admin.TabularInline):
                 "last_update",
                 "confirm_status",
             )
+            
         if request.user.has_perm("confirm_invoices.edit_qty"):
             return (
                 "product_code",
@@ -238,6 +240,9 @@ class ConfirmInvoiceDetailInline(admin.TabularInline):
 
     def has_add_permission(self, request, obj):
         return False
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request)
 
 
 @admin.action(description="Mark selected to Export To Excel")
@@ -338,7 +343,7 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
         pass
 
     def get_readonly_fields(self, request, obj):
-        if int(obj.inv_status) > 0:
+        if (obj.inv_status in ["1", "3", "4", "5"]):
             return (
                 "purchase_no",
                 "supplier_id",
@@ -476,9 +481,9 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
     get_delivery_date.short_description = "Delivery Date"
 
     def get_inv_status(self, obj):
-        lstClass = ["badge badge-info", "text-success",
-                    "badge badge-warning", "badge badge-danger"]
-        return format_html(f"<strong class='{lstClass[int(obj.inv_status)]}'>{CONFIRM_INV_STATUS[int(obj.inv_status)][1]}</strong")
+        lstClass = ["badge badge-info", "badge badge-success",
+                    "badge badge-danger", "badge badge-secondary"]
+        return format_html(f"<span class='text-xs {lstClass[int(obj.inv_status)]}'>{CONFIRM_INV_STATUS[int(obj.inv_status)][1]}</span>")
     get_inv_status.short_description = "Status"
 
     def get_updated_at(self, obj):

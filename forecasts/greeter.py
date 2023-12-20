@@ -864,7 +864,7 @@ def check_confirm_qty(request):
         id = data[f'confirminvoicedetail_set-{i}-id']
         confirmQty = int(data[f'confirminvoicedetail_set-{i}-confirm_qty'])
         obj = ConfirmInvoiceDetail.objects.get(id=id)
-        print(f"Confirm QTY: {confirmQty} QTY: {obj.qty} :: {int(obj.qty)-confirmQty}")
+        # print(f"Confirm QTY: {confirmQty} QTY: {obj.qty} :: {int(obj.qty)-confirmQty}")
         if confirmQty > int(obj.qty):
             obj.confirm_qty = obj.qty
             # obj.save()
@@ -924,6 +924,10 @@ def receive_invoice(request, obj):
         confirmDetail.qty = (totalQty - confirmQty)
         confirmDetail.confirm_qty = (totalQty - confirmQty)
         confirmDetail.balance_qty = 0
+        confirmDetail.confirm_status = "1"
+        if (totalQty - confirmQty) > 0:
+            confirmDetail.confirm_status = "2"
+            
         confirmDetail.save()
         seq += 1
         qty += confirmQty
@@ -938,7 +942,7 @@ def receive_invoice(request, obj):
     for i in objDetail:
         rc = ReceiveDetail.objects.filter(confirm_detail_id=i)
         for r in rc:
-            print(r.qty)
+            # print(r.qty)
             recQty += int(r.qty)
     
     obj.confirm_qty = recQty

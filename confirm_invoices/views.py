@@ -24,12 +24,12 @@ def pds_reports(request, id):
     file_name = f"report_pds_{head.id}_{dte.strftime('%Y%m%d%H%M')}"
     rpPds = None
     try:
-        rpPds = ReportPDSHeader.objects.get(pds_no=head.purchase_no)
-        
+        ReportPDSHeader.objects.get(pds_no=head.purchase_no).delete()
     except ReportPDSHeader.DoesNotExist:
-        rpPds = ReportPDSHeader()
-        rpPds.pds_no = head.purchase_no
+        pass
     
+    rpPds = ReportPDSHeader()
+    rpPds.pds_no = head.purchase_no
     deliveryDte = "-"
     if head.inv_delivery_date:
         deliveryDte = head.inv_delivery_date.strftime('%d-%B-%Y')
@@ -47,18 +47,19 @@ def pds_reports(request, id):
     rpPds.save()
     
     for r in data:
+        part_code = f"{r.pds_detail_id.forecast_detail_id.product_id.no}"
         rpPdsDetail = None
         try:
-            rpPdsDetail = ReportPDSDetail.objects.get(pds_no=rpPds, part_code=r.pds_detail_id.forecast_detail_id.product_id.code)
-            
-        except ReportPDSDetail.DoesNotExist:
-            rpPdsDetail = ReportPDSDetail()
-            rpPdsDetail.pds_no = rpPds
-            rpPdsDetail.seq = r.seq
-            rpPdsDetail.part_model = r.pds_detail_id.forecast_detail_id.import_model_by_user
-            rpPdsDetail.part_code = r.pds_detail_id.forecast_detail_id.product_id.code
-            rpPdsDetail.part_name = f"{r.pds_detail_id.forecast_detail_id.product_id.no}:{r.pds_detail_id.forecast_detail_id.product_id.name}"
-            
+            ReportPDSDetail.objects.get(pds_no=rpPds, part_code=part_code).delete()
+        except:
+            pass
+        
+        rpPdsDetail = ReportPDSDetail()
+        rpPdsDetail.pds_no = rpPds
+        rpPdsDetail.seq = r.seq
+        rpPdsDetail.part_model = r.pds_detail_id.forecast_detail_id.import_model_by_user
+        rpPdsDetail.part_code = part_code
+        rpPdsDetail.part_name = f"{r.pds_detail_id.forecast_detail_id.product_id.code}:{r.pds_detail_id.forecast_detail_id.product_id.name}"
         rpPdsDetail.packing_qty = 0
         rpPdsDetail.total = float(r.total_qty)
         rpPdsDetail.is_active = True

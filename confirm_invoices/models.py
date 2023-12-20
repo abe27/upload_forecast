@@ -46,7 +46,7 @@ class ConfirmInvoiceHeader(models.Model):
         db_table = "ediConfirmInvoice"
         verbose_name = "Confirm Invoice"
         verbose_name_plural = "EDI Confirm Invoice"
-        ordering = ('inv_status','inv_no','created_at','updated_at')
+        ordering = ('inv_status','inv_no','updated_at')
         permissions = [
             (
                 "is_download_report",
