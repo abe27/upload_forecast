@@ -47,483 +47,481 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
     dte = datetime.now()
     ordH = None
     txtMsg =""
-    try:
-        ## Line Notification
-        token = os.environ.get("LINE_TOKEN")
-        if type(request.user.line_notification_id) != type(None):
-            token = request.user.line_notification_id.token
+    # try:
+    ## Line Notification
+    token = os.environ.get("LINE_TOKEN")
+    if type(request.user.line_notification_id) != type(None):
+        token = request.user.line_notification_id.token
+    
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': f'Bearer {token}'
+    }
+    
+    ### Get Formula Master Data
+    formulaUser = "TEST"
+    if type(request.user.formula_user_id) != type(None):
+        formulaUser = request.user.formula_user_id.code
         
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': f'Bearer {token}'
-        }
+    formulaDepartment = "-"
+    if type(request.user.department_id)!= type(None):
+        formulaDepartment = request.user.department_id.code
         
-        ### Get Formula Master Data
-        formulaUser = "TEST"
-        if type(request.user.formula_user_id) != type(None):
-            formulaUser = request.user.formula_user_id.code
+    formulaSect = "-"
+    if type(request.user.section_id)!= type(None):
+        formulaSect = request.user.section_id.code
+    
+    emp = EMPLOYEE.objects.filter(FCCODE=formulaUser).first()
+    dept = DEPT.objects.filter(FCCODE=formulaDepartment).first()
+    sect = SECT.objects.filter(FCCODE=formulaSect).first()
+    corp = CORP.objects.all().first()
+    ordBook = BOOK.objects.filter(FCREFTYPE=prefixRef, FCCODE=bookGroup).first()
+    
+    fcStep = "1"
+    if prefixRef == "PO":
+        fcStep = "P"
+        obj = PDSHeader.objects.get(id=id)
+        ### Get Supplier Information
+        supplier = COOR.objects.filter(FCCODE=obj.forecast_id.supplier_id.code).first()
+        # ordH = None
+        PREFIX_DTE_Y = str(int(obj.pds_date.strftime('%Y')) + 543)[2:]
+        PREFIX_DTE_M = f"{int(obj.pds_date.strftime('%m')):02d}"
+        lastNum = OrderH.objects.filter(FCREFTYPE='PO',FCBOOK='H2tsKd02',FDDATE__lte=f"{obj.pds_date.strftime('%Y-%m-')}01").order_by('-FCCODE').first()
+        if lastNum is None:
+            lastNum = "0000000"
             
-        formulaDepartment = "-"
-        if type(request.user.department_id)!= type(None):
-            formulaDepartment = request.user.department_id.code
+        fccodeNo = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}{(int(str(lastNum)[4:]) + 1):03d}"
+        
+        #### CheckLast No
+        lst = CheckLastPurchaseRunning.objects.filter(last_date=f"{PREFIX_DTE_Y}{PREFIX_DTE_M}").count()
+        if lst > 0:
+            lastNum = CheckLastPurchaseRunning.objects.filter(last_date=f"{PREFIX_DTE_Y}{PREFIX_DTE_M}").order_by('-last_running').first()
+            fccodeNo = int(str(lastNum.last_running)) + 1
+        
+        prNo = f"{str(ordBook.FCPREFIX).strip()}{fccodeNo}"### PO TEST REFNO
+        #### Create Last No Log
+        lst = CheckLastPurchaseRunning()
+        lst.last_date = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}"
+        lst.last_running = fccodeNo
+        lst.last_no = prNo
+        lst.is_active = True
+        lst.save()
+        
+        msg = f"message=เรียนแผนก PU\nขณะนี้ทางแผนก Planning ได้ทำการเปิดเอกสาร{str(ordBook.FCNAME).strip()} เลขที่ {prNo} เรียบร้อยแล้วคะ"
+        
+        ordH = OrderH()
+        ordH.FCSKID=nanoid.generate(size=8)
+        ordH.FDDUEDATE=request.POST.get("pds_delivery_date")
+        ordH.FCCODE=fccodeNo
+        ordH.FCREFNO=prNo
+        ordH.FCREFTYPE=prefixRef
+        ordH.FCDEPT=dept.FCSKID
+        ordH.FCSECT=sect.FCSKID
+        ordH.FCBOOK=ordBook.FCSKID
+        ordH.FCCREATEBY=emp.FCSKID
+        ordH.FCAPPROVEB=""
+        ordH.FCCOOR=supplier.FCSKID
+        ordH.FCCORP=corp.FCSKID
+        ordH.FDDATE=obj.pds_date
+        ordH.FNAMT=obj.qty
+        ordH.FCSTEP=fcStep
+        ordH.save()
+        
+        obj.ref_formula_id = ordH.FCSKID
+        
+        ### Create Confirm Invoice
+        confirmInv = ConfirmInvoiceHeader()
+        confirmInv.approve_by_id = request.user
+        confirmInv.pds_id = obj
+        confirmInv.supplier_id = obj.supplier_id
+        confirmInv.part_model_id = obj.part_model_id
+        confirmInv.purchase_no = ordH.FCREFNO
+        confirmInv.inv_date = datetime.now()
+        confirmInv.item = 0
+        confirmInv.qty = 0
+        confirmInv.original_qty = 0
+        confirmInv.is_active = True
+        confirmInv.save()
+        
+        ordDetail = PDSDetail.objects.filter(pds_header_id=obj, qty__gt=0).all()
+        seq = 1
+        qty = 0
+        summary_price = 0
+        summary_balance = 0
+        SUM_FNQTY = 0
+        for i in ordDetail:
+            #### Sum Balance
+            summary_balance += i.balance_qty
+            print(i)
+            if i.is_select is True and i.qty > 0:
+                ordProd = PROD.objects.filter(FCCODE=i.forecast_detail_id.product_id.code,FCTYPE=i.forecast_detail_id.product_id.prod_type_id.code).first()
+                unitObj = UM.objects.filter(FCCODE=i.forecast_detail_id.product_id.unit_id.code).first()
+                summary_price += int(ordProd.FNSTDCOST) * i.qty
+                currentPrice = int(ordProd.FNSTDCOST) * i.qty
+                ### Get PR Data
+                ordPR = OrderI.objects.get(FCSKID=i.forecast_detail_id.ref_formula_id)
+                olderQty = int(ordPR.FNBACKQTY)
+                
+                print(f"PR BackQTY: %s" %olderQty)
+                ordI = OrderI()
+                ordI.FCSKID=nanoid.generate(size=8)
+                ordI.FCCOOR=supplier.FCSKID
+                ordI.FCCORP=corp.FCSKID
+                ordI.FCDEPT=dept.FCSKID
+                ordI.FCORDERH=ordH.FCSKID
+                ordI.FCPROD=ordProd.FCSKID
+                ordI.FCPRODTYPE=ordProd.FCTYPE
+                ordI.FCREFTYPE=prefixRef
+                ordI.FCSECT=sect.FCSKID
+                ordI.FCSEQ=f"{seq:03d}"
+                ordI.FCSTUM=unitObj.FCSKID
+                ordI.FCUM=unitObj.FCSKID
+                ordI.FCUMSTD=unitObj.FCSKID
+                ordI.FDDATE=obj.pds_date
+                ordI.FNQTY=i.qty
+                ordI.FMREMARK=i.remark
+                #### Update Nagative to Positive
+                ordI.FNBACKQTY=abs(int(i.qty)-olderQty)
+                ######
+                ordI.FNPRICE=currentPrice
+                ordI.FNPRICEKE=currentPrice
+                ordI.FCSHOWCOMP=""
+                ordI.FCSTEP=fcStep
+                ordI.save()
+                print(ordI)
+                print(f"supplier.FCSKID: {supplier.FCSKID}")
+                
+                
+                ### Update BackQTY For PR
+                if ordPR is not None:
+                    ordPR.FNBACKQTY=abs(int(i.qty)-olderQty)
+                    ordPR.save()
+                SUM_FNQTY += ordI.FNQTY
+                
+                ### Create Notecut
+                orderPRID = obj.forecast_id.ref_formula_id
+                orderPRDetailID = i.forecast_detail_id.ref_formula_id
+                
+                ### Update PR to FCSTEP='P'
+                prHeader = OrderH.objects.get(FCSKID=orderPRID)
+                prHeader.FCSTEP = fcStep
+                prHeader.save()
+                
+                prDetail = OrderI.objects.get(FCSKID=orderPRDetailID)
+                prDetail.FCSTEP = fcStep
+                prDetail.save()
+                #### End Update FCSTEP
+                
+                ### Create Invoice Details
+                invDetail = ConfirmInvoiceDetail()
+                invDetail.invoice_header_id = confirmInv
+                invDetail.pds_detail_id = i
+                invDetail.seq = seq
+                invDetail.qty = i.qty
+                invDetail.confirm_qty = i.qty
+                invDetail.total_qty = i.qty
+                invDetail.price = int(ordProd.FNSTDCOST)
+                invDetail.remark = ""
+                invDetail.ref_formula_id = ordI.FCSKID
+                invDetail.save()
+                
+                ### Save Invoice Detail
+                orderPOID = ordH.FCSKID
+                orderPODetailID = ordI.FCSKID
+                
+                ### Create Notecut
+                noteCut = NoteCut(
+                        FCAPPNAME="",
+                        FCSKID=nanoid.generate(size=8),
+                        FCCHILDH=orderPRID,
+                        FCCHILDI=orderPRDetailID,
+                        FCMASTERH=orderPOID,
+                        FCMASTERI=orderPODetailID,
+                        FNQTY=i.qty,
+                        FNUMQTY=i.qty,
+                        FCCORRECTB=emp.FCSKID,
+                        FCCREATEBY=emp.FCSKID,
+                        FCCREATETY="",
+                        FCCUACC="",
+                        FCDATAIMP="",
+                        FCORGCODE="",
+                        FCSELTAG="",
+                        FCSRCUPD="",
+                        FCU1ACC="",
+                        FCUDATE="",
+                        FCUTIME="",
+                        FCCORP=corp.FCSKID
+                    )
+                noteCut.save()
+                # Update Status Order Details
+                print(f"QTY: {i.qty} Balance Qty: {i.balance_qty}")
+                blQty = i.balance_qty - i.qty
+                i.ref_formula_id = ordI.FCSKID
+                i.request_status = "1"
+                i.qty = blQty
+                i.balance_qty = blQty
+                i.is_select = i.balance_qty > 0
+                i.save()
+                
+                # Summary Seq/Qty
+                seq += 1
+                qty += i.qty
+        
+        ordH.FNAMT=summary_price
+        ordH.save()
+        # print(f"{ordH.FCREFNO}: {len(ordH.FCREFNO)}")
+        # ordDetail = PDSDetail.objects.filter(pds_header_id=obj, qty__gt=0).all()
+        # seq = 1
+        # qty = 0
+        # summary_price = 0
+        # summary_balance = 0
+        ordDetail = PDSDetail.objects.filter(pds_header_id=obj, qty__gt=0).all()
+        seq = 0
+        qty = 0
+        summary_price = 0
+        for i in ordDetail:
+            seq += 1
+            qty += i.qty
+            summary_price += int(i.price) * i.qty
+            i.seq = seq
+            i.is_select = True
+            i.save()
             
-        formulaSect = "-"
-        if type(request.user.section_id)!= type(None):
-            formulaSect = request.user.section_id.code
+        obj.approve_by_id = request.user
+        obj.item = seq
+        obj.qty = qty
+        obj.balance_qty = qty
+        obj.summary_price = summary_price
         
-        emp = EMPLOYEE.objects.filter(FCCODE=formulaUser).first()
-        dept = DEPT.objects.filter(FCCODE=formulaDepartment).first()
-        sect = SECT.objects.filter(FCCODE=formulaSect).first()
-        corp = CORP.objects.all().first()
-        ordBook = BOOK.objects.filter(FCREFTYPE=prefixRef, FCCODE=bookGroup).first()
         
-        fcStep = "1"
-        if prefixRef == "PO":
-            fcStep = "P"
-            obj = PDSHeader.objects.get(id=id)
-            ### Get Supplier Information
-            supplier = COOR.objects.filter(FCCODE=obj.forecast_id.supplier_id.code).first()
-            # ordH = None
-            PREFIX_DTE_Y = str(int(obj.pds_date.strftime('%Y')) + 543)[2:]
-            PREFIX_DTE_M = f"{int(obj.pds_date.strftime('%m')):02d}"
-            lastNum = OrderH.objects.filter(FCREFTYPE='PO',FCBOOK='H2tsKd02',FDDATE__lte=f"{obj.pds_date.strftime('%Y%m')}01").order_by('-FCCODE').first()
+        if (summary_balance - SUM_FNQTY) == 0:
+            obj.pds_status = "2"
+            obj.pds_no = ordH.FCREFNO
+            obj.ref_formula_id = ordH.FCSKID
+            
+        else:
+            obj.pds_status = "1"
+            obj.pds_delivery_date = None
+        obj.save()
+        
+        
+        # confirmInv.inv_delivery_date
+        # confirmInv.inv_no
+        conInvDetail = ConfirmInvoiceDetail.objects.filter(invoice_header_id=confirmInv)
+        seq = 0
+        qty = 0
+        summary_price = 0
+        for i in conInvDetail:
+            seq += 1
+            qty += i.qty
+            summary_price += int(i.price) * i.qty
+        
+        confirmInv.item = seq
+        confirmInv.qty = qty
+        confirmInv.original_qty = qty
+        confirmInv.confirm_qty = qty
+        confirmInv.summary_price = summary_price
+        confirmInv.inv_status = "0"
+        confirmInv.ref_formula_id = ordH.FCSKID
+        confirmInv.save()
+        
+        ### Message Notification
+        txtMsg = f"ได้ทำการเปิดเอกสาร PDS เลขที่ {ordH.FCREFNO}"
+        msg = f"message=เรียนแผนก PU \nขณะนี้ทางแผนก Planning ได้ทำการเปิดเอกสาร PDS เลขที่ {ordH.FCREFNO} เรียบร้อยแล้วคะ"
+        try:
+            requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
+        except:
+            pass
+    else:
+        ### Create PR
+        obj = Forecast.objects.get(id=id)
+        ### Create PDSHeader
+        pdsHead = None
+        pdsCount = PDSHeader.objects.filter(pds_date=dte).count() + 1
+        pds_no = f"PDS{str(dte.strftime('%Y%m'))[3:]}{pdsCount:04d}"
+        try:
+            pdsHead = PDSHeader.objects.get(forecast_id=obj)
+        except PDSHeader.DoesNotExist:
+            pdsHead = PDSHeader()
+            pass
+        
+        pdsHead.forecast_id = obj
+        pdsHead.supplier_id = obj.supplier_id
+        pdsHead.part_model_id = obj.part_model_id
+        pdsHead.forecast_plan_id = obj.forecast_plan_id
+        pdsHead.pds_date = datetime.now()
+        pdsHead.pds_revise_id = obj.forecast_revise_id
+        pdsHead.pds_on_month_id = obj.forecast_on_month_id
+        pdsHead.pds_on_year_id = obj.forecast_on_year_id
+        pdsHead.pds_no = pds_no
+        pdsHead.item = 0
+        pdsHead.qty = 0
+        pdsHead.balance_qty = 0
+        pdsHead.summary_price = 0
+        pdsHead.pds_status = "0"
+        pdsHead.is_active = True
+        pdsHead.save()
+        ### End PDSHeader
+        
+        supplier = COOR.objects.filter(FCCODE=obj.supplier_id.code).first()
+        ordH = None
+        if obj.ref_formula_id is None:
+            ### Create PR to Formula
+            # #### Create Formula OrderH
+            PREFIX_DTE_Y = str(int(obj.forecast_date.strftime('%Y')) + 543)[2:]
+            PREFIX_DTE_M = f"{int(obj.forecast_date.strftime('%m')):02d}"
+            lastNum = OrderH.objects.filter(FDDATE__lte=obj.forecast_date).order_by('-FCCODE').first()
             if lastNum is None:
                 lastNum = "0000000"
                 
-            fccodeNo = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}{(int(str(lastNum)[4:]) + 1):03d}"
-            
-            #### CheckLast No
-            lst = CheckLastPurchaseRunning.objects.filter(last_date=f"{PREFIX_DTE_Y}{PREFIX_DTE_M}").count()
-            if lst > 0:
-                lastNum = CheckLastPurchaseRunning.objects.filter(last_date=f"{PREFIX_DTE_Y}{PREFIX_DTE_M}").order_by('-last_running').first()
-                fccodeNo = int(str(lastNum.last_running)) + 1
-            
-            prNo = f"{str(ordBook.FCPREFIX).strip()}{fccodeNo}"### PO TEST REFNO
-            #### Create Last No Log
-            lst = CheckLastPurchaseRunning()
-            lst.last_date = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}"
-            lst.last_running = fccodeNo
-            lst.last_no = prNo
-            lst.is_active = True
-            lst.save()
-            
-            msg = f"message=เรียนแผนก PU\nขณะนี้ทางแผนก Planning ได้ทำการเปิดเอกสาร{str(ordBook.FCNAME).strip()} เลขที่ {prNo} เรียบร้อยแล้วคะ"
-            
+            fccodeNo = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}{int(str(lastNum)[4:]) + 1:03d}"
+            prNo = f"{str(ordBook.FCPREFIX).strip()}{fccodeNo}"### PR TEST REFNO
+            msg = f"message=เรียนแผนก Planning\nขณะนี้ทางแผนก PU ได้ทำการอนุมัติเอกสาร {prNo} เรียบร้อยแล้วคะ"
             ordH = OrderH()
+            ordH.FCCODE = fccodeNo
+            ordH.FCREFNO = prNo
             ordH.FCSKID=nanoid.generate(size=8)
-            ordH.FDDUEDATE=request.POST.get("pds_delivery_date")
-            ordH.FCCODE=fccodeNo
-            ordH.FCREFNO=prNo
-            ordH.FCREFTYPE=prefixRef
-            ordH.FCDEPT=dept.FCSKID
-            ordH.FCSECT=sect.FCSKID
-            ordH.FCBOOK=ordBook.FCSKID
-            ordH.FCCREATEBY=emp.FCSKID
-            ordH.FCAPPROVEB=""
-            ordH.FCCOOR=supplier.FCSKID
-            ordH.FCCORP=corp.FCSKID
-            ordH.FDDATE=obj.pds_date
-            ordH.FNAMT=obj.qty
-            ordH.FCSTEP=fcStep
-            ordH.save()
-            
             obj.ref_formula_id = ordH.FCSKID
             
-            ### Create Confirm Invoice
-            confirmInv = ConfirmInvoiceHeader()
-            confirmInv.approve_by_id = request.user
-            confirmInv.pds_id = obj
-            confirmInv.supplier_id = obj.supplier_id
-            confirmInv.part_model_id = obj.part_model_id
-            confirmInv.purchase_no = ordH.FCREFNO
-            confirmInv.inv_date = datetime.now()
-            confirmInv.item = 0
-            confirmInv.qty = 0
-            confirmInv.original_qty = 0
-            confirmInv.is_active = True
-            confirmInv.save()
-            
-            ordDetail = PDSDetail.objects.filter(pds_header_id=obj, qty__gt=0).all()
-            seq = 1
-            qty = 0
-            summary_price = 0
-            summary_balance = 0
-            SUM_FNQTY = 0
-            for i in ordDetail:
-                #### Sum Balance
-                summary_balance += i.balance_qty
-                
-                if i.is_select is True and i.qty > 0:
-                    ordI = None
-                    ordProd = PROD.objects.filter(FCCODE=i.forecast_detail_id.product_id.code,FCTYPE=i.forecast_detail_id.product_id.prod_type_id.code).first()
-                    unitObj = UM.objects.filter(FCCODE=i.forecast_detail_id.product_id.unit_id.code).first()
-                    summary_price += int(ordProd.FNSTDCOST) * i.qty
-                    currentPrice = int(ordProd.FNSTDCOST) * i.qty
-                    ### Get PR Data
-                    ordPR = OrderI.objects.get(FCSKID=i.forecast_detail_id.ref_formula_id)
-                    olderQty = int(ordPR.FNBACKQTY)
-                    # print(f"PR BackQTY: %s" %olderQty)
-                    try:
-                        # ordI = OrderI.objects.get(FCSKID=i.ref_formula_id)
-                        ordI = OrderI.objects.get(FCORDERH=ordH.FCSKID,FCPROD=ordProd.FCSKID)
-                    except OrderI.DoesNotExist as e:
-                        ordI = OrderI()
-                        ordI.FCSKID=nanoid.generate(size=8)
-                        pass
-                    
-                    ordI.FCCOOR=supplier.FCSKID
-                    ordI.FCCORP=corp.FCSKID
-                    ordI.FCDEPT=dept.FCSKID
-                    ordI.FCORDERH=ordH.FCSKID
-                    ordI.FCPROD=ordProd.FCSKID
-                    ordI.FCPRODTYPE=ordProd.FCTYPE
-                    ordI.FCREFTYPE=prefixRef
-                    ordI.FCSECT=sect.FCSKID
-                    ordI.FCSEQ=f"{seq:03d}"
-                    ordI.FCSTUM=unitObj.FCSKID
-                    ordI.FCUM=unitObj.FCSKID
-                    ordI.FCUMSTD=unitObj.FCSKID
-                    ordI.FDDATE=obj.pds_date
-                    ordI.FNQTY=i.qty
-                    ordI.FMREMARK=i.remark
-                    #### Update Nagative to Positive
-                    ordI.FNBACKQTY=abs(int(i.qty)-olderQty)
-                    ######
-                    ordI.FNPRICE=currentPrice
-                    ordI.FNPRICEKE=currentPrice
-                    ordI.FCSHOWCOMP=""
-                    ordI.FCSTEP=fcStep
-                    ordI.save()
-                    
-                    ### Update BackQTY For PR
-                    ordPR.FNBACKQTY=abs(int(i.qty)-olderQty)
-                    ordPR.save()
-                    SUM_FNQTY += ordI.FNQTY
-                    
-                    ### Create Notecut
-                    orderPRID = obj.forecast_id.ref_formula_id
-                    orderPRDetailID = i.forecast_detail_id.ref_formula_id
-                    
-                    ### Update PR to FCSTEP='P'
-                    prHeader = OrderH.objects.get(FCSKID=orderPRID)
-                    prHeader.FCSTEP = fcStep
-                    prHeader.save()
-                    
-                    prDetail = OrderI.objects.get(FCSKID=orderPRDetailID)
-                    prDetail.FCSTEP = fcStep
-                    prDetail.save()
-                    #### End Update FCSTEP
-                    
-                    ### Create Invoice Details
-                    invDetail = ConfirmInvoiceDetail()
-                    invDetail.invoice_header_id = confirmInv
-                    invDetail.pds_detail_id = i
-                    invDetail.seq = seq
-                    invDetail.qty = i.qty
-                    invDetail.confirm_qty = i.qty
-                    invDetail.total_qty = i.qty
-                    invDetail.price = int(ordProd.FNSTDCOST)
-                    invDetail.remark = ""
-                    invDetail.ref_formula_id = ordI.FCSKID
-                    invDetail.save()
-                    
-                    ### Save Invoice Detail
-                    orderPOID = ordH.FCSKID
-                    orderPODetailID = ordI.FCSKID
-                    
-                    ### Create Notecut
-                    noteCut = NoteCut(
-                            FCAPPNAME="",
-                            FCSKID=nanoid.generate(size=8),
-                            FCCHILDH=orderPRID,
-                            FCCHILDI=orderPRDetailID,
-                            FCMASTERH=orderPOID,
-                            FCMASTERI=orderPODetailID,
-                            FNQTY=i.qty,
-                            FNUMQTY=i.qty,
-                            FCCORRECTB=emp.FCSKID,
-                            FCCREATEBY=emp.FCSKID,
-                            FCCREATETY="",
-                            FCCUACC="",
-                            FCDATAIMP="",
-                            FCORGCODE="",
-                            FCSELTAG="",
-                            FCSRCUPD="",
-                            FCU1ACC="",
-                            FCUDATE="",
-                            FCUTIME="",
-                            FCCORP=corp.FCSKID
-                        )
-                    noteCut.save()
-                    # Update Status Order Details
-                    print(f"QTY: {i.qty} Balance Qty: {i.balance_qty}")
-                    blQty = i.balance_qty - i.qty
-                    i.ref_formula_id = ordI.FCSKID
-                    i.request_status = "1"
-                    i.qty = blQty
-                    i.balance_qty = blQty
-                    i.is_select = i.balance_qty > 0
-                    i.save()
-                    
-                    # Summary Seq/Qty
-                    seq += 1
-                    qty += i.qty
-            
-            ordH.FNAMT=summary_price
-            ordH.save()
-            # print(f"{ordH.FCREFNO}: {len(ordH.FCREFNO)}")
-            # ordDetail = PDSDetail.objects.filter(pds_header_id=obj, qty__gt=0).all()
-            # seq = 1
-            # qty = 0
-            # summary_price = 0
-            # summary_balance = 0
-            ordDetail = PDSDetail.objects.filter(pds_header_id=obj, qty__gt=0).all()
-            seq = 0
-            qty = 0
-            summary_price = 0
-            for i in ordDetail:
-                seq += 1
-                qty += i.qty
-                summary_price += int(i.price) * i.qty
-                i.seq = seq
-                i.is_select = True
-                i.save()
-                
-            obj.approve_by_id = request.user
-            obj.item = seq
-            obj.qty = qty
-            obj.balance_qty = qty
-            obj.summary_price = summary_price
-            
-            
-            if (summary_balance - SUM_FNQTY) == 0:
-                obj.pds_status = "2"
-                obj.pds_no = ordH.FCREFNO
-                obj.ref_formula_id = ordH.FCSKID
-                
-            else:
-                obj.pds_status = "1"
-                obj.pds_delivery_date = None
-            obj.save()
-            
-            
-            # confirmInv.inv_delivery_date
-            # confirmInv.inv_no
-            conInvDetail = ConfirmInvoiceDetail.objects.filter(invoice_header_id=confirmInv)
-            seq = 0
-            qty = 0
-            summary_price = 0
-            for i in conInvDetail:
-                seq += 1
-                qty += i.qty
-                summary_price += int(i.price) * i.qty
-            
-            confirmInv.item = seq
-            confirmInv.qty = qty
-            confirmInv.original_qty = qty
-            confirmInv.confirm_qty = qty
-            confirmInv.summary_price = summary_price
-            confirmInv.inv_status = "0"
-            confirmInv.ref_formula_id = ordH.FCSKID
-            confirmInv.save()
-            
-            ### Message Notification
-            txtMsg = f"ได้ทำการเปิดเอกสาร PDS เลขที่ {ordH.FCREFNO}"
-            msg = f"message=เรียนแผนก PU \nขณะนี้ทางแผนก Planning ได้ทำการเปิดเอกสาร PDS เลขที่ {ordH.FCREFNO} เรียบร้อยแล้วคะ"
-            try:
-                requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
-            except:
-                pass
         else:
-            ### Create PR
-            obj = Forecast.objects.get(id=id)
-            ### Create PDSHeader
-            pdsHead = None
-            pdsCount = PDSHeader.objects.filter(pds_date=dte).count() + 1
-            pds_no = f"PDS{str(dte.strftime('%Y%m'))[3:]}{pdsCount:04d}"
-            try:
-                pdsHead = PDSHeader.objects.get(forecast_id=obj)
-            except PDSHeader.DoesNotExist:
-                pdsHead = PDSHeader()
-                pass
-            
-            pdsHead.forecast_id = obj
-            pdsHead.supplier_id = obj.supplier_id
-            pdsHead.part_model_id = obj.part_model_id
-            pdsHead.forecast_plan_id = obj.forecast_plan_id
-            pdsHead.pds_date = datetime.now()
-            pdsHead.pds_revise_id = obj.forecast_revise_id
-            pdsHead.pds_on_month_id = obj.forecast_on_month_id
-            pdsHead.pds_on_year_id = obj.forecast_on_year_id
-            pdsHead.pds_no = pds_no
-            pdsHead.item = 0
-            pdsHead.qty = 0
-            pdsHead.balance_qty = 0
-            pdsHead.summary_price = 0
-            pdsHead.pds_status = "0"
-            pdsHead.is_active = True
-            pdsHead.save()
-            ### End PDSHeader
-            
-            supplier = COOR.objects.filter(FCCODE=obj.supplier_id.code).first()
-            ordH = None
-            if obj.ref_formula_id is None:
-                ### Create PR to Formula
-                # #### Create Formula OrderH
-                PREFIX_DTE_Y = str(int(obj.forecast_date.strftime('%Y')) + 543)[2:]
-                PREFIX_DTE_M = f"{int(obj.forecast_date.strftime('%m')):02d}"
-                lastNum = OrderH.objects.filter(FDDATE__lte=obj.forecast_date).order_by('-FCCODE').first()
-                if lastNum is None:
-                    lastNum = "0000000"
-                    
-                fccodeNo = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}{int(str(lastNum)[4:]) + 1:03d}"
-                prNo = f"{str(ordBook.FCPREFIX).strip()}{fccodeNo}"### PR TEST REFNO
-                msg = f"message=เรียนแผนก Planning\nขณะนี้ทางแผนก PU ได้ทำการอนุมัติเอกสาร {prNo} เรียบร้อยแล้วคะ"
-                ordH = OrderH()
-                ordH.FCCODE = fccodeNo
-                ordH.FCREFNO = prNo
-                ordH.FCSKID=nanoid.generate(size=8)
-                obj.ref_formula_id = ordH.FCSKID
-                
-            else:
-                ordH = OrderH.objects.get(FCSKID=obj.ref_formula_id)
-                msg = f"message=เรียนแผนก Planning\nขณะนี้ทางแผนก PU ได้ทำการอนุมัติเอกสาร {ordH.FCREFNO} เรียบร้อยแล้วคะ"
-                pass
-            
-            ordH.FCREFTYPE=prefixRef
-            ordH.FCDEPT=dept.FCSKID
-            ordH.FCSECT=sect.FCSKID
-            ordH.FCBOOK=ordBook.FCSKID
-            ordH.FCCREATEBY=emp.FCSKID
-            ordH.FCAPPROVEB=""
-            ordH.FCCOOR=supplier.FCSKID
-            ordH.FCCORP=corp.FCSKID
-            ordH.FDDATE=obj.forecast_date
-            ordH.FDDUEDATE=obj.forecast_date
-            ordH.FNAMT=0
-            ordH.FCSTEP=fcStep
-            ordH.save()
-            # ### OrderI
-            # # Get Order Details
-            ordDetail = ForecastDetail.objects.filter(forecast_id=obj, request_qty__gt=0).all()
-            seq = 1
-            qty = 0
-            summary_price = 0
-            for i in ordDetail:
-                ### Create OrderI Formula
-                try:
-                    ordProd = PROD.objects.filter(FCCODE=i.product_id.code,FCTYPE=i.product_id.prod_type_id.code).first()
-                    unitObj = UM.objects.filter(FCCODE=i.product_id.unit_id.code).first()
-                    summary_price += int(ordProd.FNSTDCOST) * int(i.request_qty)
-                    currentPrice = int(ordProd.FNSTDCOST) * int(i.request_qty)
-                    ### Create PDS Detail
-                    pdsDetail = None
-                    try:
-                        pdsDetail = PDSDetail.objects.get(pds_header_id=pdsHead,forecast_detail_id=i)
-                    except PDSDetail.DoesNotExist:
-                        pdsDetail = PDSDetail()
-                        pdsDetail.pds_header_id = pdsHead
-                        pdsDetail.forecast_detail_id = i
-                        pass
-                    
-                    pdsDetail.seq = seq
-                    pdsDetail.qty = i.request_qty
-                    pdsDetail.balance_qty = i.request_qty
-                    pdsDetail.price = currentPrice
-                    # pdsDetail.total_seq = seq
-                    # pdsDetail.total_qty = i.request_qty
-                    # pdsDetail.total_balance_qty = i.request_qty
-                    # pdsDetail.total_price = currentPrice 
-                    pdsDetail.remark = i.remark
-                    pdsDetail.is_active = True
-                    pdsDetail.pds_detail_status = "0"
-                    pdsDetail.save()
-                    ### End PDS Detail
-                
-                    ordI = None
-                    try:
-                        ordI = OrderI.objects.get(FCSKID=i.ref_formula_id)
-                    except OrderI.DoesNotExist as e:
-                        ordI = OrderI()
-                        ordI.FCSKID=nanoid.generate(size=8)
-                        pass
-                    
-                    ordI.FCCOOR=supplier.FCSKID
-                    ordI.FCCORP=corp.FCSKID
-                    ordI.FCDEPT=dept.FCSKID
-                    ordI.FCORDERH=ordH.FCSKID
-                    ordI.FCPROD=ordProd.FCSKID
-                    ordI.FCPRODTYPE=ordProd.FCTYPE
-                    ordI.FCREFTYPE=prefixRef
-                    ordI.FCSECT=sect.FCSKID
-                    ordI.FCSEQ=f"{seq:03d}"
-                    ordI.FCSTUM=unitObj.FCSKID
-                    ordI.FCUM=unitObj.FCSKID
-                    ordI.FCUMSTD=unitObj.FCSKID
-                    ordI.FDDATE=obj.forecast_date
-                    ordI.FNQTY=i.request_qty
-                    ordI.FMREMARK=i.remark
-                    ordI.FNBACKQTY=i.request_qty
-                    ordI.FCSTEP = fcStep
-                    ######
-                    ordI.FNPRICE=currentPrice
-                    ordI.FNPRICEKE=currentPrice
-                    ordI.FCSHOWCOMP=""
-                    ordI.save()
-                    # Update Status Order Details
-                    i.ref_formula_id = ordI.FCSKID
-                    i.request_status = "1"
-                    
-                except Exception as e:
-                    messages.error(request, str(e))
-                    ordH.delete()
-                    return
-                # Summary Seq/Qty
-                seq += 1
-                qty += i.request_qty
-                i.save()
-                
-            ordH.FNAMT = summary_price
-            ordH.save()
-                
-            pdsHead.item = (seq - 1)
-            pdsHead.qty = qty
-            pdsHead.balance_qty = qty
-            pdsHead.summary_price = summary_price
-            # ### Original
-            # pdsHead.total_item = (seq - 1)
-            # pdsHead.total_qty = qty
-            # pdsHead.total_balance_qty = qty
-            # pdsHead.total_summary_price = summary_price
-            pdsHead.save()
-                
-            obj.forecast_no = ordH.FCREFNO
-            obj.forecast_status = "1"
-            obj.forecast_qty = qty
-            obj.forecast_item = (seq - 1)
-            obj.save()
-            
-            ### Message Notification
-            txtMsg = f"ได้ทำการอนุมัติเอกสาร {obj.forecast_no}"
-            msg = f"message=เรียนแผนก Planning\nขณะนี้ทางแผนก PU ได้ทำการอนุมัติเอกสาร {obj.forecast_no} เรียบร้อยแล้วคะ"
-            requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
-            # messages.success(request, f"บันทึกข้อมูลเรียบร้อยแล้ว")
+            ordH = OrderH.objects.get(FCSKID=obj.ref_formula_id)
+            msg = f"message=เรียนแผนก Planning\nขณะนี้ทางแผนก PU ได้ทำการอนุมัติเอกสาร {ordH.FCREFNO} เรียบร้อยแล้วคะ"
+            pass
         
-
-        rp = UserErrorLog()
-        rp.user_id = request.user
-        rp.remark = txtMsg
-        rp.is_status = True
-        rp.save()
-    except Exception as ex:
-        messages.error(request, str(ex))
-        rp = UserErrorLog()
-        rp.user_id = request.user
-        rp.remark = f"เกิดข้อผิดพลาด {str(ex)}"
-        rp.is_status = True
-        rp.save()
-        return False
-        # pass
+        ordH.FCREFTYPE=prefixRef
+        ordH.FCDEPT=dept.FCSKID
+        ordH.FCSECT=sect.FCSKID
+        ordH.FCBOOK=ordBook.FCSKID
+        ordH.FCCREATEBY=emp.FCSKID
+        ordH.FCAPPROVEB=""
+        ordH.FCCOOR=supplier.FCSKID
+        ordH.FCCORP=corp.FCSKID
+        ordH.FDDATE=obj.forecast_date
+        ordH.FDDUEDATE=obj.forecast_date
+        ordH.FNAMT=0
+        ordH.FCSTEP=fcStep
+        ordH.save()
+        # ### OrderI
+        # # Get Order Details
+        ordDetail = ForecastDetail.objects.filter(forecast_id=obj, request_qty__gt=0).all()
+        seq = 1
+        qty = 0
+        summary_price = 0
+        for i in ordDetail:
+            ### Create OrderI Formula
+            try:
+                ordProd = PROD.objects.filter(FCCODE=i.product_id.code,FCTYPE=i.product_id.prod_type_id.code).first()
+                unitObj = UM.objects.filter(FCCODE=i.product_id.unit_id.code).first()
+                summary_price += int(ordProd.FNSTDCOST) * int(i.request_qty)
+                currentPrice = int(ordProd.FNSTDCOST) * int(i.request_qty)
+                ### Create PDS Detail
+                pdsDetail = None
+                try:
+                    pdsDetail = PDSDetail.objects.get(pds_header_id=pdsHead,forecast_detail_id=i)
+                except PDSDetail.DoesNotExist:
+                    pdsDetail = PDSDetail()
+                    pdsDetail.pds_header_id = pdsHead
+                    pdsDetail.forecast_detail_id = i
+                    pass
+                
+                pdsDetail.seq = seq
+                pdsDetail.qty = i.request_qty
+                pdsDetail.balance_qty = i.request_qty
+                pdsDetail.price = currentPrice
+                # pdsDetail.total_seq = seq
+                # pdsDetail.total_qty = i.request_qty
+                # pdsDetail.total_balance_qty = i.request_qty
+                # pdsDetail.total_price = currentPrice 
+                pdsDetail.remark = i.remark
+                pdsDetail.is_active = True
+                pdsDetail.pds_detail_status = "0"
+                pdsDetail.save()
+                ### End PDS Detail
+            
+                ordI = None
+                try:
+                    ordI = OrderI.objects.get(FCSKID=i.ref_formula_id)
+                except OrderI.DoesNotExist as e:
+                    ordI = OrderI()
+                    ordI.FCSKID=nanoid.generate(size=8)
+                    pass
+                
+                ordI.FCCOOR=supplier.FCSKID
+                ordI.FCCORP=corp.FCSKID
+                ordI.FCDEPT=dept.FCSKID
+                ordI.FCORDERH=ordH.FCSKID
+                ordI.FCPROD=ordProd.FCSKID
+                ordI.FCPRODTYPE=ordProd.FCTYPE
+                ordI.FCREFTYPE=prefixRef
+                ordI.FCSECT=sect.FCSKID
+                ordI.FCSEQ=f"{seq:03d}"
+                ordI.FCSTUM=unitObj.FCSKID
+                ordI.FCUM=unitObj.FCSKID
+                ordI.FCUMSTD=unitObj.FCSKID
+                ordI.FDDATE=obj.forecast_date
+                ordI.FNQTY=i.request_qty
+                ordI.FMREMARK=i.remark
+                ordI.FNBACKQTY=i.request_qty
+                ordI.FCSTEP = fcStep
+                ######
+                ordI.FNPRICE=currentPrice
+                ordI.FNPRICEKE=currentPrice
+                ordI.FCSHOWCOMP=""
+                ordI.save()
+                # Update Status Order Details
+                i.ref_formula_id = ordI.FCSKID
+                i.request_status = "1"
+                
+            except Exception as e:
+                messages.error(request, str(e))
+                ordH.delete()
+                return
+            # Summary Seq/Qty
+            seq += 1
+            qty += i.request_qty
+            i.save()
+            
+        ordH.FNAMT = summary_price
+        ordH.save()
+            
+        pdsHead.item = (seq - 1)
+        pdsHead.qty = qty
+        pdsHead.balance_qty = qty
+        pdsHead.summary_price = summary_price
+        # ### Original
+        # pdsHead.total_item = (seq - 1)
+        # pdsHead.total_qty = qty
+        # pdsHead.total_balance_qty = qty
+        # pdsHead.total_summary_price = summary_price
+        pdsHead.save()
+            
+        obj.forecast_no = ordH.FCREFNO
+        obj.forecast_status = "1"
+        obj.forecast_qty = qty
+        obj.forecast_item = (seq - 1)
+        obj.save()
+        
+        ### Message Notification
+        txtMsg = f"ได้ทำการอนุมัติเอกสาร {obj.forecast_no}"
+        msg = f"message=เรียนแผนก Planning\nขณะนี้ทางแผนก PU ได้ทำการอนุมัติเอกสาร {obj.forecast_no} เรียบร้อยแล้วคะ"
+        requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
+        # messages.success(request, f"บันทึกข้อมูลเรียบร้อยแล้ว")
+    
+    rp = UserErrorLog()
+    rp.user_id = request.user
+    rp.remark = txtMsg
+    rp.is_status = True
+    rp.save()
+    # except Exception as ex:
+    #     messages.error(request, str(ex))
+    #     rp = UserErrorLog()
+    #     rp.user_id = request.user
+    #     rp.remark = f"เกิดข้อผิดพลาด {str(ex)}"
+    #     rp.is_status = True
+    #     rp.save()
+    #     ordH.delete()
+    #     return False
+    #     # pass
     
     return True
 
