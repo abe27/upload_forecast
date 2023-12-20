@@ -92,7 +92,7 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                     lastNum = "0000000"
                     
                 fccodeNo = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}{int(str(lastNum)[4:]) + 1:03d}"
-                prNo = f"{str(ordBook.FCPREFIX).strip()}{fccodeNo}"### PR TEST REFNO
+                prNo = f"{str(ordBook.FCPREFIX).strip()}{fccodeNo}"### PO TEST REFNO
                 msg = f"message=เรียนแผนก PU\nขณะนี้ทางแผนก Planning ได้ทำการเปิดเอกสาร{str(ordBook.FCNAME).strip()} เลขที่ {prNo} เรียบร้อยแล้วคะ"
                 
                 ordH = OrderH()
@@ -826,14 +826,14 @@ def request_validation(request):
     query_set = Group.objects.filter(user=request.user)
     if query_set.filter(name="Planning").exists():
         Forecast._meta.verbose_name_plural = "Upload Forecast"
-        PDSHeader._meta.verbose_name_plural = "View PR"
+        PDSHeader._meta.verbose_name_plural = "View Purchase"
         forecast_apps.ForecastsConfig.verbose_name = "อัพโหลด Forecast"
         open_pds_apps.OpenPdsConfig.verbose_name = "จัดการข้อมูล PDS"
         
     if query_set.filter(name="Purchase").exists():
         Forecast._meta.verbose_name_plural = "Open PR"
         PDSHeader._meta.verbose_name_plural = "View PDS"
-        forecast_apps.ForecastsConfig.verbose_name = "จัดการข้อมูล PR"
+        forecast_apps.ForecastsConfig.verbose_name = "จัดการข้อมูล Purchase"
         open_pds_apps.OpenPdsConfig.verbose_name = "ตรวจสอบ PDS"
     
     if query_set.filter(name="Supplier").exists():

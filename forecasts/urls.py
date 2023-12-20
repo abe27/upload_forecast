@@ -10,5 +10,5 @@ urlpatterns = [
     # path('download/<str:id>', views.download_forecast),
     # path('export_pds/<str:id>', views.download_open_pds),
     # path('estimated_forecast/<str:id>', views.estimated_report),
-    # path('export_forecast/<str:id>', views.export_forecast),
+    path('export_forecast/<str:id>', views.export_forecast),
 ]

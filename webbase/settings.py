@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'jazzmin',
     # 'grappelli',
     # "semantic_admin",
+    "validate_requests.apps.ValidateRequestsConfig",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -169,7 +170,7 @@ DATABASE_ROUTERS = ["webbase.db_routes.DBRoutes"]
 
 APPEND_SLASH = False
 AUTH_USER_MODEL = 'members.ManagementUser'
-LOGIN_REDIRECT_URL = "/forecast/"
+LOGIN_REDIRECT_URL = "forecast"
 
 JAZZMIN_SETTINGS = {
     # # title of the window (Will default to current_admin_site.site_title if absent or None)
@@ -336,25 +337,58 @@ JAZZMIN_SETTINGS = {
     # Add a language dropdown into the admin
     # "language_chooser": True,
 }
+# JAZZMIN_UI_TWEAKS = {
+#     "navbar_small_text": True,
+#     "footer_small_text": True,
+#     "body_small_text": True,
+#     "brand_small_text": True,
+#     "brand_colour": "navbar-cyan",
+#     "accent": "accent-primary",
+#     "navbar": "navbar-info navbar-dark",
+#     "no_navbar_border": True,
+#     "navbar_fixed": True,
+#     "layout_boxed": False,
+#     "footer_fixed": False,
+#     "sidebar_fixed": True,
+#     "sidebar": "sidebar-light-lightblue",
+#     "sidebar_nav_small_text": True,
+#     "sidebar_disable_expand": True,
+#     "sidebar_nav_child_indent": True,
+#     "sidebar_nav_compact_style": True,
+#     "sidebar_nav_legacy_style": True,
+#     "sidebar_nav_flat_style": True,
+#     "theme": "united",
+#     "dark_mode_theme": None,
+#     "button_classes": {
+#         "primary": "btn-primary",
+#         "secondary": "btn-secondary",
+#         "info": "btn-info",
+#         "warning": "btn-warning",
+#         "danger": "btn-danger",
+#         "success": "btn-success"
+#     },
+#     "actions_sticky_top": False
+# }
+
 JAZZMIN_UI_TWEAKS = {
-    "navbar_small_text": True,
-    "footer_small_text": True,
+    "navbar_small_text": False,
+    "footer_small_text": False,
     "body_small_text": True,
-    "brand_small_text": True,
-    "brand_colour": "navbar-cyan",
-    "accent": "accent-primary",
-    "navbar": "navbar-info navbar-dark",
+    "brand_small_text": False,
+    "brand_colour": "navbar-gray",
+    "accent": "accent-lightblue",
+    "navbar": "navbar-gray navbar-dark",
     "no_navbar_border": True,
-    "navbar_fixed": True,
+    "navbar_fixed": False,
     "layout_boxed": False,
     "footer_fixed": False,
     "sidebar_fixed": True,
-    "sidebar": "sidebar-light-lightblue",
-    "sidebar_nav_small_text": True,
+    "sidebar": "sidebar-dark-teal",
+    "sidebar_nav_small_text": False,
     "sidebar_disable_expand": True,
-    "sidebar_nav_child_indent": True,
+    "sidebar_nav_child_indent": False,
     "sidebar_nav_compact_style": True,
-    "sidebar_nav_legacy_style": True,
+    "sidebar_nav_legacy_style": False,
     "sidebar_nav_flat_style": True,
     "theme": "united",
     "dark_mode_theme": None,
@@ -366,8 +400,9 @@ JAZZMIN_UI_TWEAKS = {
         "danger": "btn-danger",
         "success": "btn-success"
     },
-    "actions_sticky_top": False
+    "actions_sticky_top": True
 }
+
 
 
 JASPER_RESERVER = os.environ.get("JASPER_RESERVERVER")

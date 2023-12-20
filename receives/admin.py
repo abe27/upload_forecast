@@ -139,6 +139,13 @@ class ReceiveHeaderAdmin(admin.ModelAdmin):
         greeter.request_validation(request)
         return super().get_queryset(request)
     
+    def has_change_permission(self, request, obj=None):
+        if request.user.is_superuser:
+            return True
+        
+        return request.user.has_perm("confirm_invoices.edit_qty")
+
+    
     def response_change(self, request, obj):
         if '_cancel_invoice' in request.POST:
             obj.receive_status = "2"

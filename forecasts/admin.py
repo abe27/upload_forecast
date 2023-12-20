@@ -23,7 +23,7 @@ class ForecastDetailInline(admin.TabularInline):
     readonly_fields = (
         'seq',
         'product_id',
-        # 'product_code',
+        'product_no',
         'product_code',
         'product_name',
         'product_group',
@@ -42,7 +42,7 @@ class ForecastDetailInline(admin.TabularInline):
         'product_name',
         'product_group',
         'request_qty',
-        'balance_qty',
+        # 'balance_qty',
         'price',
         'request_status',
         'last_updated',
@@ -205,7 +205,6 @@ class ForecastSupplierFilter(admin.SimpleListFilter):
             for i in data:
                 docs.append((i['id'], f"{i['code']}-{i['name']}"))
 
-        print(docs)
         return docs
 
     def queryset(self, request, queryset):
@@ -214,7 +213,9 @@ class ForecastSupplierFilter(admin.SimpleListFilter):
         provided in the query string and retrievable via
         `self.value()`.
         """
-        # print(self.value())
+        if self.value() is None:
+            return queryset
+        
         return queryset.filter(supplier_id=self.value())
 
 
@@ -438,7 +439,7 @@ class ForecastAdmin(admin.ModelAdmin):
             elif int(obj.forecast_status) == 4:
                 txtClass = "badge-info"
 
-            return format_html(f"<span class='badge {txtClass}'>{data[1]}</span>")
+            return format_html(f"<span class='text-xs badge {txtClass}'>{data[1]}</span>")
 
         except:
             pass

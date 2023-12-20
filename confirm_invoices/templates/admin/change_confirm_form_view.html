@@ -5,12 +5,14 @@
 {% endblock %} {% endcomment %}
 {% block submit_buttons_bottom %} 
 {% comment %} {{block.super }} {% endcomment %}
-{% if perms.confirm_invoice.edit_qty and is_confirm %}
+{% if perms.confirm_invoices.edit_qty and is_confirm %}
 <div class="form-group pt-2">
     <button type="submit" class="btn btn-success btn-sm form-control" name="_confirm_invoice">
         <i class="fas fa-calendar-check"></i></i>{{" "}}ยืนยันการส่งสินค้า
     </button>
 </div>
+{% endif %}
+{% if is_supplier is False and inv_status != 3 %}
 <div class="form-group pt-1">
     <button type="submit" class="btn btn-danger btn-sm form-control" name="_cancel_invoice">
         <i class="fas fa-times-circle"></i></i>{{" "}}ยกเลิกรายการนี้

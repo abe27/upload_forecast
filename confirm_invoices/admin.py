@@ -14,7 +14,7 @@ from formula_vcs.models import OrderH, OrderI
 from open_pds.models import PDSDetail
 
 from .models import CONFIRM_INV_STATUS, ConfirmInvoiceDetail, ConfirmInvoiceHeader, ReportPurchaseOrder
-from members.models import ManagementUser, Supplier
+from members.models import ManagementUser, Supplier, UserErrorLog
 
 # Register your models here.
 from django.forms.widgets import TextInput
@@ -62,7 +62,7 @@ class SupplierFilter(admin.SimpleListFilter):
             for i in data:
                 docs.append((i['id'], f"{i['code']}-{i['name']}"))
 
-        print(docs)
+        # print(docs)
         return docs
 
     def queryset(self, request, queryset):
@@ -72,6 +72,9 @@ class SupplierFilter(admin.SimpleListFilter):
         `self.value()`.
         """
         # print(self.value())
+        if self.value() is None:
+            return queryset
+        
         return queryset.filter(supplier_id=self.value())
 
 class BeginInvoiceDateFilter(admin.SimpleListFilter):
@@ -101,7 +104,9 @@ class BeginInvoiceDateFilter(admin.SimpleListFilter):
         provided in the query string and retrievable via
         `self.value()`.
         """
-        # print(self.value())
+        if self.value() is None:
+            return queryset
+        
         return queryset.filter(inv_date=self.value())
 
 class ConfirmInvoiceDetailInline(admin.TabularInline):
@@ -147,7 +152,7 @@ class ConfirmInvoiceDetailInline(admin.TabularInline):
                 "last_update",
             )
 
-        if request.user.has_perm("confirm_invoice.edit_qty"):
+        if request.user.has_perm("confirm_invoices.edit_qty"):
             return (
                 "seq",
                 "product_code",
@@ -190,7 +195,7 @@ class ConfirmInvoiceDetailInline(admin.TabularInline):
                 "last_update",
                 "confirm_status",
             )
-        if request.user.has_perm("confirm_invoice.edit_qty"):
+        if request.user.has_perm("confirm_invoices.edit_qty"):
             return (
                 "product_code",
                 "product_no",
@@ -348,7 +353,7 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
                 "inv_no",
             )
 
-        if request.user.has_perm("confirm_invoice.edit_qty"):
+        if request.user.has_perm("confirm_invoices.edit_qty"):
             return (
                 "purchase_no",
                 "supplier_id",
@@ -369,12 +374,12 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
             "item",
             "qty",
             # "confirm_qty",
-            "remark",
+            # "remark",
             "inv_status",
         )
 
     def get_fields(self, request, obj):
-        if request.user.has_perm("confirm_invoice.edit_qty"):
+        if request.user.has_perm("confirm_invoices.edit_qty"):
             return (
                 "purchase_no",
                 "supplier_id",
@@ -508,15 +513,21 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
         extra_context['is_confirm'] = (int(obj.inv_status) != 1)
         if int(obj.inv_status) >= 3:
             extra_context['is_confirm'] = False
+        extra_context['inv_status'] = int(obj.inv_status)
         return super().change_view(request, object_id, form_url, extra_context=extra_context,)
 
     def has_view_permission(self, request, obj=None):
         return True
 
     def has_change_permission(self, request, obj=None):
-        if request.user.is_superuser:
+        # if request.user.is_superuser:
+        #     return True
+        
+        query_set = Group.objects.filter(user=request.user)
+        if query_set.filter(name="Supplier").exists() is False:
             return True
-        return request.user.has_perm("confirm_invoice.edit_qty")
+        
+        return request.user.has_perm("confirm_invoices.edit_qty")
 
     # def has_add_permission(self, request):
     #     return True
@@ -526,6 +537,8 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
         return super().get_queryset(request)
 
     def response_change(self, request, obj):
+        msgRemark = ""
+        isError = True
         if '_confirm_invoice' in request.POST:
             isValid = True
             if obj.inv_delivery_date is None:
@@ -556,9 +569,11 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
             obj.remark = None
             obj.save()
             
+            msgRemark = f"ยืนยัน Invoice เลขที่ {obj.inv_no}"
+            
         if '_cancel_invoice' in request.POST:
-            if len(obj.remark) <= 0:
-                messages.warning(request, "กรุณาระบุหมายเหตุด้วยด้วย")
+            if obj.remark is None:
+                messages.warning(request, "กรุณาระบุเหตุผลที่ต้องยกเลิกรายการนี้ด้วย")
                 
             else:    
                 obj.inv_status = "3"
@@ -578,8 +593,9 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
                     
                     ### Order PO
                     ordI = OrderI.objects.filter(FCSKID=r.pds_detail_id.ref_formula_id).first()
-                    ordI.FCSTEP = "C"
-                    ordI.save()
+                    ordI.delete()
+                    # ordI.FCSTEP = "C"
+                    # ordI.save()
                     
                     #### Order PR
                     ordI = OrderI.objects.filter(FCSKID=r.pds_detail_id.forecast_detail_id.ref_formula_id).first()
@@ -591,8 +607,9 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
                 
                 #### Cancel ORDERH PO
                 ordH = OrderH.objects.filter(FCSKID=obj.pds_id.ref_formula_id).first()
-                ordH.FCSTEP = "C"
-                ordH.save()
+                ordH.delete()
+                # ordH.FCSTEP = "C"
+                # ordH.save()
                 
                 # #### UPDATE ORDERH PR
                 # ordH = OrderH.objects.filter(FCSKID=obj.pds_id.forecast_id.ref_formula_id).first()
@@ -605,8 +622,16 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
                 obj.pds_id.item = item
                 obj.pds_id.save()
                 obj.save()
+                
+                msgRemark = f"ยกเลิกรายการ {obj.purchase_no}"
             
                 messages.success(request, f"ยกเลิกรายการนี้ {obj.purchase_no} แล้ว")
+                
+        rp = UserErrorLog()
+        rp.user_id = request.user
+        rp.remark = msgRemark
+        rp.is_status = isError
+        rp.save()
 
         return super().response_change(request, obj)
     pass

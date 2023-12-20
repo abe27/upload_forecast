@@ -65,33 +65,37 @@ def pds_reports(request, id):
         rpPdsDetail.save()
         
     # # import requests
-    # JASPER_RESERVER
-    url = f"{settings.JASPER_RESERVER}/jasperserver/rest_v2/login?j_username={settings.JASPER_USER}&j_password={settings.JASPER_PASSWORD}"
-    response = requests.request("GET", url)
-    
-    url = f"""{settings.JASPER_RESERVER}/jasperserver/rest_v2/reports/report_forecast/print_pds.pdf?ParmID={rpPds.id}"""
-    response = requests.request("GET", url, cookies=response.cookies)
-    
+    try:
+        # JASPER_RESERVER
+        url = f"{settings.JASPER_RESERVER}/jasperserver/rest_v2/login?j_username={settings.JASPER_USER}&j_password={settings.JASPER_PASSWORD}"
+        response = requests.request("GET", url)
         
-    query_set = Group.objects.filter(user=request.user)
-    if query_set.filter(name="Supplier").exists():
-        token = os.environ.get("LINE_TOKEN")
-        if type(request.user.line_notification_id) != type(None):
-            token = request.user.line_notification_id.token
+        url = f"""{settings.JASPER_RESERVER}/jasperserver/rest_v2/reports/report_forecast/print_pds.pdf?ParmID={rpPds.id}"""
+        response = requests.request("GET", url, cookies=response.cookies)
         
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': f'Bearer {token}'
-        }
-        msg = f"message=เรียนแผนก Planning/PU\nขณะนี้ทาง Supplier({request.user})\nได้ทำการโหลดเอกสาร PDS\n{head.supplier_id.name}\nเลขที่เอกสาร {head.purchase_no}\nเรียบร้อยแล้วคะ"
-        requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
-        ### Update Download Counter
-        head.is_download_count += 1
-        head.save()
-        
-    response = HttpResponse(response, content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="{file_name}.pdf"'
-    return response
+            
+        query_set = Group.objects.filter(user=request.user)
+        if query_set.filter(name="Supplier").exists():
+            token = os.environ.get("LINE_TOKEN")
+            if type(request.user.line_notification_id) != type(None):
+                token = request.user.line_notification_id.token
+            
+            headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': f'Bearer {token}'
+            }
+            msg = f"message=เรียนแผนก Planning/PU\nขณะนี้ทาง Supplier({request.user})\nได้ทำการโหลดเอกสาร PDS\n{head.supplier_id.name}\nเลขที่เอกสาร {head.purchase_no}\nเรียบร้อยแล้วคะ"
+            requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
+            ### Update Download Counter
+            head.is_download_count += 1
+            head.save()
+            
+        response = HttpResponse(response, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{file_name}.pdf"'
+        return response
+    except Exception as e:
+        print(e)
+        return HttpResponse("Error")
 
 def print_tags(request, id):
     dte = datetime.now()
@@ -124,35 +128,40 @@ def print_tags(request, id):
         p.qr_code = f"{r.pds_detail_id.forecast_detail_id.product_id.no}@lotno@{r.seq}@{r.qty}"
         p.save()
         
-    # JASPER_RESERVER
-    url = f"{settings.JASPER_RESERVER}/jasperserver/rest_v2/login?j_username={settings.JASPER_USER}&j_password={settings.JASPER_PASSWORD}"
-    response = requests.request("GET", url)
-    
-    url = f"""{settings.JASPER_RESERVER}/jasperserver/rest_v2/reports/report_forecast/tags_report.pdf?ParmID={parmID}"""
-    response = requests.request("GET", url, cookies=response.cookies)
-    
-    query_set = Group.objects.filter(user=request.user)
-    if query_set.filter(name="Supplier").exists():
-        token = os.environ.get("LINE_TOKEN")
-        if type(request.user.line_notification_id) != type(None):
-            token = request.user.line_notification_id.token
+    try:
+        # JASPER_RESERVER
+        url = f"{settings.JASPER_RESERVER}/jasperserver/rest_v2/login?j_username={settings.JASPER_USER}&j_password={settings.JASPER_PASSWORD}"
+        response = requests.request("GET", url)
         
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': f'Bearer {token}'
-        }
-        msg = f"message=เรียนแผนก Planning/PU\nขณะนี้ทาง Supplier({request.user})\nได้ทำการโหลดเอกสาร TAG\n{head.supplier_id.name}\nเลขที่ {head.purchase_no}\nเรียบร้อยแล้วคะ"
-        try:
-            requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
-        except:
-            pass
-        ### Update Download Counter
-        head.is_download_count += 1
-        head.save()
+        url = f"""{settings.JASPER_RESERVER}/jasperserver/rest_v2/reports/report_forecast/tags_report.pdf?ParmID={parmID}"""
+        response = requests.request("GET", url, cookies=response.cookies)
         
-    response = HttpResponse(response, content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="{file_name}.pdf"'
-    return response
+        query_set = Group.objects.filter(user=request.user)
+        if query_set.filter(name="Supplier").exists():
+            token = os.environ.get("LINE_TOKEN")
+            if type(request.user.line_notification_id) != type(None):
+                token = request.user.line_notification_id.token
+            
+            headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': f'Bearer {token}'
+            }
+            msg = f"message=เรียนแผนก Planning/PU\nขณะนี้ทาง Supplier({request.user})\nได้ทำการโหลดเอกสาร TAG\n{head.supplier_id.name}\nเลขที่ {head.purchase_no}\nเรียบร้อยแล้วคะ"
+            try:
+                requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
+            except:
+                pass
+            ### Update Download Counter
+            head.is_download_count += 1
+            head.save()
+            
+        response = HttpResponse(response, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{file_name}.pdf"'
+        return response
+    
+    except Exception as e:
+        print(e)
+        return HttpResponse(status=500)
 
 def export_purchase(request, id):
     dte = datetime.now()
