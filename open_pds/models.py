@@ -165,3 +165,13 @@ class ReportPDSDetail(models.Model):
     
     class Meta:
         db_table = "tempReportPDSDetail"
+        
+class CheckLastPurchaseRunning(models.Model):
+    id = models.UUIDField(primary_key=True, editable=False, verbose_name="PRIMARY KEY", default=uuid.uuid4)
+    last_date = models.CharField(max_length=4)
+    last_running = models.CharField(max_length=8, unique=True)
+    last_no = models.CharField(max_length=15, unique=True)
+    is_active = models.BooleanField(verbose_name="Is Active", default=False, blank=True, null=True)
+    
+    class Meta:
+        db_table = "tempLastPurchaseRunning"

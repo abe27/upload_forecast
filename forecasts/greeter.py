@@ -16,7 +16,7 @@ import pandas as pd
 # from reportlab.lib import colors
 from books.models import Book, ReviseBook
 from confirm_invoices.models import ConfirmInvoiceDetail, ConfirmInvoiceHeader
-from open_pds.models import PDSDetail, PDSHeader
+from open_pds.models import CheckLastPurchaseRunning, PDSDetail, PDSHeader
 from products.models import Product, ProductGroup
 from receives.models import ReceiveDetail, ReceiveHeader
 from forecasts.models import Forecast
@@ -83,29 +83,37 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
             obj = PDSHeader.objects.get(id=id)
             ### Get Supplier Information
             supplier = COOR.objects.filter(FCCODE=obj.forecast_id.supplier_id.code).first()
-            ordH = None
-            if obj.ref_formula_id is None:
-                PREFIX_DTE_Y = str(int(obj.pds_date.strftime('%Y')) + 543)[2:]
-                PREFIX_DTE_M = f"{int(obj.pds_date.strftime('%m')):02d}"
-                lastNum = OrderH.objects.filter(FCREFTYPE='PO',FCBOOK='H2tsKd02',FDDATE__lte=obj.pds_date).order_by('-FCCODE').first()
-                if lastNum is None:
-                    lastNum = "0000000"
-                    
-                fccodeNo = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}{(int(str(lastNum)[4:]) + 1):03d}"
-                prNo = f"{str(ordBook.FCPREFIX).strip()}{fccodeNo}"### PO TEST REFNO
-                msg = f"message=เรียนแผนก PU\nขณะนี้ทางแผนก Planning ได้ทำการเปิดเอกสาร{str(ordBook.FCNAME).strip()} เลขที่ {prNo} เรียบร้อยแล้วคะ"
+            # ordH = None
+            PREFIX_DTE_Y = str(int(obj.pds_date.strftime('%Y')) + 543)[2:]
+            PREFIX_DTE_M = f"{int(obj.pds_date.strftime('%m')):02d}"
+            lastNum = OrderH.objects.filter(FCREFTYPE='PO',FCBOOK='H2tsKd02',FDDATE__lte=f"{obj.pds_date.strftime('%Y%m')}01").order_by('-FCCODE').first()
+            if lastNum is None:
+                lastNum = "0000000"
                 
-                ordH = OrderH()
-                ordH.FCSKID=nanoid.generate(size=8)
-                ordH.FDDUEDATE=request.POST.get("pds_delivery_date")
-                ordH.FCCODE=fccodeNo
-                ordH.FCREFNO=prNo
-                obj.ref_formula_id = ordH.FCSKID
-                
-            else:
-                ordH = OrderH.objects.get(FCSKID=obj.ref_formula_id)
-                pass
+            fccodeNo = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}{(int(str(lastNum)[4:]) + 1):03d}"
             
+            #### CheckLast No
+            lst = CheckLastPurchaseRunning.objects.filter(last_date=f"{PREFIX_DTE_Y}{PREFIX_DTE_M}").count()
+            if lst > 0:
+                lastNum = CheckLastPurchaseRunning.objects.filter(last_date=f"{PREFIX_DTE_Y}{PREFIX_DTE_M}").order_by('-last_running').first()
+                fccodeNo = int(str(lastNum.last_running)) + 1
+            
+            prNo = f"{str(ordBook.FCPREFIX).strip()}{fccodeNo}"### PO TEST REFNO
+            #### Create Last No Log
+            lst = CheckLastPurchaseRunning()
+            lst.last_date = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}"
+            lst.last_running = fccodeNo
+            lst.last_no = prNo
+            lst.is_active = True
+            lst.save()
+            
+            msg = f"message=เรียนแผนก PU\nขณะนี้ทางแผนก Planning ได้ทำการเปิดเอกสาร{str(ordBook.FCNAME).strip()} เลขที่ {prNo} เรียบร้อยแล้วคะ"
+            
+            ordH = OrderH()
+            ordH.FCSKID=nanoid.generate(size=8)
+            ordH.FDDUEDATE=request.POST.get("pds_delivery_date")
+            ordH.FCCODE=fccodeNo
+            ordH.FCREFNO=prNo
             ordH.FCREFTYPE=prefixRef
             ordH.FCDEPT=dept.FCSKID
             ordH.FCSECT=sect.FCSKID
@@ -118,6 +126,8 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
             ordH.FNAMT=obj.qty
             ordH.FCSTEP=fcStep
             ordH.save()
+            
+            obj.ref_formula_id = ordH.FCSKID
             
             ### Create Confirm Invoice
             confirmInv = ConfirmInvoiceHeader()
@@ -152,7 +162,7 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                     ### Get PR Data
                     ordPR = OrderI.objects.get(FCSKID=i.forecast_detail_id.ref_formula_id)
                     olderQty = int(ordPR.FNBACKQTY)
-                    print(f"PR BackQTY: %s" %olderQty)
+                    # print(f"PR BackQTY: %s" %olderQty)
                     try:
                         # ordI = OrderI.objects.get(FCSKID=i.ref_formula_id)
                         ordI = OrderI.objects.get(FCORDERH=ordH.FCSKID,FCPROD=ordProd.FCSKID)

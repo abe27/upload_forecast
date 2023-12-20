@@ -572,7 +572,7 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
             msgRemark = f"ยืนยัน Invoice เลขที่ {obj.inv_no}"
             
         if '_cancel_invoice' in request.POST:
-            if obj.remark is None:
+            if obj.remark is None or len(obj.remark) <= 0:
                 messages.warning(request, "กรุณาระบุเหตุผลที่ต้องยกเลิกรายการนี้ด้วย")
                 
             else:    
@@ -585,29 +585,41 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
                     r.confirm_status = "3"
                     r.remark = obj.remark
                     
-                    r.pds_detail_id.remark = obj.remark
-                    r.pds_detail_id.pds_detail_status = "0"
-                    r.pds_detail_id.qty += r.qty
-                    r.pds_detail_id.balance_qty += r.qty
-                    r.pds_detail_id.save()
-                    
                     ### Order PO
-                    ordI = OrderI.objects.filter(FCSKID=r.pds_detail_id.ref_formula_id).first()
-                    ordI.delete()
+                    try:
+                        ordI = OrderI.objects.filter(FCSKID=r.pds_detail_id.ref_formula_id).first()
+                        ordI.delete()
+                        
+                    except:
+                        pass
                     # ordI.FCSTEP = "C"
                     # ordI.save()
                     
                     #### Order PR
-                    ordI = OrderI.objects.filter(FCSKID=r.pds_detail_id.forecast_detail_id.ref_formula_id).first()
-                    ordI.FNBACKQTY += r.qty
-                    ordI.save()
+                    try:
+                        ordI = OrderI.objects.filter(FCSKID=r.pds_detail_id.forecast_detail_id.ref_formula_id).first()
+                        ordI.FNBACKQTY += r.qty
+                        ordI.save()
+                    except:
+                        pass
                     
+                    r.pds_detail_id.ref_formula_id = None
+                    r.pds_detail_id.remark = obj.remark
+                    r.pds_detail_id.pds_detail_status = "0"
+                    r.pds_detail_id.is_select = True
+                    r.pds_detail_id.qty += r.qty
+                    r.pds_detail_id.balance_qty += r.qty
+                    r.pds_detail_id.save()
                     r.save()
                     obj.pds_id.qty += r.qty
                 
                 #### Cancel ORDERH PO
-                ordH = OrderH.objects.filter(FCSKID=obj.pds_id.ref_formula_id).first()
-                ordH.delete()
+                try:
+                    ordH = OrderH.objects.filter(FCSKID=obj.pds_id.ref_formula_id).first()
+                    ordH.delete()
+                    
+                except:
+                    pass
                 # ordH.FCSTEP = "C"
                 # ordH.save()
                 
@@ -618,6 +630,7 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
                 # print(len(confirmDetail))
                 
                 item = PDSDetail.objects.filter(pds_header_id=obj.pds_id).count()
+                obj.pds_id.ref_formula_id = None
                 obj.pds_id.pds_no = obj.pds_id.forecast_id.forecast_no
                 obj.pds_id.item = item
                 obj.pds_id.save()
