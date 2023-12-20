@@ -87,11 +87,11 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
             if obj.ref_formula_id is None:
                 PREFIX_DTE_Y = str(int(obj.pds_date.strftime('%Y')) + 543)[2:]
                 PREFIX_DTE_M = f"{int(obj.pds_date.strftime('%m')):02d}"
-                lastNum = OrderH.objects.filter(FDDATE__lte=obj.pds_date).order_by('-FCCODE').first()
+                lastNum = OrderH.objects.filter(FCREFTYPE='PO',FCBOOK='H2tsKd02',FDDATE__lte=obj.pds_date).order_by('-FCCODE').first()
                 if lastNum is None:
                     lastNum = "0000000"
                     
-                fccodeNo = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}{int(str(lastNum)[4:]) + 1:03d}"
+                fccodeNo = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}{(int(str(lastNum)[4:]) + 1):03d}"
                 prNo = f"{str(ordBook.FCPREFIX).strip()}{fccodeNo}"### PO TEST REFNO
                 msg = f"message=เรียนแผนก PU\nขณะนี้ทางแผนก Planning ได้ทำการเปิดเอกสาร{str(ordBook.FCNAME).strip()} เลขที่ {prNo} เรียบร้อยแล้วคะ"
                 
