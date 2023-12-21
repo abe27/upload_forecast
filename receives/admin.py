@@ -6,7 +6,7 @@ from django.http.response import HttpResponse
 from django.utils.html import format_html
 
 from forecasts import greeter
-from members.models import UserErrorLog
+from members.models import ManagementUser, UserErrorLog
 from .models import RECEIVE_INV_STATUS, ReceiveHeader, ReceiveDetail
 
 # Register your models here.
@@ -137,7 +137,18 @@ class ReceiveHeaderAdmin(admin.ModelAdmin):
     
     def get_queryset(self, request):
         greeter.request_validation(request)
-        return super().get_queryset(request)
+        sup_id = []
+        qs = super().get_queryset(request)
+        if request.user.groups.filter(name='Supplier').exists():
+            usr = ManagementUser.supplier_id.through.objects.filter(
+                managementuser_id=request.user.id)
+            for u in usr:
+                sup_id.append(u.supplier_id)
+                
+            obj = qs.filter(supplier_id__in=sup_id)
+            return obj
+
+        return qs
     
     def has_change_permission(self, request, obj=None):
         if request.user.is_superuser:

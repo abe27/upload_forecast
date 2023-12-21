@@ -539,16 +539,27 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         greeter.request_validation(request)
-        return super().get_queryset(request)
+        sup_id = []
+        qs = super().get_queryset(request)
+        if request.user.groups.filter(name='Supplier').exists():
+            usr = ManagementUser.supplier_id.through.objects.filter(
+                managementuser_id=request.user.id)
+            for u in usr:
+                sup_id.append(u.supplier_id)
+                
+            obj = qs.filter(supplier_id__in=sup_id)
+            return obj
+
+        return qs
 
     def response_change(self, request, obj):
         msgRemark = ""
         isError = True
         if '_confirm_invoice' in request.POST:
             isValid = True
-            if obj.inv_delivery_date is None:
-                messages.warning(request, "กรุณาระบุ Delivery Date ด้วย")
-                isValid = False
+            # if obj.inv_delivery_date is None:
+            #     messages.warning(request, "กรุณาระบุ Delivery Date ด้วย")
+            #     isValid = False
 
             if obj.inv_no is None:
                 messages.warning(request, "กรุณาระบุ Invoice No.ด้วย")
@@ -568,8 +579,9 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
                     if greeter.receive_invoice(request, obj):
                         messages.success(
                             request, f"Confirm Invoice {obj.inv_no} สำเร็จ")
-
-            obj.inv_delivery_date = None
+                        
+            #### Check date confirm
+            # obj.inv_delivery_date = None
             obj.inv_no = None
             obj.remark = None
             obj.save()

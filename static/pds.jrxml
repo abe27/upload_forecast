@@ -130,6 +130,11 @@ ORDER BY "tempReportPDSDetail".pds_no_id ASC,
 		<property name="com.jaspersoft.studio.field.label" value="id"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="tempReportPDSHeader"/>
 	</field>
+	<field name="factory_tags" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="factory_tags"/>
+		<property name="com.jaspersoft.studio.field.label" value="factory_tags"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tempReportPDSHeader"/>
+	</field>
 	<field name="delivery_date" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="delivery_date"/>
 		<property name="com.jaspersoft.studio.field.label" value="delivery_date"/>
@@ -165,17 +170,32 @@ ORDER BY "tempReportPDSDetail".pds_no_id ASC,
 		<property name="com.jaspersoft.studio.field.label" value="issue_time"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="tempReportPDSHeader"/>
 	</field>
-	<field name="COLUMN_20" class="java.lang.Boolean">
+	<field name="approve_by_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="approve_by_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="approve_by_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tempReportPDSHeader"/>
+	</field>
+	<field name="issue_by_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="issue_by_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="issue_by_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tempReportPDSHeader"/>
+	</field>
+	<field name="issue_by_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="issue_by_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="issue_by_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tempReportPDSHeader"/>
+	</field>
+	<field name="COLUMN_24" class="java.lang.Boolean">
 		<property name="com.jaspersoft.studio.field.name" value="is_active"/>
 		<property name="com.jaspersoft.studio.field.label" value="is_active"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="tempReportPDSHeader"/>
 	</field>
-	<field name="COLUMN_21" class="java.sql.Timestamp">
+	<field name="COLUMN_25" class="java.sql.Timestamp">
 		<property name="com.jaspersoft.studio.field.name" value="created_at"/>
 		<property name="com.jaspersoft.studio.field.label" value="created_at"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="tempReportPDSHeader"/>
 	</field>
-	<field name="COLUMN_22" class="java.sql.Timestamp">
+	<field name="COLUMN_26" class="java.sql.Timestamp">
 		<property name="com.jaspersoft.studio.field.name" value="updated_at"/>
 		<property name="com.jaspersoft.studio.field.label" value="updated_at"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="tempReportPDSHeader"/>
@@ -195,7 +215,7 @@ ORDER BY "tempReportPDSDetail".pds_no_id ASC,
 				</reportElement>
 			</line>
 			<textField pattern="dd-MM-yyyy H:mm">
-				<reportElement x="282" y="0" width="272" height="22" uuid="bb10dbe1-0a4f-4722-9953-c163b63cf979"/>
+				<reportElement x="282" y="0" width="218" height="22" uuid="bb10dbe1-0a4f-4722-9953-c163b63cf979"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
@@ -459,6 +479,13 @@ ORDER BY "tempReportPDSDetail".pds_no_id ASC,
 					<bottomPen lineWidth="1.0"/>
 				</box>
 			</frame>
+			<textField>
+				<reportElement x="500" y="0" width="56" height="25" uuid="3a648055-a62b-4a84-83e2-e1e4a42f8288"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{factory_tags}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>

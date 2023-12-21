@@ -483,26 +483,12 @@ class ForecastAdmin(admin.ModelAdmin):
         greeter.request_validation(request)
         sup_id = []
         qs = super().get_queryset(request)
-        # if len(request.GET) > 0:
-        #     qs = super().get_queryset(request)
-        #     # if request.user.is_superuser:
-        #     #     return qs
-
-        #     if request.user.groups.filter(name='Supplier').exists():
-        #         usr = ManagementUser.supplier_id.through.objects.filter(managementuser_id=request.user.id)
-        #         for u in usr:
-        #             sup_id.append(u.supplier_id)
-        #         obj = qs.filter(supplier_id__in=sup_id, forecast_qty__gt=0)
-        #         return obj
-
-        #     return qs.filter(forecast_qty__gt=0)
-        # obj = qs.filter(supplier_id__in=sup_id, forecast_qty__gt=0)
-        # return obj
         if request.user.groups.filter(name='Supplier').exists():
             usr = ManagementUser.supplier_id.through.objects.filter(
                 managementuser_id=request.user.id)
             for u in usr:
                 sup_id.append(u.supplier_id)
+                
             obj = qs.filter(supplier_id__in=sup_id, forecast_qty__gt=0)
             return obj
 

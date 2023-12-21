@@ -7,6 +7,7 @@ import requests
 import xlwt
 
 from confirm_invoices.models import ConfirmInvoiceDetail, PrintTAG, ReportPurchaseOrder
+from members.models import ManagementUser
 from open_pds.models import ReportPDSDetail, ReportPDSHeader
 from django.conf import settings
 
@@ -33,6 +34,11 @@ def pds_reports(request, id):
     deliveryDte = "-"
     if head.pds_id.pds_delivery_date:
         deliveryDte = head.pds_id.pds_delivery_date.strftime('%d-%B-%Y')
+    
+    ### Factory TAG ###
+    usr = ManagementUser.factory_tags_id.through.objects.filter(managementuser_id=head.approve_by_id.id)
+    for u in usr:
+        print(u.factory_tags_id.name)
         
     rpPds.delivery_date = deliveryDte
     rpPds.sup_code = head.supplier_id.code

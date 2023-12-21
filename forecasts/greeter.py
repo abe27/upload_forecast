@@ -137,6 +137,7 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
         confirmInv.part_model_id = obj.part_model_id
         confirmInv.purchase_no = ordH.FCREFNO
         confirmInv.inv_date = datetime.now()
+        confirmInv.inv_delivery_date = obj.pds_delivery_date
         confirmInv.item = 0
         confirmInv.qty = 0
         confirmInv.original_qty = 0

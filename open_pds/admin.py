@@ -447,6 +447,7 @@ class PDSHeaderAdmin(admin.ModelAdmin):
         if request.user.groups.filter(name='Supplier').exists():
             obj = qs.filter(supplier_id__in=sup_id, qty__gt=0)
             return obj
+        
         return qs.filter(qty__gt=0)
     
     class Meta:
