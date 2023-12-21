@@ -1,0 +1,71 @@
+version: "3"
+
+services:
+    web:
+        restart: always
+        build: ./web
+        expose:
+            - "8004"
+
+        links:
+            - postgres:postgres
+            - redis:redis
+
+        volumes:
+            - web-django:/usr/src/app
+            - web-static:/usr/src/app/static
+
+        env_file: .env
+        environment:
+            DEBUG: "true"
+            WEB_API: "http://localhost:8000"
+            DEBUG_MODE: "false"
+            IS_POOLING: "true"
+            LINE_TOKEN: "CQg5dmIyN3JOMGh52ewokts85ME757VazcWhm4dSMsW"
+            JASPER_RESERVERVER: "http://192.168.20.11:8080"
+            JASPER_USER: "jasperadmin"
+            JASPER_PASSWORD: "bitnami"
+            EDI_HOSTNAME: "localhost"
+            EDI_PORT: "5433"
+            EDI_DBNAME: "web_forecast"
+            EDI_USERNAME: "postgres"
+            EDI_PASSWORD: "password"
+            FORMULA_HOSTNAME: "localhost"
+            FORMULA_PORT: "1433"
+            FORMULA_DBNAME: "formula"
+            FORMULA_USERNAME: "sa"
+            FORMULA_PASSWORD: "password"
+            
+        command: /usr/local/bin/gunicorn docker_django.wsgi:application -w 2 -b :8004
+
+    nginx:
+        restart: always
+        build: ./nginx/
+        ports:
+            - "80:80"
+        volumes:
+            - web-static:/www/static
+        links:
+            - web:web
+
+    postgres:
+        restart: always
+        image: postgres:latest
+        ports:
+            - "5432:5432"
+        volumes:
+            - pgdata:/var/lib/postgresql/data/
+
+    redis:
+        restart: always
+        image: redis:latest
+        ports:
+            - "6379:6379"
+        volumes:
+            - redisdata:/data
+
+volumes:
+    web-django:
+    web-static:
+    pgdata:
+    redisdata:
