@@ -31,8 +31,8 @@ def pds_reports(request, id):
     rpPds = ReportPDSHeader()
     rpPds.pds_no = head.purchase_no
     deliveryDte = "-"
-    if head.inv_delivery_date:
-        deliveryDte = head.inv_delivery_date.strftime('%d-%B-%Y')
+    if head.pds_id.pds_delivery_date:
+        deliveryDte = head.pds_id.pds_delivery_date.strftime('%d-%B-%Y')
         
     rpPds.delivery_date = deliveryDte
     rpPds.sup_code = head.supplier_id.code
