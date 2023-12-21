@@ -662,29 +662,29 @@ def upload_file_forecast(request, obj, form, change):
             return
             
         else:
-            ### Create File Forecast Upload
-            mydate = datetime.now()
-            onMonth = int(mydate.month)
-            onYear = int(mydate.year)
+            # ### Create File Forecast Upload
+            # mydate = datetime.now()
+            # onMonth = int(mydate.month)
+            # onYear = int(mydate.year)
             
-            if obj.forecast_month is None:
-                onMonthList = OnMonthList.objects.get(value=str(onMonth))
-                obj.forecast_month = onMonthList
+            # if obj.forecast_month is None:
+            #     onMonthList = OnMonthList.objects.get(value=str(onMonth))
+            #     obj.forecast_month = onMonthList
                 
-            else:
-                if obj.forecast_month.value != onMonth:
-                    messages.warning(request, "กรุณาเลือกเดือน Forecast ให้ถูกต้องด้วย")
-                    return
+            # else:
+            #     if obj.forecast_month.value != onMonth:
+            #         messages.warning(request, "กรุณาเลือกเดือน Forecast ให้ถูกต้องด้วย")
+            #         return
                     
 
-            if obj.forecast_year is None:
-                onYearList = OnYearList.objects.get(value=str(onYear))
-                obj.forecast_year = onYearList
+            # if obj.forecast_year is None:
+            #     onYearList = OnYearList.objects.get(value=str(onYear))
+            #     obj.forecast_year = onYearList
                 
-            else:
-                if obj.forecast_year.value != onYear:
-                    messages.warning(request, "กรุณาเลือกปี Forecast ให้ถูกต้องด้วย")
-                    return
+            # else:
+            #     if obj.forecast_year.value != onYear:
+            #         messages.warning(request, "กรุณาเลือกปี Forecast ให้ถูกต้องด้วย")
+            #         return
             
             if obj.forecast_book_id is None:
                 bookData = Book.objects.get(id=request.POST.get('forecast_book_id'))
