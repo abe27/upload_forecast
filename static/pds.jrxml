@@ -354,7 +354,7 @@ ORDER BY "tempReportPDSDetail".pds_no_id ASC,
 			<staticText>
 				<reportElement x="191" y="55" width="169" height="182" uuid="9562d0a6-8d11-4f39-8fb6-58ea63849881"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PART DELIVERY SHEET]]></text>
 			</staticText>
@@ -470,7 +470,9 @@ ORDER BY "tempReportPDSDetail".pds_no_id ASC,
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[ITEM]]></text>
 			</staticText>
 			<staticText>
@@ -481,7 +483,9 @@ ORDER BY "tempReportPDSDetail".pds_no_id ASC,
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[Part Code]]></text>
 			</staticText>
 			<staticText>
@@ -492,7 +496,9 @@ ORDER BY "tempReportPDSDetail".pds_no_id ASC,
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[Part Number : Part Name]]></text>
 			</staticText>
 			<staticText>
@@ -503,8 +509,10 @@ ORDER BY "tempReportPDSDetail".pds_no_id ASC,
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Packing]]></text>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PACKING]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="480" y="2" width="73" height="38" uuid="53f6a654-e9b0-465e-b046-fb10fe787c76"/>
@@ -514,7 +522,9 @@ ORDER BY "tempReportPDSDetail".pds_no_id ASC,
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[TOTAL(Pcs.)]]></text>
 			</staticText>
 			<staticText>
