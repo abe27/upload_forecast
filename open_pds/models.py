@@ -132,6 +132,7 @@ class PDSDetail(models.Model):
         # ]
         
 class ReportPDSHeader(models.Model):
+    factory_tags = models.CharField(max_length=50,verbose_name="Factory Tags")
     delivery_date = models.CharField(max_length=50,verbose_name="Delivery Date")# ParmDeliveryDate
     sup_code = models.CharField(max_length=50, verbose_name="Sup. Code")# ParmSupCode
     sup_name = models.CharField(max_length=255, verbose_name="Sup. Name")# ParmSumName
@@ -141,6 +142,7 @@ class ReportPDSHeader(models.Model):
     issue_time = models.CharField(max_length=50, verbose_name="Issue Time", blank=True, null=True)# ParmTime
     approve_by_id = models.ImageField(verbose_name="Approve By ID",blank=True, null=True)
     issue_by_id = models.ImageField(verbose_name="Issue By ID",blank=True, null=True)
+    issue_by_name = models.CharField(max_length=50, verbose_name="Issue By Name",blank=True, null=True)
     is_active = models.BooleanField(verbose_name="Is Active", default=False, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

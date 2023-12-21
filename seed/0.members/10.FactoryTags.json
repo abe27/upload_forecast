@@ -1,0 +1,32 @@
+[
+    {
+        "model": "members.factorytags",
+        "fields": {
+            "name": "F1",
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:25.348",
+            "updated_on": "2023-12-12T19:18:25.348"
+        }
+    },
+    {
+        "model": "members.factorytags",
+        "fields": {
+            "name": "F2",
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:25.348",
+            "updated_on": "2023-12-12T19:18:25.348"
+        }
+    },
+    {
+        "model": "members.factorytags",
+        "fields": {
+            "name": "F3",
+            "description": "-",
+            "is_active": true,
+            "created_on": "2023-12-12T19:18:25.348",
+            "updated_on": "2023-12-12T19:18:25.348"
+        }
+    }
+]
