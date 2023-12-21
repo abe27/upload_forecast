@@ -90,7 +90,7 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
         if lastNum is None:
             lastNum = "0000000"
             
-        fccodeNo = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}{(int(str(lastNum)[4:]) + 1):03d}"
+        fccodeNo = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}{(int(str(lastNum)[4:]) + 1):04d}"
         
         #### CheckLast No
         lst = CheckLastPurchaseRunning.objects.filter(last_date=f"{PREFIX_DTE_Y}{PREFIX_DTE_M}").count()
@@ -152,7 +152,6 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
         for i in ordDetail:
             #### Sum Balance
             summary_balance += i.balance_qty
-            print(i)
             if i.is_select is True and i.qty > 0:
                 ordProd = PROD.objects.filter(FCCODE=i.forecast_detail_id.product_id.code,FCTYPE=i.forecast_detail_id.product_id.prod_type_id.code).first()
                 unitObj = UM.objects.filter(FCCODE=i.forecast_detail_id.product_id.unit_id.code).first()
@@ -374,7 +373,7 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
             if lastNum is None:
                 lastNum = "0000000"
                 
-            fccodeNo = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}{int(str(lastNum)[4:]) + 1:03d}"
+            fccodeNo = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}{int(str(lastNum)[4:]) + 1:04d}"
             prNo = f"{str(ordBook.FCPREFIX).strip()}{fccodeNo}"### PR TEST REFNO
             msg = f"message=เรียนแผนก Planning\nขณะนี้ทางแผนก PU ได้ทำการอนุมัติเอกสาร {prNo} เรียบร้อยแล้วคะ"
             ordH = OrderH()
