@@ -409,7 +409,9 @@ class PDSHeaderAdmin(admin.ModelAdmin):
                 messages.error(request,"กรุณาระบุ Delivery Date ด้วย")
                 
             else:
-                if int(obj.pds_delivery_date.strftime("%Y%m")) == int(f"{obj.forecast_id.forecast_on_year_id.value}{obj.forecast_id.forecast_on_month_id.value}"):
+                onM = int(f"{obj.forecast_id.forecast_on_month_id.value}")
+                onMonth = int(f"{obj.forecast_id.forecast_on_year_id.value}{onM:02d}")
+                if int(obj.pds_delivery_date.strftime("%Y%m")) == onMonth:
                     isSuccess= greeter.create_purchase_order(request, obj.id, "PO", "002")
                     if isSuccess:
                         msg = f"ทำการเปิด PDS หมายเลข {obj.pds_no}"

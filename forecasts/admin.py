@@ -79,19 +79,20 @@ def make_reject_forecast(modeladmin, request, queryset):
 def make_approve_forecast(modeladmin, request, queryset):
     ###
     data = queryset
-    isValid = False
-    for i in data:
-        if int(i.forecast_status) > 0:
-            isValid = True
-            break
+    # isValid = False
+    # for i in data:
+    #     if int(i.forecast_status) > 0:
+    #         isValid = True
+    #         break
 
-    if isValid:
-        messages.error(
-            request, "ไม่สามารถดำเนินการตามที่ร้องขอได้เนื่องจาก สถานะของรายการไม่ถูกต้อง รบการทบทวนรายการที่เลือกใหม่ด้วย")
-        return
+    # if isValid:
+    #     messages.error(
+    #         request, "ไม่สามารถดำเนินการตามที่ร้องขอได้เนื่องจาก สถานะของรายการไม่ถูกต้อง รบการทบทวนรายการที่เลือกใหม่ด้วย")
+    #     return
 
     for obj in data:
-        greeter.create_purchase_order(request, obj.id)
+        if obj.forecast_status == "0":
+            greeter.create_purchase_order(request, obj.id)
 
 
 class ForecastMonthFilter(admin.SimpleListFilter):
