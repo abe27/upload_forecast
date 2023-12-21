@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
 
-from .models import Corporation,Factory, LineNotification, ReportApproveByUser, ReportIssueByUser,Section,Position,Department,Employee,ManagementUser,Supplier, PlanningForecast, OrganizationApprovePDS, UserErrorLog
+from .models import Corporation,Factory, FactoryTags, LineNotification, ReportApproveByUser, ReportIssueByUser,Section,Position,Department,Employee,ManagementUser,Supplier, PlanningForecast, OrganizationApprovePDS, UserErrorLog
 
 # Register your models here.
 class CorporationAdmin(admin.ModelAdmin):
@@ -360,6 +360,9 @@ class UserErrorLogAdmin(admin.ModelAdmin):
     )
     pass
 
+class FactoryTagsAdmin(admin.ModelAdmin):
+    pass
+
 admin.site.register(Corporation, CorporationAdmin,)
 admin.site.register(Factory, FactoryAdmin,)
 admin.site.register(Section, SectionAdmin,)
@@ -372,3 +375,4 @@ admin.site.register(LineNotification, LineNotificationAdmin)
 admin.site.register(PlanningForecast, PlanningForecastAdmin)
 admin.site.register(OrganizationApprovePDS, OrganizationApprovePDSAdmin)
 admin.site.register(UserErrorLog, UserErrorLogAdmin)
+admin.site.register(FactoryTags, FactoryTagsAdmin)

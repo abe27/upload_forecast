@@ -120,6 +120,23 @@ class Department(models.Model):
         verbose_name = "Department"
         verbose_name_plural = "Department"
         
+class FactoryTags(models.Model):
+    # select FCSKID,FCCODE,FCNAME,FCNAME2 from DEPT
+    id = models.UUIDField(primary_key=True, editable=False, verbose_name="PRIMARY KEY", default=uuid.uuid4)
+    name = models.CharField(max_length=250, verbose_name="Name", blank=False, null=False)
+    description = models.TextField(verbose_name="Description",blank=True, null=True)
+    is_active = models.BooleanField(verbose_name="Is Active", default=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        db_table = "tbmFactoryTags"
+        verbose_name = "FactoryTags"
+        verbose_name_plural = "FactoryTags"
+        
 class Employee(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, verbose_name="PRIMARY KEY", default=uuid.uuid4)
     corporation_id = models.ForeignKey(Corporation, blank=True, null=True, on_delete=models.SET_NULL)
@@ -184,6 +201,7 @@ class ManagementUser(AbstractUser):
     description = models.TextField(verbose_name="Description",blank=True, null=True)
     avatar_url = models.ImageField(verbose_name="Avatar Image",blank=True, null=True)
     signature_img = models.ImageField(verbose_name="Signature Image",blank=True, null=True)
+    factory_tags_id = models.ManyToManyField(FactoryTags, blank=True, verbose_bose="PDS Tags Factory",related_name='SetFactoryTags')
     is_approve = models.BooleanField(verbose_name="Is Approve", default=False)
     is_issue = models.BooleanField(verbose_name="Is Issue", default=False)
     is_active = models.BooleanField(verbose_name="Is Active", default=True)
