@@ -162,7 +162,7 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
                 ordPR = OrderI.objects.get(FCSKID=i.forecast_detail_id.ref_formula_id)
                 olderQty = int(ordPR.FNBACKQTY)
                 
-                print(f"PR BackQTY: %s" %olderQty)
+                # print(f"PR BackQTY: %s" %olderQty)
                 ordI = OrderI()
                 ordI.FCSKID=nanoid.generate(size=8)
                 ordI.FCCOOR=supplier.FCSKID

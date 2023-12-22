@@ -177,7 +177,7 @@ class ManagementUserAdmin(UserAdmin):
             'fields': ('last_login', 'date_joined')
         }),
         ('Additional info', {
-            'fields': ('formula_user_id','position_id','department_id', 'section_id','line_notification_id','supplier_id','is_approve','is_issue','avatar_url','signature_img', 'description')
+            'fields': ('formula_user_id','position_id','department_id', 'section_id','line_notification_id','supplier_id','factory_tags_id','is_approve','is_issue','avatar_url','signature_img', 'description')
         })
     )
     
@@ -185,6 +185,10 @@ class ManagementUserAdmin(UserAdmin):
         # if obj.position_id is None:
         #     pos = Position.objects.get(code="-")
         #     obj.position_id = pos
+        
+        if obj.factory_tags_id is None:
+            tags = FactoryTags.objects.get(name="F1")
+            obj.factory_tags_id = tags
         
         if obj.line_notification_id is None:
             pos = LineNotification.objects.get(name="TEST")

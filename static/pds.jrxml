@@ -3,10 +3,12 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_pds" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryNewPage="true" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="web_forecast"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="ireport.jasperserver.url" value="http://192.168.20.11:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.url" value="http://localhost:8080/jasperserver/"/>
 	<property name="ireport.jasperserver.user" value="jasperadmin"/>
 	<property name="ireport.jasperserver.report.resource" value="/report_forecast/print_pds_files/main_jrxml"/>
 	<property name="ireport.jasperserver.reportUnit" value="/report_forecast/print_pds"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="418"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="570"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="TH Sarabun New" fontSize="50" isBold="false" pdfFontName="fonts/THSarabun-Bold.ttf"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="TH Sarabun New" fontSize="18" isBold="false" pdfFontName="Courier" pdfEncoding="Identity-H (Unicode with horizontal writing)"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true"/>
@@ -58,7 +60,7 @@
 		</conditionalStyle>
 	</style>
 	<parameter name="ParmID" class="java.lang.Integer">
-		<defaultValueExpression><![CDATA[5]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[3]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
@@ -408,7 +410,7 @@ ORDER BY "tempReportPDSDetail".pds_no_id ASC,
 					<text><![CDATA[Telephone:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="92" y="32" width="100" height="24" uuid="2e6ce9bf-5148-4689-a82e-fab97b91bad7"/>
+					<reportElement x="90" y="32" width="102" height="24" uuid="2e6ce9bf-5148-4689-a82e-fab97b91bad7"/>
 					<textElement verticalAlignment="Middle">
 						<font fontName="TH Sarabun New" size="14"/>
 					</textElement>
@@ -714,6 +716,13 @@ ORDER BY "tempReportPDSDetail".pds_no_id ASC,
 				</textElement>
 				<text><![CDATA[********** หมายเหตุ: หากมีข้อสงสัยประการใดกรุณาติดต่อกลับ  038-578530 ต่อ 303 **********]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="420" y="80" width="130" height="40" uuid="f52bd8aa-8c4e-4630-b7b0-e0ed80211e53"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{issue_by_name}]]></textFieldExpression>
+			</textField>
 		</band>
 	</lastPageFooter>
 </jasperReport>

@@ -23,23 +23,22 @@ def pds_reports(request, id):
     data = ConfirmInvoiceDetail.objects.filter(invoice_header_id=rec.confirm_invoice_id)
     head = data[0].invoice_header_id
     file_name = f"report_pds_{head.id}_{dte.strftime('%Y%m%d%H%M')}"
-    rpPds = None
+    
     try:
-        ReportPDSHeader.objects.get(pds_no=head.purchase_no).delete()
+        rpPds = ReportPDSHeader.objects.get(pds_no=head.purchase_no).delete()
     except ReportPDSHeader.DoesNotExist:
+        
         pass
     
-    rpPds = ReportPDSHeader()
-    rpPds.pds_no = head.purchase_no
     deliveryDte = "-"
     if head.pds_id.pds_delivery_date:
         deliveryDte = head.pds_id.pds_delivery_date.strftime('%d-%B-%Y')
     
     ### Factory TAG ###
-    usr = ManagementUser.factory_tags_id.through.objects.filter(managementuser_id=head.approve_by_id.id)
-    for u in usr:
-        print(u.factory_tags_id.name)
-        
+    rpPds = ReportPDSHeader()
+    rpPds.pds_no = head.purchase_no
+    rpPds.factory_tags = head.approve_by_id.factory_tags_id.name
+    rpPds.issue_by_name = head.approve_by_id
     rpPds.delivery_date = deliveryDte
     rpPds.sup_code = head.supplier_id.code
     rpPds.sup_name = head.supplier_id.name
@@ -91,7 +90,10 @@ def pds_reports(request, id):
             'Authorization': f'Bearer {token}'
         }
         msg = f"message=เรียนแผนก Planning/PU\nขณะนี้ทาง Supplier({request.user})\nได้ทำการโหลดเอกสาร PDS\n{head.supplier_id.name}\nเลขที่เอกสาร {head.purchase_no}\nเรียบร้อยแล้วคะ"
-        requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
+        try:
+            requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
+        except:
+            pass
         ### Update Download Counter
         head.is_download_count += 1
         head.save()

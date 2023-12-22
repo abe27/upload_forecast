@@ -201,7 +201,7 @@ class ManagementUser(AbstractUser):
     description = models.TextField(verbose_name="Description",blank=True, null=True)
     avatar_url = models.ImageField(verbose_name="Avatar Image",blank=True, null=True)
     signature_img = models.ImageField(verbose_name="Signature Image",blank=True, null=True)
-    factory_tags_id = models.ManyToManyField(FactoryTags, blank=True, verbose_name="PDS Tags Factory",related_name='SetFactoryTags')
+    factory_tags_id = models.ForeignKey(FactoryTags, blank=True, null=True, verbose_name="PDS Tags Factory",on_delete=models.SET_NULL)
     is_approve = models.BooleanField(verbose_name="Is Approve", default=False)
     is_issue = models.BooleanField(verbose_name="Is Issue", default=False)
     is_active = models.BooleanField(verbose_name="Is Active", default=True)
