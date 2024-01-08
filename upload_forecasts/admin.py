@@ -96,7 +96,6 @@ class UploadForecastAdmin(admin.ModelAdmin):
         remark = ""
         isSuccess = True
         checkDuplicate = UploadForecast.objects.filter(forecast_month=obj.forecast_month,forecast_year=obj.forecast_year,forecast_revise_id=obj.forecast_revise_id).first()
-        # greeter.upload_file_forecast(request, obj, form, change)
         if checkDuplicate is None:
             greeter.upload_file_forecast(request, obj, form, change)
             remark = "อัพโหลดข้อมูล Forecast เรียบร้อย"
