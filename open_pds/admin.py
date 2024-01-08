@@ -412,10 +412,24 @@ class PDSHeaderAdmin(admin.ModelAdmin):
                 onM = int(f"{obj.forecast_id.forecast_on_month_id.value}")
                 onMonth = int(f"{obj.forecast_id.forecast_on_year_id.value}{onM:02d}")
                 if int(obj.pds_delivery_date.strftime("%Y%m")) == onMonth:
-                    isSuccess= greeter.create_purchase_order(request, obj.id, "PO", "002")
-                    if isSuccess:
-                        msg = f"ทำการเปิด PDS หมายเลข {obj.pds_no}"
-                        messages.success(request, f"บันทึกข้อมูลเรียบร้อยแล้ว")
+                    ordDetail = PDSDetail.objects.filter(pds_header_id=obj, qty__gt=0).all()
+                    isFound = False
+                    for r in ordDetail:
+                        if int(r.qty) > int(r.balance_qty):
+                            isFound = True
+                            r.qty = int(r.balance_qty)
+                            r.save()
+                            
+                    if isFound:
+                        isSuccess = False
+                        msg = f"ระบุจำนวน Qty เกิน"
+                        messages.error(request, f"ระบุจำนวน Qty เกินยอดจริง")
+                        
+                    else:     
+                        isSuccess= greeter.create_purchase_order(request, obj.id, "PO", "002")
+                        if isSuccess:
+                            msg = f"ทำการเปิด PDS หมายเลข {obj.pds_no}"
+                            messages.success(request, f"บันทึกข้อมูล {obj.pds_no} เรียบร้อยแล้ว")
                 else:
                     isSuccess = False
                     msg = f"ระบุวันที่ Delivery Date ไม่ตรงกับรายการ Forecast"

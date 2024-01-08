@@ -85,6 +85,13 @@ class ReceiveHeaderAdmin(admin.ModelAdmin):
     
     readonly_fields = fields
     
+    list_filter = (
+        "supplier_id",
+        "receive_date",
+        "inv_delivery_date",
+        "receive_status",
+    )
+    
     def show_po_detail(self, obj):
         return format_html(f'<a target="blank" href="/web/confirm_invoices/confirminvoiceheader/{obj.confirm_invoice_id}/change/">{obj.purchase_no}</a>')
     show_po_detail.short_description = "PDS No."
