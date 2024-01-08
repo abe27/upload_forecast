@@ -3,6 +3,7 @@ from django.contrib import admin,messages
 from django.shortcuts import redirect
 from books.models import Book, EDIReviseType, ReviseBook
 from forecasts import greeter
+from members.models import UserErrorLog
 
 from upload_forecasts.models import OnMonthList, OnYearList, UploadForecast
 
@@ -92,8 +93,24 @@ class UploadForecastAdmin(admin.ModelAdmin):
         return redirect('/web/forecasts/forecast/')
     
     def save_model(self, request, obj, form, change):
-        greeter.upload_file_forecast(request, obj, form, change)
-        
+        remark = ""
+        isSuccess = True
+        checkDuplicate = UploadForecast.objects.filter(forecast_month=obj.forecast_month,forecast_year=obj.forecast_year,forecast_revise_id=obj.forecast_revise_id).first()
+        # greeter.upload_file_forecast(request, obj, form, change)
+        if checkDuplicate is None:
+            greeter.upload_file_forecast(request, obj, form, change)
+            remark = "อัพโหลดข้อมูล Forecast เรียบร้อย"
+            
+        else:
+            messages.error(request, "อัพโหลดข้อมูล Forecast ซ้ำ!")
+            remark = "อัพโหลดข้อมูล Forecast ซ้ำ!"
+            isSuccess = False
+            
+        log = UserErrorLog()
+        log.user_id = request.user
+        log.remark = remark
+        log.is_status = isSuccess
+        log.save()
     pass
 
 
