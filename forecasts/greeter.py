@@ -867,7 +867,7 @@ def check_confirm_qty(request):
         # print(f"Confirm QTY: {confirmQty} QTY: {obj.qty} :: {int(obj.qty)-confirmQty}")
         if confirmQty > int(obj.qty):
             obj.confirm_qty = obj.qty
-            # obj.save()
+            obj.save()
             return True
         
         obj.balance_qty = int(obj.qty)
