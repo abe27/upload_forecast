@@ -66,6 +66,7 @@ class ReceiveHeaderAdmin(admin.ModelAdmin):
         "item",
         "qty",
         "summary_price",
+        "remark",
         "status",
         "updated_at",
     )

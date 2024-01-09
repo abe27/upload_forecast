@@ -560,6 +560,7 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
     def response_change(self, request, obj):
         msgRemark = ""
         isError = True
+        isUpdate = False
         if '_confirm_invoice' in request.POST:
             isValid = True
             # if obj.inv_delivery_date is None:
@@ -581,16 +582,20 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
                         request, f"ระบุยอด Confirm เกินกว่ายอดสั่งซื้อ")
 
                 else:
-                    if greeter.receive_invoice(request, obj):
+                    isUpdate = greeter.receive_invoice(request, obj)
+                    if isUpdate:
                         messages.success(
                             request, f"Confirm Invoice {obj.inv_no} สำเร็จ")
+                    else:
+                        messages.error(
+                            request, f"Confirm Invoice {obj.inv_no} ไม่สำเร็จกรุณาตรวจสอบข้อมูลด้วย")
+                        obj.inv_status = "0"
                         
             #### Check date confirm
             # obj.inv_delivery_date = None
             obj.inv_no = None
             obj.remark = None
-            # obj.save()
-            
+            obj.save()
             msgRemark = f"ยืนยัน Invoice เลขที่ {obj.inv_no}"
             
         if '_cancel_invoice' in request.POST:

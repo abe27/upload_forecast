@@ -863,19 +863,20 @@ def check_confirm_qty(request):
     for i in range(0, plimit):
         id = data[f'confirminvoicedetail_set-{i}-id']
         confirmQty = int(data[f'confirminvoicedetail_set-{i}-confirm_qty'])
-        obj = ConfirmInvoiceDetail.objects.get(id=id)
-        # print(f"Confirm QTY: {confirmQty} QTY: {obj.qty} :: {int(obj.qty)-confirmQty}")
-        if confirmQty > int(obj.qty):
-            obj.confirm_qty = obj.qty
+        if confirmQty > 0:
+            obj = ConfirmInvoiceDetail.objects.get(id=id)
+            # print(f"Confirm QTY: {confirmQty} QTY: {obj.qty} :: {int(obj.qty)-confirmQty}")
+            if confirmQty > int(obj.qty):
+                obj.confirm_qty = obj.qty
+                obj.save()
+                return True
+            
+            obj.balance_qty = int(obj.qty)
+            balance_qty = int(obj.qty)-confirmQty
+            obj.qty=balance_qty
+            obj.confirm_status = "1"
             obj.save()
-            return True
-        
-        obj.balance_qty = int(obj.qty)
-        balance_qty = int(obj.qty)-confirmQty
-        obj.qty=balance_qty
-        obj.confirm_status = "1"
-        obj.save()
-        totalConfirm += int(obj.qty)-confirmQty
+            totalConfirm += int(obj.qty)-confirmQty
     
     # print(confirmID)
     # conData = ConfirmInvoiceHeader.objects.get(id=confirmID)
@@ -902,6 +903,7 @@ def receive_invoice(request, obj):
     rec.item = 0
     rec.qty = 0
     rec.summary_price = 0
+    rec.remark = obj.remark
     rec.save()
     
     seq = 0
@@ -911,26 +913,27 @@ def receive_invoice(request, obj):
     for i in range(0, plimit):
         id = data[f'confirminvoicedetail_set-{i}-id']
         confirmQty = int(data[f'confirminvoicedetail_set-{i}-confirm_qty'])
-        confirmDetail = ConfirmInvoiceDetail.objects.get(id=id)
-        totalQty = confirmDetail.balance_qty
-        receDetail = ReceiveDetail()
-        receDetail.receive_header_id = rec
-        receDetail.confirm_detail_id = confirmDetail
-        receDetail.seq = seq + 1
-        receDetail.qty = confirmQty
-        receDetail.save()
-        
-        ### Update Transaction
-        confirmDetail.qty = (totalQty - confirmQty)
-        confirmDetail.confirm_qty = (totalQty - confirmQty)
-        confirmDetail.balance_qty = 0
-        confirmDetail.confirm_status = "1"
-        if (totalQty - confirmQty) > 0:
-            confirmDetail.confirm_status = "2"
+        if confirmQty > 0:
+            confirmDetail = ConfirmInvoiceDetail.objects.get(id=id)
+            totalQty = confirmDetail.balance_qty
+            receDetail = ReceiveDetail()
+            receDetail.receive_header_id = rec
+            receDetail.confirm_detail_id = confirmDetail
+            receDetail.seq = seq + 1
+            receDetail.qty = confirmQty
+            receDetail.save()
             
-        confirmDetail.save()
-        seq += 1
-        qty += confirmQty
+            ### Update Transaction
+            confirmDetail.qty = (totalQty - confirmQty)
+            confirmDetail.confirm_qty = (totalQty - confirmQty)
+            confirmDetail.balance_qty = 0
+            confirmDetail.confirm_status = "1"
+            if (totalQty - confirmQty) > 0:
+                confirmDetail.confirm_status = "2"
+                
+            confirmDetail.save()
+            seq += 1
+            qty += confirmQty
         
     rec.item = seq
     rec.qty = qty
@@ -948,10 +951,19 @@ def receive_invoice(request, obj):
     obj.confirm_qty = recQty
     obj.qty = obj.original_qty
     
-    if confirmDetail.qty == 0:
-        obj.confirm_qty = obj.original_qty
-        obj.inv_status = 1
+    if seq > 0:
+        checkQty = 0
+        for q in objDetail:
+            checkQty += int(q.qty)
         
-    else:
-        obj.inv_status = 2
+        if checkQty == 0:
+            obj.confirm_qty = obj.original_qty
+            obj.inv_status = 1
+            
+        else:
+            obj.inv_status = 2
+        
+        return True
     
+    rec.delete()
+    return False
