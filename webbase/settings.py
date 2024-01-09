@@ -31,8 +31,8 @@ SECRET_KEY = 'django-insecure-n919u-1x#hdb8aaf$qba6+9-+@mla*ofaz81#mc6z2q)-=18%&
 DEBUG = True
 
 # ALLOWED_HOSTS = ["*"]
-ALLOWED_HOSTS = ["https://edi-vcst.in.th", "*",]
-CSRF_TRUSTED_ORIGINS = ["https://edi-vcst.in.th", "*",]
+ALLOWED_HOSTS = ["https://edi-vcst.in.th","edi-vcst.in.th","125.25.57.91", ]
+CSRF_TRUSTED_ORIGINS = ["https://edi-vcst.in.th"]
 
 # Application definition
 
