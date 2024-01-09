@@ -11,7 +11,7 @@ from receives.models import ReceiveDetail
 # Create your views here.
 def print_tags(request, id):
     dte = datetime.now()
-    data = ReceiveDetail.objects.filter(receive_header_id=id)
+    data = ReceiveDetail.objects.filter(receive_header_id=id, qty__gt=0)
     head = data[0].receive_header_id
     file_name = f"print_tag_{head.id}_{dte.strftime('%Y%m%d%H%M')}"
     ### Count Tags

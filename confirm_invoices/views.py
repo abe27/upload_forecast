@@ -20,7 +20,7 @@ def index(request):
 def pds_reports(request, id):
     dte = datetime.now()
     rec = ReceiveHeader.objects.get(id=id)
-    data = ConfirmInvoiceDetail.objects.filter(invoice_header_id=rec.confirm_invoice_id)
+    data = ConfirmInvoiceDetail.objects.filter(invoice_header_id=rec.confirm_invoice_id, qty__qt=0)
     head = data[0].invoice_header_id
     file_name = f"report_pds_{head.id}_{dte.strftime('%Y%m%d%H%M')}"
     
