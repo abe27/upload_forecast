@@ -242,7 +242,8 @@ class ConfirmInvoiceDetailInline(admin.TabularInline):
         return False
     
     def get_queryset(self, request):
-        return super().get_queryset(request)
+        qs = super().get_queryset(request)
+        return qs.filter(qty__gt=0)
 
 
 @admin.action(description="Mark selected to Export To Excel")
@@ -588,7 +589,7 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
             # obj.inv_delivery_date = None
             obj.inv_no = None
             obj.remark = None
-            obj.save()
+            # obj.save()
             
             msgRemark = f"ยืนยัน Invoice เลขที่ {obj.inv_no}"
             
