@@ -179,7 +179,7 @@ class ReceiveHeaderAdmin(admin.ModelAdmin):
                 sumQty += i.qty
             
             obj.confirm_invoice_id.inv_status = "0"   
-            obj.confirm_invoice_id.qty = sumQty
+            # obj.confirm_invoice_id.qty = sumQty
             obj.confirm_invoice_id.save()
             obj.save()
             
