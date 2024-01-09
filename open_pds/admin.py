@@ -149,7 +149,7 @@ class PDSDetailInlineAdmin(admin.TabularInline):
 
 class PDSHeaderAdmin(admin.ModelAdmin):
     change_form_template = "admin/open_pds_form_view.html"
-    change_list_template = "admin/open_pds_list_view.html"
+    # change_list_template = "admin/open_pds_list_view.html"
     inlines = [PDSDetailInlineAdmin]
     
     def get_fields(self, request, obj=None):
@@ -315,6 +315,7 @@ class PDSHeaderAdmin(admin.ModelAdmin):
         if int(obj.pds_status) >= 1:
             return obj.pds_no
         return obj.forecast_id
+    check_data_status.short_description = "No."
     
     def status(self, obj):
         try:
@@ -451,18 +452,15 @@ class PDSHeaderAdmin(admin.ModelAdmin):
         greeter.request_validation(request)
         sup_id = []
         qs = super().get_queryset(request)
-        if request.user.is_superuser:
+        if request.user.groups.filter(name='Supplier').exists() is False:
             return qs.filter(qty__gt=0)
         
         usr = ManagementUser.supplier_id.through.objects.filter(managementuser_id=request.user.id)
         for u in usr:
             sup_id.append(u.supplier_id)
         
-        if request.user.groups.filter(name='Supplier').exists():
-            obj = qs.filter(supplier_id__in=sup_id, qty__gt=0)
-            return obj
-        
-        return qs.filter(qty__gt=0)
+        obj = qs.filter(supplier_id__in=sup_id, qty__gt=0)
+        return obj
     
     class Meta:
         css = {
