@@ -30,7 +30,9 @@ SECRET_KEY = 'django-insecure-n919u-1x#hdb8aaf$qba6+9-+@mla*ofaz81#mc6z2q)-=18%&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["https://edi-vcst.in.th"]
+CSRF_TRUSTED_ORIGINS = ["https://edi-vcst.in.th"]
 
 
 # Application definition
