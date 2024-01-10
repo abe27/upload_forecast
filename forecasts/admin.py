@@ -20,6 +20,8 @@ class ForecastDetailInline(admin.TabularInline):
         'product_code',
         'product_name',
         'product_group',
+        'packing',
+        'qty',
         'request_qty',
         'balance_qty',
         'request_status',
@@ -35,10 +37,11 @@ class ForecastDetailInline(admin.TabularInline):
         'product_name',
         'product_group',
         'request_qty',
+        # 'packing',
+        # 'qty',
         # 'balance_qty',
         'price',
         'request_status',
-        'last_updated',
     ]
 
     # def updated_on(self, obj):

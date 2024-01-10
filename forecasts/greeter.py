@@ -573,7 +573,7 @@ def upload_file_forecast(request, obj, form, change):
                     if part == 0:
                         msgProduct = f"ไม่พบข้อมูล Part:{partNo}"
                         isError = True
-                
+                        
                 supFilter = None
                 if supName == "0":
                     isError = True
@@ -741,6 +741,11 @@ def upload_file_forecast(request, obj, form, change):
                     pdsDetail.product_id=part
                     pass
                 
+                # bQty = r["qty"]
+                # if part.std_pack > 0:
+                #     bQty = int(float(r["qty"])/part.std_pack)
+                
+                # pdsDetail.qty = r["qty"]
                 pdsDetail.request_qty=r["qty"]
                 pdsDetail.balance_qty=r["qty"]
                 pdsDetail.month_0 = str(r['month0'])

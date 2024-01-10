@@ -123,6 +123,12 @@ class ForecastDetail(models.Model):
         # return str(self.product_id.prod_group_id.code)
         return format_html(f"<span class='text-danger text-bold'>{self.product_id.prod_group_id.code}</span>")
     
+    def packing(self):
+        return self.product_id.std_pack
+    
+    def qty(self):
+        return self.request_qty * self.product_id.std_pack
+    
     def last_updated(self):
         return self.updated_at.strftime("%d-%m-%Y %H:%M:%S")
     
