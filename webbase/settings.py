@@ -28,11 +28,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'ADSads123')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('DEBUG_MODE'))
+DEBUG = bool(os.environ.get('DEBUG_MODE', 'true'))
 
 ALLOWED_HOSTS = ["https://edi-vcst.in.th","edi-vcst.in.th","125.25.57.91", ]
 CSRF_TRUSTED_ORIGINS = ["https://edi-vcst.in.th"]
-if bool(os.environ.get('DEBUG_MODE')):
+if DEBUG:
     ALLOWED_HOSTS = ["*"]
     # CSRF_TRUSTED_ORIGINS = ["*"]
 
