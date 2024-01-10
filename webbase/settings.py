@@ -28,11 +28,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-n919u-1x#hdb8aaf$qba6+9-+@mla*ofaz81#mc6z2q)-=18%&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.environ.get('DEBUG_MODE'))
 
-ALLOWED_HOSTS = ["*"]
-# ALLOWED_HOSTS = ["https://edi-vcst.in.th","edi-vcst.in.th","125.25.57.91", ]
-# CSRF_TRUSTED_ORIGINS = ["https://edi-vcst.in.th"]
+ALLOWED_HOSTS = ["https://edi-vcst.in.th","edi-vcst.in.th","125.25.57.91", ]
+CSRF_TRUSTED_ORIGINS = ["https://edi-vcst.in.th"]
+if bool(os.environ.get('DEBUG_MODE')):
+    ALLOWED_HOSTS = ["*"]
+    # CSRF_TRUSTED_ORIGINS = ["*"]
 
 # Application definition
 
