@@ -861,35 +861,40 @@ def request_validation(request):
     pass
 
 def check_confirm_qty(request):
-    data = request.POST.copy()
-    # confirmID = data['confirminvoicedetail_set-0-invoice_header_id']
-    totalConfirm = 0
-    plimit = int(data['confirminvoicedetail_set-TOTAL_FORMS'])
-    for i in range(0, plimit):
-        id = data[f'confirminvoicedetail_set-{i}-id']
-        confirmQty = int(data[f'confirminvoicedetail_set-{i}-confirm_qty'])
-        if confirmQty > 0:
-            obj = ConfirmInvoiceDetail.objects.get(id=id)
-            # print(f"Confirm QTY: {confirmQty} QTY: {obj.qty} :: {int(obj.qty)-confirmQty}")
-            if confirmQty > int(obj.qty):
-                obj.confirm_qty = obj.qty
+    try:
+        data = request.POST.copy()
+        # confirmID = data['confirminvoicedetail_set-0-invoice_header_id']
+        totalConfirm = 0
+        plimit = int(data['confirminvoicedetail_set-TOTAL_FORMS'])
+        for i in range(0, plimit):
+            id = data[f'confirminvoicedetail_set-{i}-id']
+            confirmQty = int(data[f'confirminvoicedetail_set-{i}-confirm_qty'])
+            if confirmQty > 0:
+                obj = ConfirmInvoiceDetail.objects.get(id=id)
+                # print(f"Confirm QTY: {confirmQty} QTY: {obj.qty} :: {int(obj.qty)-confirmQty}")
+                if confirmQty > int(obj.qty):
+                    obj.confirm_qty = obj.qty
+                    obj.save()
+                    return True
+                
+                obj.balance_qty = int(obj.qty)
+                balance_qty = int(obj.qty)-confirmQty
+                obj.qty=balance_qty
+                obj.confirm_status = "1"
                 obj.save()
-                return True
-            
-            obj.balance_qty = int(obj.qty)
-            balance_qty = int(obj.qty)-confirmQty
-            obj.qty=balance_qty
-            obj.confirm_status = "1"
-            obj.save()
-            totalConfirm += int(obj.qty)-confirmQty
+                totalConfirm += int(obj.qty)-confirmQty
+        
+        # print(confirmID)
+        # conData = ConfirmInvoiceHeader.objects.get(id=confirmID)
+        # print(conData)
+        # conData.qty = totalConfirm
+        # conData.confirm_qty = totalConfirm
+        # conData.save()
+        return False
     
-    # print(confirmID)
-    # conData = ConfirmInvoiceHeader.objects.get(id=confirmID)
-    # print(conData)
-    # conData.qty = totalConfirm
-    # conData.confirm_qty = totalConfirm
-    # conData.save()
-    return False
+    except Exception as ex:
+        print(f"Error: {str(ex)}")
+        return True
 
 def receive_invoice(request, obj):
     dte = datetime.now()

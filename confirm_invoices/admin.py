@@ -578,8 +578,8 @@ class ConfirmInvoiceHeaderAdmin(admin.ModelAdmin):
             if isValid:
                 isError = greeter.check_confirm_qty(request)
                 if isError:
-                    messages.warning(
-                        request, f"ระบุยอด Confirm เกินกว่ายอดสั่งซื้อ")
+                    messages.error(
+                        request, f"ระบุยอด Confirm ยอดสั่งซื้อไม่ถูกต้อง")
 
                 else:
                     isUpdate = greeter.receive_invoice(request, obj)

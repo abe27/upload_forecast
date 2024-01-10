@@ -1,8 +1,9 @@
 from datetime import datetime
 import os
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib.auth.models import Group
+from django.contrib import messages
 import requests
 import xlwt
 
@@ -18,89 +19,94 @@ def index(request):
     return render(request, 'index.html')
 
 def pds_reports(request, id):
-    dte = datetime.now()
-    rec = ReceiveHeader.objects.get(id=id)
-    data = ConfirmInvoiceDetail.objects.filter(invoice_header_id=rec.confirm_invoice_id, qty__qt=0)
-    head = data[0].invoice_header_id
-    file_name = f"report_pds_{head.id}_{dte.strftime('%Y%m%d%H%M')}"
-    
     try:
-        rpPds = ReportPDSHeader.objects.get(pds_no=head.purchase_no).delete()
-    except ReportPDSHeader.DoesNotExist:
+        dte = datetime.now()
+        rec = ReceiveHeader.objects.get(id=id)
+        data = ConfirmInvoiceDetail.objects.filter(invoice_header_id=rec.confirm_invoice_id, qty__qt=0)
+        head = data[0].invoice_header_id
+        file_name = f"report_pds_{head.id}_{dte.strftime('%Y%m%d%H%M')}"
         
-        pass
-    
-    deliveryDte = "-"
-    if head.pds_id.pds_delivery_date:
-        deliveryDte = head.pds_id.pds_delivery_date.strftime('%d-%B-%Y')
-    
-    ### Factory TAG ###
-    rpPds = ReportPDSHeader()
-    rpPds.pds_no = head.purchase_no
-    rpPds.factory_tags = head.approve_by_id.factory_tags_id.name
-    rpPds.issue_by_name = head.approve_by_id
-    rpPds.delivery_date = deliveryDte
-    rpPds.sup_code = head.supplier_id.code
-    rpPds.sup_name = head.supplier_id.name
-    rpPds.sup_telephone = ""
-    issueDte = ""
-    if head.inv_date:
-        issueDte = head.inv_date.strftime('%d-%B-%Y')
-        
-    rpPds.issue_date = issueDte
-    rpPds.issue_time = ""
-    rpPds.save()
-    
-    for r in data:
-        part_code = f"{r.pds_detail_id.forecast_detail_id.product_id.no}"
-        rpPdsDetail = None
         try:
-            ReportPDSDetail.objects.get(pds_no=rpPds, part_code=part_code).delete()
-        except:
+            rpPds = ReportPDSHeader.objects.get(pds_no=head.purchase_no).delete()
+        except ReportPDSHeader.DoesNotExist:
+            
             pass
         
-        rpPdsDetail = ReportPDSDetail()
-        rpPdsDetail.pds_no = rpPds
-        rpPdsDetail.seq = r.seq
-        rpPdsDetail.part_model = r.pds_detail_id.forecast_detail_id.import_model_by_user
-        rpPdsDetail.part_code = part_code
-        rpPdsDetail.part_name = f"{r.pds_detail_id.forecast_detail_id.product_id.code}:{r.pds_detail_id.forecast_detail_id.product_id.name}"
-        rpPdsDetail.packing_qty = 0
-        rpPdsDetail.total = float(r.total_qty)
-        rpPdsDetail.is_active = True
-        rpPdsDetail.save()
+        deliveryDte = "-"
+        if head.pds_id.pds_delivery_date:
+            deliveryDte = head.pds_id.pds_delivery_date.strftime('%d-%B-%Y')
         
-    # # import requests
-    # JASPER_RESERVER
-    url = f"{settings.JASPER_RESERVER}/jasperserver/rest_v2/login?j_username={settings.JASPER_USER}&j_password={settings.JASPER_PASSWORD}"
-    response = requests.request("GET", url)
+        ### Factory TAG ###
+        rpPds = ReportPDSHeader()
+        rpPds.pds_no = head.purchase_no
+        rpPds.factory_tags = head.approve_by_id.factory_tags_id.name
+        rpPds.issue_by_name = head.approve_by_id
+        rpPds.delivery_date = deliveryDte
+        rpPds.sup_code = head.supplier_id.code
+        rpPds.sup_name = head.supplier_id.name
+        rpPds.sup_telephone = ""
+        issueDte = ""
+        if head.inv_date:
+            issueDte = head.inv_date.strftime('%d-%B-%Y')
+            
+        rpPds.issue_date = issueDte
+        rpPds.issue_time = ""
+        rpPds.save()
+        
+        for r in data:
+            part_code = f"{r.pds_detail_id.forecast_detail_id.product_id.no}"
+            rpPdsDetail = None
+            try:
+                ReportPDSDetail.objects.get(pds_no=rpPds, part_code=part_code).delete()
+            except:
+                pass
+            
+            rpPdsDetail = ReportPDSDetail()
+            rpPdsDetail.pds_no = rpPds
+            rpPdsDetail.seq = r.seq
+            rpPdsDetail.part_model = r.pds_detail_id.forecast_detail_id.import_model_by_user
+            rpPdsDetail.part_code = part_code
+            rpPdsDetail.part_name = f"{r.pds_detail_id.forecast_detail_id.product_id.code}:{r.pds_detail_id.forecast_detail_id.product_id.name}"
+            rpPdsDetail.packing_qty = 0
+            rpPdsDetail.total = float(r.total_qty)
+            rpPdsDetail.is_active = True
+            rpPdsDetail.save()
+            
+        # # import requests
+        # JASPER_RESERVER
+        url = f"{settings.JASPER_RESERVER}/jasperserver/rest_v2/login?j_username={settings.JASPER_USER}&j_password={settings.JASPER_PASSWORD}"
+        response = requests.request("GET", url)
+        
+        url = f"""{settings.JASPER_RESERVER}/jasperserver/rest_v2/reports/report_forecast/print_pds.pdf?ParmID={rpPds.id}"""
+        response = requests.request("GET", url, cookies=response.cookies)
+        
+            
+        query_set = Group.objects.filter(user=request.user)
+        if query_set.filter(name="Supplier").exists():
+            token = os.environ.get("LINE_TOKEN")
+            if type(request.user.line_notification_id) != type(None):
+                token = request.user.line_notification_id.token
+            
+            headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': f'Bearer {token}'
+            }
+            msg = f"message=เรียนแผนก Planning/PU\nขณะนี้ทาง Supplier({request.user})\nได้ทำการโหลดเอกสาร PDS\n{head.supplier_id.name}\nเลขที่เอกสาร {head.purchase_no}\nเรียบร้อยแล้วคะ"
+            try:
+                requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
+            except:
+                pass
+            ### Update Download Counter
+            head.is_download_count += 1
+            head.save()
+            
+        response = HttpResponse(response, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{file_name}.pdf"'
+        return response
     
-    url = f"""{settings.JASPER_RESERVER}/jasperserver/rest_v2/reports/report_forecast/print_pds.pdf?ParmID={rpPds.id}"""
-    response = requests.request("GET", url, cookies=response.cookies)
-    
-        
-    query_set = Group.objects.filter(user=request.user)
-    if query_set.filter(name="Supplier").exists():
-        token = os.environ.get("LINE_TOKEN")
-        if type(request.user.line_notification_id) != type(None):
-            token = request.user.line_notification_id.token
-        
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': f'Bearer {token}'
-        }
-        msg = f"message=เรียนแผนก Planning/PU\nขณะนี้ทาง Supplier({request.user})\nได้ทำการโหลดเอกสาร PDS\n{head.supplier_id.name}\nเลขที่เอกสาร {head.purchase_no}\nเรียบร้อยแล้วคะ"
-        try:
-            requests.request("POST", "https://notify-api.line.me/api/notify", headers=headers, data=msg.encode("utf-8"))
-        except:
-            pass
-        ### Update Download Counter
-        head.is_download_count += 1
-        head.save()
-        
-    response = HttpResponse(response, content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="{file_name}.pdf"'
-    return response
+    except Exception as e:
+        messages.error(request, f"เกิดข้อผิดพลาดในการเชื่อมต่อ Report Server")
+        return redirect(request.META.get('HTTP_REFERER'))
 
 def print_tags(request, id):
     dte = datetime.now()
