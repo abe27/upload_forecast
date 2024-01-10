@@ -93,9 +93,35 @@ class ProductAdmin(admin.ModelAdmin):
         'code',
         'no',
         'name',
+        'std_pack',
         'price',
         'is_active',
         'updated_at',
+    )
+    
+    fields = (
+        "prod_type_id",
+        "prod_group_id",
+        "unit_id",
+        "code",
+        "no",
+        "name",
+        "std_pack",
+        "price",
+        "description",
+        "img",
+    )
+    
+    readonly_fields = (
+        "prod_type_id",
+        "prod_group_id",
+        "unit_id",
+        "code",
+        "no",
+        "name",
+        "price",
+        "description",
+        "img",
     )
     
     search_fields = (
@@ -104,8 +130,7 @@ class ProductAdmin(admin.ModelAdmin):
         'name',
     )
     
-    # list_filter = ('prod_type_id','prod_group_id','is_active',)
-    list_filter = ('is_active',)
+    list_filter = ('prod_type_id','prod_group_id','is_active',)
     
     # ordering = ("code","name",)
     list_per_page = 25
