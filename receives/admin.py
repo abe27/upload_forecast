@@ -94,7 +94,8 @@ class ReceiveHeaderAdmin(admin.ModelAdmin):
     )
     
     def show_po_detail(self, obj):
-        return format_html(f'<a target="blank" href="/web/confirm_invoices/confirminvoiceheader/{obj.confirm_invoice_id}/change/">{obj.purchase_no}</a>')
+        return obj.purchase_no
+        # return format_html(f'<a target="blank" href="/web/confirm_invoices/confirminvoiceheader/{obj.confirm_invoice_id}/change/">{obj.purchase_no}</a>')
     show_po_detail.short_description = "PDS No."
     
     def get_delivery_date(self, obj):

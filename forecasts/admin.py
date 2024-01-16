@@ -392,7 +392,11 @@ class ForecastAdmin(admin.ModelAdmin):
         return obj.updated_at.strftime("%d-%m-%Y %H:%M:%S")
 
     def download_forecast(self, obj):
-        return format_html(f"<a class='btn btn-sm btn-primary' href='/forecast/export_forecast/{obj.id}' target='_blank'>Download</a>")
+        txtClass = "btn-primary"
+        if obj.forecast_download_count > 0:
+            txtClass = "btn-secondary"
+            
+        return format_html(f"<a class='btn btn-sm {txtClass}' href='/forecast/export_forecast/{obj.id}' target='_blank'>Download</a>")
     download_forecast.short_description = "Download"
 
     def get_model(self, obj):
@@ -485,7 +489,7 @@ class ForecastAdmin(admin.ModelAdmin):
             for u in usr:
                 sup_id.append(u.supplier_id)
                 
-            obj = qs.filter(supplier_id__in=sup_id, forecast_qty__gt=0)
+            obj = qs.filter(forecast_status='1', supplier_id__in=sup_id, forecast_qty__gt=0)
             return obj
         
         if request.user.groups.filter(name='Purchase').exists() or request.user.groups.filter(name='Planning').exists():
