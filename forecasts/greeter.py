@@ -540,6 +540,7 @@ def upload_file_forecast(request, obj, form, change):
         data.fillna(0, inplace=True)
         df = data.to_records()
         docs = []
+        sumRevise = 0
         i = 0
         for r in df:
             if i > 0:
@@ -614,6 +615,9 @@ def upload_file_forecast(request, obj, form, change):
                     
                 elif obj.forecast_revise_id.code == 3:
                     qty = rev3
+                    
+                if qty > 0:
+                    sumRevise += 1
                 
                 docs.append({
                     "rows": rows,
@@ -656,6 +660,11 @@ def upload_file_forecast(request, obj, form, change):
                     isAllErrors += 1
                 
             i += 1
+        
+        if sumRevise <= 0:
+            messages.warning(request, f"ไม่พบข้อมูล Revise ที่ระบุ กรุณากลับไปตรวจข้อมูลที่อัพโหลดใหม่ด้วย")
+            obj.delete()
+            return
         
         if isAllErrors > 0:
             messages.warning(request, format_html("{} <a class='text-primary' href='/forecast/logging/{}'>{}</a>", f"เกิดข้อผิดพลาดไม่สามารถอัพโหลดข้อมูลได้", str(obj.id), "รบกวนกดที่ลิงค์นี้เพื่อตรวจข้อผิดพลาดดังกล่าว"))
