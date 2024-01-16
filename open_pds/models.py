@@ -114,7 +114,7 @@ class PDSDetail(models.Model):
     
     def get_model(self):
         return str(self.forecast_detail_id.import_model_by_user)
-    
+
     class Meta:
         db_table = "ediPDSDetail"
         verbose_name = "PDSDetail"

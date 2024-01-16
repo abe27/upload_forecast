@@ -413,24 +413,27 @@ class PDSHeaderAdmin(admin.ModelAdmin):
                 onM = int(f"{obj.forecast_id.forecast_on_month_id.value}")
                 onMonth = int(f"{obj.forecast_id.forecast_on_year_id.value}{onM:02d}")
                 if int(obj.pds_delivery_date.strftime("%Y%m")) == onMonth:
-                    ordDetail = PDSDetail.objects.filter(pds_header_id=obj, qty__gt=0).all()
+                    ordDetail = PDSDetail.objects.filter(pds_header_id=obj, is_select=True, qty__gt=0)
                     isFound = False
-                    for r in ordDetail:
-                        if int(r.qty) > int(r.balance_qty):
-                            isFound = True
-                            r.qty = int(r.balance_qty)
-                            r.save()
+                    if ordDetail.count() <= 0:
+                        isFound = True
+                    else:
+                        for r in ordDetail:
+                            if r.qty > r.balance_qty:
+                                isFound = True
+                                r.qty = r.balance_qty
+                                r.save()
                             
                     if isFound:
                         isSuccess = False
-                        msg = f"ระบุจำนวน Qty เกิน"
-                        messages.error(request, f"ระบุจำนวน Qty เกินยอดจริง")
-                        
-                    else:     
+                        msg = f"ระบุจำนวน Qty ไม่ถูกต้อง"
+                        messages.error(request, f"ระบุจำนวน Qty ไม่ถูกต้อง")
+                    else:
                         isSuccess= greeter.create_purchase_order(request, obj.id, "PO", "002")
                         if isSuccess:
                             msg = f"ทำการเปิด PDS หมายเลข {obj.pds_no}"
                             messages.success(request, f"บันทึกข้อมูล {obj.pds_no} เรียบร้อยแล้ว")
+                    
                 else:
                     isSuccess = False
                     msg = f"ระบุวันที่ Delivery Date ไม่ตรงกับรายการ Forecast"
@@ -446,7 +449,10 @@ class PDSHeaderAdmin(admin.ModelAdmin):
         log.remark = msg
         log.is_status = isSuccess
         log.save()
-        return super().response_change(request, obj)
+        if isSuccess:
+            return super().response_change(request, obj)
+        
+        return super().response_change(request, None)
     
     def get_queryset(self, request):
         greeter.request_validation(request)
