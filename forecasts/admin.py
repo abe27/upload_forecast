@@ -256,19 +256,19 @@ class ForecastAdmin(admin.ModelAdmin):
     def get_list_filter(self, request):
         query_set = Group.objects.filter(user=request.user)
         if query_set.filter(name="Supplier").exists():
-            return ["forecast_on_month_id", "forecast_on_year_id", "forecast_revise_id", ForecastSupplierFilter, 'part_model_id', "forecast_status",]
+            return ["forecast_on_month_id", "forecast_on_year_id", "forecast_revise_id", ForecastSupplierFilter, 'part_model_id',]
         return [
             "forecast_on_month_id",
             "forecast_on_year_id",
             "forecast_revise_id",
             "supplier_id",
             'part_model_id',
-            "forecast_status",
+            # "forecast_status",
         ]
 
     fields = [
         ('forecast_no',
-         'book_id',),
+        'book_id',),
         'supplier_id',
         'forecast_date',
         'forecast_item',
@@ -487,7 +487,11 @@ class ForecastAdmin(admin.ModelAdmin):
                 
             obj = qs.filter(supplier_id__in=sup_id, forecast_qty__gt=0)
             return obj
-
+        
+        if request.user.groups.filter(name='Purchase').exists() or request.user.groups.filter(name='Planning').exists():
+            obj = qs.filter(forecast_status='0', forecast_qty__gt=0)
+            return obj
+        
         return qs.filter(forecast_qty__gt=0)
 
     # def save_model(self, request, obj, form, change):
