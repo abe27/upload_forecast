@@ -22,7 +22,8 @@ def pds_reports(request, id):
     try:
         dte = datetime.now()
         rec = ReceiveHeader.objects.get(id=id)
-        data = ConfirmInvoiceDetail.objects.filter(invoice_header_id=rec.confirm_invoice_id, qty__qt=0)
+        print("Start collecting")
+        data = ConfirmInvoiceDetail.objects.filter(invoice_header_id=rec.confirm_invoice_id)
         head = data[0].invoice_header_id
         file_name = f"report_pds_{head.id}_{dte.strftime('%Y%m%d%H%M')}"
         
@@ -67,10 +68,11 @@ def pds_reports(request, id):
             rpPdsDetail.part_model = r.pds_detail_id.forecast_detail_id.import_model_by_user
             rpPdsDetail.part_code = part_code
             rpPdsDetail.part_name = f"{r.pds_detail_id.forecast_detail_id.product_id.code}:{r.pds_detail_id.forecast_detail_id.product_id.name}"
-            rpPdsDetail.packing_qty = 0
+            rpPdsDetail.packing_qty = r.pds_detail_id.forecast_detail_id.product_id.std_pack
             rpPdsDetail.total = float(r.total_qty)
             rpPdsDetail.is_active = True
             rpPdsDetail.save()
+            print(r)
             
         # # import requests
         # JASPER_RESERVER
@@ -105,7 +107,7 @@ def pds_reports(request, id):
         return response
     
     except Exception as e:
-        messages.error(request, f"เกิดข้อผิดพลาดในการเชื่อมต่อ Report Server")
+        messages.error(request, f"เกิดข้อผิดพลาดในการเชื่อมต่อ Report Server {e}")
         return redirect(request.META.get('HTTP_REFERER'))
 
 def print_tags(request, id):
