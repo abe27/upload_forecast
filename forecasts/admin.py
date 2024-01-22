@@ -442,7 +442,7 @@ class ForecastAdmin(admin.ModelAdmin):
 
             return format_html(f"<span class='text-xs badge {txtClass}'>{data[1]}</span>")
 
-        except:
+        except:  # noqa: E722
             pass
 
     def changelist_view(self, request, extra_context=None):
@@ -492,8 +492,12 @@ class ForecastAdmin(admin.ModelAdmin):
             obj = qs.filter(forecast_status='1', supplier_id__in=sup_id, forecast_qty__gt=0)
             return obj
         
-        if request.user.groups.filter(name='Purchase').exists() or request.user.groups.filter(name='Planning').exists():
+        if request.user.groups.filter(name='Purchase').exists():
             obj = qs.filter(forecast_status='0', forecast_qty__gt=0)
+            return obj
+        
+        if request.user.groups.filter(name='Planning').exists():
+            obj = qs.filter(forecast_qty__gt=0)
             return obj
         
         return qs.filter(forecast_qty__gt=0)
