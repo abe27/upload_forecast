@@ -14,7 +14,7 @@ import datetime
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-load_dotenv()
+load_dotenv(".env.upload_forecast")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
