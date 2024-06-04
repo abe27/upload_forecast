@@ -1,6 +1,5 @@
 import os
 from os.path import join, dirname
-import subprocess
 
 def main():
     sDir = join(dirname(__file__), '')
@@ -11,7 +10,7 @@ def main():
         files.sort()
         for f in files:
             fname = f"{sDir}/seed/{dd}/{f}"
-            strCmd = f"python manage.py loaddata {fname}"
+            strCmd = f"python {sDir}/manage.py loaddata {fname}"
             print(strCmd)
 
 if __name__ == '__main__':
