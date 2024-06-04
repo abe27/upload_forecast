@@ -13,8 +13,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import datetime
 import os
 from pathlib import Path
+from dotenv import find_dotenv
 from dotenv import load_dotenv
-load_dotenv(".env.upload_forecast")
+
+env_file = find_dotenv(".env.upload_forecast")
+load_dotenv(env_file)
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
