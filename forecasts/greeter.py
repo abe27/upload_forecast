@@ -370,10 +370,13 @@ def create_purchase_order(request, id, prefixRef="PR", bookGroup="0002"):
             # #### Create Formula OrderH
             PREFIX_DTE_Y = str(int(obj.forecast_date.strftime('%Y')) + 543)[2:]
             PREFIX_DTE_M = f"{int(obj.forecast_date.strftime('%m')):02d}"
-            lastNum = OrderH.objects.filter(FDDATE__lte=obj.forecast_date).order_by('-FCCODE').first()
+            lastNum = OrderH.objects.filter(FDDATE__gte=obj.forecast_date).order_by('-FCCODE').first()
             if lastNum is None:
                 lastNum = "0000000"
-                
+
+            if lastNum == "9999":
+                lastNum = "0000000"
+
             fccodeNo = f"{PREFIX_DTE_Y}{PREFIX_DTE_M}{int(str(lastNum)[4:]) + 1:04d}"
             prNo = f"{str(ordBook.FCPREFIX).strip()}{fccodeNo}"### PR TEST REFNO
             msg = f"message=เรียนแผนก Planning\nขณะนี้ทางแผนก PU ได้ทำการอนุมัติเอกสาร {prNo} เรียบร้อยแล้วคะ"

@@ -2,7 +2,11 @@
 <!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_pds" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryNewPage="true" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="web_forecast"/>
-	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[dGVtcFJlcG9ydFBEU0hlYWRlciAsMjAzLDMwLGQ2NmM1MTFjLWEzMzItNGM1Ni05OGVmLWNhMjNi
+ZGJhMzM3OTt0ZW1wUmVwb3J0UERTRGV0YWlsICwxNSwxNSwwNzgxYjQwNi01MGQwLTQ1MDktOTUz
+NS1hZGNmMTk0MzU0MDg7]]>
+	</property>
 	<property name="ireport.jasperserver.url" value="http://192.168.20.11:8080/jasperserver/"/>
 	<property name="ireport.jasperserver.user" value="jasperadmin"/>
 	<property name="ireport.jasperserver.report.resource" value="/report_forecast/print_pds_files/main_jrxml"/>
@@ -63,14 +67,14 @@
 		<defaultValueExpression><![CDATA[3]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT
-*
-FROM "tempReportPDSDetail"
-inner join  "tempReportPDSHeader"  on  "tempReportPDSDetail".pds_no_id = "tempReportPDSHeader".id 
+		<![CDATA[SELECT *
+FROM tempReportPDSDetail
+	inner join tempReportPDSHeader ON 
+	 tempReportPDSDetail.pds_no_id = tempReportPDSHeader.id 
 WHERE 
-	 "tempReportPDSDetail".pds_no_id = '$P!{ParmID}' 
-ORDER BY "tempReportPDSDetail".pds_no_id ASC,
-	"tempReportPDSDetail".seq ASC]]>
+	 tempReportPDSDetail.pds_no_id = '$P!{ParmID}' 
+ORDER BY tempReportPDSDetail.pds_no_id ASC,
+	tempReportPDSDetail.seq ASC]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
 		<property name="com.jaspersoft.studio.field.name" value="id"/>
