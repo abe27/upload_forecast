@@ -7,10 +7,10 @@
 ZGJhMzM3OTt0ZW1wUmVwb3J0UERTRGV0YWlsICwxNSwxNSwwNzgxYjQwNi01MGQwLTQ1MDktOTUz
 NS1hZGNmMTk0MzU0MDg7]]>
 	</property>
-	<property name="ireport.jasperserver.url" value="http://192.168.20.11:8080/jasperserver/"/>
+	<property name="ireport.jasperserver.url" value="http://192.168.20.16:8080/jasperserver/"/>
 	<property name="ireport.jasperserver.user" value="jasperadmin"/>
-	<property name="ireport.jasperserver.report.resource" value="/report_forecast/print_pds_files/main_jrxml"/>
-	<property name="ireport.jasperserver.reportUnit" value="/report_forecast/print_pds"/>
+	<property name="ireport.jasperserver.report.resource" value="/report_forecast/pds_report_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/report_forecast/pds_report"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="418"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="570"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="TH Sarabun New" fontSize="50" isBold="false" pdfFontName="fonts/THSarabun-Bold.ttf"/>
