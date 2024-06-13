@@ -72,14 +72,13 @@ def pds_reports(request, id):
             rpPdsDetail.total = float(r.total_qty)
             rpPdsDetail.is_active = True
             rpPdsDetail.save()
-            print(r)
             
         # # import requests
         # JASPER_RESERVER
         url = f"{settings.JASPER_RESERVER}/jasperserver/rest_v2/login?j_username={settings.JASPER_USER}&j_password={settings.JASPER_PASSWORD}"
         response = requests.request("GET", url)
         
-        url = f"""{settings.JASPER_RESERVER}/jasperserver/rest_v2/reports/report_forecast/print_pds.pdf?ParmID={rpPds.id}"""
+        url = f"""{settings.JASPER_RESERVER}/jasperserver/rest_v2/reports/report_forecast/pds_report.pdf?ParmID={rpPds.id}"""
         response = requests.request("GET", url, cookies=response.cookies)
         
             
