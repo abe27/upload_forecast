@@ -10,5 +10,6 @@
     {% if perms.forecasts.upload_file_forecast %}
         {% load static %}
         <a href="/web/upload_forecasts/uploadforecast/add/" class="btn float-right btn-info"><i class="fas fa-upload"></i>&nbsp;Upload Forecast</a>
+        <a href="/static/file_template/templ_pds.xls" class="btn float-right btn-primary"><i class="fas fa-upload"></i>&nbsp;Template Forecast</a>
     {% endif %}
 {% endblock %}
