@@ -1,16 +1,10 @@
 from datetime import datetime
-import json
 import os
-import urllib
 from django.conf import settings
 from django.http import HttpResponse
 from django.contrib.auth.models import Group
-from django.template.loader import get_template, render_to_string
 from django.shortcuts import redirect, render
 import requests
-from xlutils.copy import copy    
-from xlrd import open_workbook
-from xlwt import XFStyle, Borders, Font, Alignment
 
 from open_pds.models import PDSDetail, PDSHeader, ReportPDSDetail, ReportPDSHeader
 
