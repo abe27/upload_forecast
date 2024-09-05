@@ -31,8 +31,10 @@ def download_pds(request, id):
     except ReportPDSHeader.DoesNotExist:
         rpPds = ReportPDSHeader()
         rpPds.pds_no = pds.pds_no
-        
-    rpPds.delivery_date = pds.pds_delivery_date.strftime('%d-%B-%Y')
+
+    rpPds.delivery_date = "-"
+    if pds.pds_delivery_date:
+        rpPds.delivery_date = pds.pds_delivery_date.strftime('%d-%B-%Y')
     rpPds.sup_code = pds.supplier_id.code
     rpPds.sup_name = pds.supplier_id.name
     rpPds.sup_telephone = ""
