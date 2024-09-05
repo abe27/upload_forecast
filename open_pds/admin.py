@@ -404,15 +404,16 @@ class PDSHeaderAdmin(admin.ModelAdmin):
         isSuccess = True
         msg = "จัดการข้อมูล PDS"
         if "_move_to_po" in request.POST:
+            onM = int(f"{obj.forecast_id.forecast_on_month_id.value}")
+            onMonth = int(f"{obj.forecast_id.forecast_on_year_id.value}{onM:02d}")
             if obj.pds_delivery_date is None:
                 isSuccess = False
                 msg = "ไม่ระบุ Delivery Date"
                 messages.error(request,"กรุณาระบุ Delivery Date ด้วย")
                 
             else:
-                onM = int(f"{obj.forecast_id.forecast_on_month_id.value}")
-                onMonth = int(f"{obj.forecast_id.forecast_on_year_id.value}{onM:02d}")
-                if int(obj.pds_delivery_date.strftime("%Y%m")) == onMonth:
+                print(f'{int(obj.pds_delivery_date.strftime("%Y%m"))} == {onMonth}')
+                if int(obj.pds_delivery_date.strftime("%Y%m")) >= onMonth:
                     ordDetail = PDSDetail.objects.filter(pds_header_id=obj, is_select=True, qty__gt=0)
                     isFound = False
                     if ordDetail.count() <= 0:
@@ -437,7 +438,7 @@ class PDSHeaderAdmin(admin.ModelAdmin):
                 else:
                     isSuccess = False
                     msg = f"ระบุวันที่ Delivery Date ไม่ตรงกับรายการ Forecast"
-                    messages.error(request, f"กรุณาเลือกวันที่จัดส่งให้ถูกต้องด้วย")
+                    messages.error(request, f"วันที่จัดส่งต้องมากกว่าหรือเท่ากับ {onMonth}")
                         
         elif "_cancel_po" in request.POST:
             isSuccess = True
